@@ -145,6 +145,15 @@ godot --headless --path . res://tests/test_player_movement.tscn
 - Input Map은 `tests/tools/setup_input_map.gd`로 다시 생성할 수 있다. (`godot --headless --path . -s res://tests/tools/setup_input_map.gd`)
 출력에 `ERROR` 또는 `SCRIPT ERROR`가 있으면 원인을 고치고 다시 실행한다.
 
+## 웹 빌드 (태블릿 크롬에서 플레이용)
+```
+godot --headless --path . --export-release "Web" build/web/index.html
+python3 tests/tools/split_web_build.py build/web
+```
+- 웹 export 템플릿(4.4.1, `web_nothreads_release.zip`)이 필요하다. 스레드 없는 빌드라 별도 헤더 없이 돌아간다.
+- 후처리 스크립트가 wasm을 15MB 이하 조각으로 나누고, `.pck`를 `.wasm` 이름으로 바꾸고, `root-access.html`(문서 골격 없는 페이지)을 만든다.
+- 웹에서는 시스템 폰트가 없으므로 한글은 프로젝트 기본 폰트(`assets/fonts/Galmuri11.ttf`, OFL)로 표시한다.
+
 ## 작업 방식
 - 한 번에 하나의 마일스톤만 진행한다. (`GDD.md`의 마일스톤 순서를 따른다)
 - 기능을 추가할 때는 먼저 어떤 파일을 만들고 수정할지 짧게 계획을 말한 뒤 진행한다.
