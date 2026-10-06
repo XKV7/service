@@ -35,7 +35,7 @@ func physics_update(delta: float) -> void:
 	_time += delta
 	if player.is_fire_held():
 		return
-	if _time >= data.charge_time and player.energy.can_spend(data.energy_cost):
+	if _time >= _charge_time() and player.energy.can_spend(data.energy_cost):
 		transitioned.emit(self, &"Fire")
 	else:
 		go_neutral()
@@ -43,7 +43,7 @@ func physics_update(delta: float) -> void:
 
 func update(_delta: float) -> void:
 	var data: RailgunData = player.railgun
-	var ratio: float = clampf(_time / data.charge_time, 0.0, 1.0)
+	var ratio: float = clampf(_time / _charge_time(), 0.0, 1.0)
 	_bar_fill.size.x = _bar_back.size.x * ratio
 	if ratio < 1.0:
 		_bar_fill.color = bar_color_charging
@@ -51,3 +51,7 @@ func update(_delta: float) -> void:
 		_bar_fill.color = bar_color_ready
 	else:
 		_bar_fill.color = bar_color_no_energy
+
+
+func _charge_time() -> float:
+	return player.stats.get_value(Player.STAT_RAILGUN_CHARGE_TIME)

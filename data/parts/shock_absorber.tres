@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="PartData" format=3]
+
+[ext_resource type="Script" path="res://core/stats/part_data.gd" id="1_part"]
+[ext_resource type="Script" path="res://core/stats/part_level.gd" id="2_lvl"]
+[ext_resource type="Script" path="res://core/stats/stat_modifier.gd" id="3_mod"]
+
+[sub_resource type="Resource" id="StatModifier_0_0"]
+script = ExtResource("3_mod")
+stat = &"knockback_taken_mult"
+op = 1
+value = 0.5
+
+[sub_resource type="Resource" id="PartLevel_0"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_0_0")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "넉백 거리 -50%"
+
+[sub_resource type="Resource" id="StatModifier_1_0"]
+script = ExtResource("3_mod")
+stat = &"knockback_taken_mult"
+op = 1
+value = 0.0
+
+[sub_resource type="Resource" id="PartLevel_1"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_1_0")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "넉백 없음"
+
+[sub_resource type="Resource" id="StatModifier_2_0"]
+script = ExtResource("3_mod")
+stat = &"knockback_taken_mult"
+op = 1
+value = 0.0
+
+[sub_resource type="Resource" id="StatModifier_2_1"]
+script = ExtResource("3_mod")
+stat = &"hurt_time_mult"
+op = 1
+value = 0.0
+
+[sub_resource type="Resource" id="PartLevel_2"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_2_0"), SubResource("StatModifier_2_1")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "넉백 없음, 피격 경직 없음"
+
+[resource]
+script = ExtResource("1_part")
+id = &"shock_absorber"
+display_name = "충격 흡수기"
+description = "피격 넉백과 경직을 줄인다."
+levels = Array[ExtResource("2_lvl")]([SubResource("PartLevel_0"), SubResource("PartLevel_1"), SubResource("PartLevel_2")])
+upgrade_costs = Array[int]([200, 500])

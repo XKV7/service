@@ -18,6 +18,8 @@ func _ready() -> void:
 	player.respawn_position = player.global_position
 	for rect: Rect2 in platforms:
 		_build_platform(rect)
+	GameState.wreck_changed.connect(func() -> void: BodyWreck.sync(self))
+	BodyWreck.sync(self)
 
 
 func _physics_process(_delta: float) -> void:

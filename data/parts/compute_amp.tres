@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="PartData" format=3]
+
+[ext_resource type="Script" path="res://core/stats/part_data.gd" id="1_part"]
+[ext_resource type="Script" path="res://core/stats/part_level.gd" id="2_lvl"]
+[ext_resource type="Script" path="res://core/stats/stat_modifier.gd" id="3_mod"]
+
+[sub_resource type="Resource" id="StatModifier_0_0"]
+script = ExtResource("3_mod")
+stat = &"energy_per_hit"
+op = 0
+value = 3.0
+
+[sub_resource type="Resource" id="PartLevel_0"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_0_0")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "타격당 연산력 +3"
+
+[sub_resource type="Resource" id="StatModifier_1_0"]
+script = ExtResource("3_mod")
+stat = &"energy_per_hit"
+op = 0
+value = 5.0
+
+[sub_resource type="Resource" id="PartLevel_1"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_1_0")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "타격당 연산력 +5"
+
+[sub_resource type="Resource" id="StatModifier_2_0"]
+script = ExtResource("3_mod")
+stat = &"energy_per_hit"
+op = 0
+value = 7.0
+
+[sub_resource type="Resource" id="PartLevel_2"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_2_0")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "타격당 연산력 +7"
+
+[resource]
+script = ExtResource("1_part")
+id = &"compute_amp"
+display_name = "연산 증폭기"
+description = "근접 공격이 맞을 때 얻는 연산력을 늘린다."
+levels = Array[ExtResource("2_lvl")]([SubResource("PartLevel_0"), SubResource("PartLevel_1"), SubResource("PartLevel_2")])
+upgrade_costs = Array[int]([200, 500])

@@ -76,5 +76,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _collect() -> void:
-	GameState.add_data(value)
+	if _target is Player:
+		(_target as Player).collect_data(value)
+	else:
+		GameState.add_data(value)
 	queue_free()

@@ -25,3 +25,17 @@ signal screen_shake_requested(intensity: float)
 ## 화면 전체 섬광 요청
 @warning_ignore("unused_signal")
 signal screen_flash_requested(color: Color, duration: float)
+
+@warning_ignore("unused_signal")
+signal part_acquired(part_id: StringName)
+
+@warning_ignore("unused_signal")
+signal relay_activated(relay_id: StringName)
+
+## 화면 알림 문구 요청
+@warning_ignore("unused_signal")
+signal toast_requested(text: String)
+
+## 의체 메뉴 열기 요청. editable이면 장착·강화를 바꿀 수 있다. (중계기)
+@warning_ignore("unused_signal")
+signal body_menu_requested(editable: bool)

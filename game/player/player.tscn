@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3]
+[gd_scene load_steps=33 format=3]
 
 [ext_resource type="Script" path="res://game/player/player.gd" id="1_player"]
 [ext_resource type="Resource" path="res://data/player/player_movement.tres" id="2_move"]
@@ -26,6 +26,12 @@
 [ext_resource type="Script" path="res://core/feel/hit_flash.gd" id="23_flash"]
 [ext_resource type="Script" path="res://game/player/states/player_hurt.gd" id="24_hurt"]
 [ext_resource type="Script" path="res://game/player/states/player_dead.gd" id="25_dead"]
+
+[ext_resource type="Script" path="res://core/stats/stat_sheet.gd" id="26_stats"]
+[ext_resource type="Script" path="res://game/player/part_loadout.gd" id="27_loadout"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
+size = Vector2(28, 44)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(18, 44)
@@ -98,7 +104,25 @@ unique_name_in_owner = true
 script = ExtResource("15_gauge")
 max_value = 100.0
 
+[node name="Stats" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("26_stats")
+
+[node name="PartLoadout" type="Node" parent="."]
+script = ExtResource("27_loadout")
+
+[node name="InteractSensor" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 32
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractSensor"]
+position = Vector2(0, -22)
+shape = SubResource("RectangleShape2D_interact")
+
 [node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("body")]
+unique_name_in_owner = true
 script = ExtResource("22_kb")
 body = NodePath("..")
 

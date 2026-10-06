@@ -15,7 +15,7 @@ func physics_update(delta: float) -> void:
 	player.move_and_slide()
 
 	_time += delta
-	if _time < player.combat.hurt_time:
+	if _time < player.get_hurt_time():
 		return
 	if player.pending_safe_return:
 		player.pending_safe_return = false

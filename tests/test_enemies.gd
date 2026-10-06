@@ -223,8 +223,15 @@ func _test_player_death_and_respawn() -> void:
 
 # --- 헬퍼 ---
 
+func _reset_game_state() -> void:
+	GameState.reset()
+	GameState.unlock_skill(&"railgun")
+	GameState.unlock_skill(&"hack")
+
+
 func _setup_player() -> Player:
 	HitStop.cancel()
+	_reset_game_state()
 	_make_body(Rect2(-2000, FLOOR_Y, 4000, 40))
 	var p := PLAYER_SCENE.instantiate() as Player
 	p.position = Vector2(0, FLOOR_Y - 1)

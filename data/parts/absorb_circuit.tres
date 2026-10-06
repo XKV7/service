@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="PartData" format=3]
+
+[ext_resource type="Script" path="res://core/stats/part_data.gd" id="1_part"]
+[ext_resource type="Script" path="res://core/stats/part_level.gd" id="2_lvl"]
+[ext_resource type="Script" path="res://core/stats/stat_modifier.gd" id="3_mod"]
+[ext_resource type="Script" path="res://game/parts/absorb_circuit_effect.gd" id="4_fx"]
+
+[sub_resource type="Resource" id="PartLevel_0"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([])
+effect_value = 10.0
+effect_value_2 = 20.0
+description = "적 10마리 처치마다 내구도 20 회복"
+
+[sub_resource type="Resource" id="PartLevel_1"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([])
+effect_value = 8.0
+effect_value_2 = 20.0
+description = "적 8마리 처치마다 내구도 20 회복"
+
+[sub_resource type="Resource" id="PartLevel_2"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([])
+effect_value = 6.0
+effect_value_2 = 20.0
+description = "적 6마리 처치마다 내구도 20 회복"
+
+[resource]
+script = ExtResource("1_part")
+id = &"absorb_circuit"
+display_name = "흡수 회로"
+description = "적을 일정 수 처치할 때마다 내구도를 회복한다."
+levels = Array[ExtResource("2_lvl")]([SubResource("PartLevel_0"), SubResource("PartLevel_1"), SubResource("PartLevel_2")])
+upgrade_costs = Array[int]([200, 500])
+effect_script = ExtResource("4_fx")

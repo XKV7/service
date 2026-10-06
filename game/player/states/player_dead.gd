@@ -8,6 +8,7 @@ func enter() -> void:
 	_time = 0.0
 	player.hitbox.deactivate()
 	player.pending_safe_return = false
+	GameState.create_wreck(player.get_wreck_position())
 	EventBus.player_died.emit()
 
 

@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="PartData" format=3]
+
+[ext_resource type="Script" path="res://core/stats/part_data.gd" id="1_part"]
+[ext_resource type="Script" path="res://core/stats/part_level.gd" id="2_lvl"]
+[ext_resource type="Script" path="res://core/stats/stat_modifier.gd" id="3_mod"]
+[ext_resource type="Script" path="res://game/parts/reflex_net_effect.gd" id="4_fx"]
+
+[sub_resource type="Resource" id="PartLevel_0"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([])
+effect_value = 0.3
+effect_value_2 = 0.4
+description = "대시 직후 0.4초간 공격력 +30%"
+
+[sub_resource type="Resource" id="PartLevel_1"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([])
+effect_value = 0.45
+effect_value_2 = 0.4
+description = "대시 직후 0.4초간 공격력 +45%"
+
+[sub_resource type="Resource" id="PartLevel_2"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([])
+effect_value = 0.6
+effect_value_2 = 0.4
+description = "대시 직후 0.4초간 공격력 +60%"
+
+[resource]
+script = ExtResource("1_part")
+id = &"reflex_net"
+display_name = "반응 신경망"
+description = "대시 직후 잠깐 공격력이 오른다."
+levels = Array[ExtResource("2_lvl")]([SubResource("PartLevel_0"), SubResource("PartLevel_1"), SubResource("PartLevel_2")])
+upgrade_costs = Array[int]([200, 500])
+effect_script = ExtResource("4_fx")

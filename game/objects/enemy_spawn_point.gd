@@ -1,6 +1,6 @@
 class_name EnemySpawnPoint
 extends Marker2D
-## 적을 배치하는 지점. 플레이어가 재접속하면(이후 중계기 사용 시에도) 적을 다시 배치한다.
+## 적을 배치하는 지점. 플레이어가 재접속하거나 중계기에 접속하면 적을 다시 배치한다.
 
 @export var enemy_scene: PackedScene
 ## 생성한 적에 덮어쓸 속성 (예: {"on_ceiling": true})
@@ -12,6 +12,7 @@ var _instance: Node
 func _ready() -> void:
 	add_to_group(&"enemy_spawn_point")
 	EventBus.player_respawned.connect(respawn)
+	EventBus.relay_activated.connect(func(_id: StringName) -> void: respawn())
 	respawn.call_deferred()
 
 

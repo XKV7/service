@@ -137,6 +137,7 @@ func _test_hack_stun_bonus() -> void:
 
 
 func _test_pogo() -> void:
+	_reset_game_state()
 	_floor = _make_floor()
 	var bag: Sandbag = SANDBAG_SCENE.instantiate() as Sandbag
 	bag.use_gravity = false
@@ -173,9 +174,16 @@ func _test_dash_cancel() -> void:
 
 # --- 헬퍼 ---
 
+func _reset_game_state() -> void:
+	GameState.reset()
+	GameState.unlock_skill(&"railgun")
+	GameState.unlock_skill(&"hack")
+
+
 ## [플레이어, 샌드백]을 반환한다. 플레이어는 원점, 오른쪽을 바라본다.
 func _setup(bag_pos: Vector2, hologram: bool = false) -> Array:
 	HitStop.cancel()
+	_reset_game_state()
 	_floor = _make_floor()
 	var p: Player = PLAYER_SCENE.instantiate() as Player
 	p.position = Vector2(0, FLOOR_Y - 1)

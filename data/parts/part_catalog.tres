@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="PartCatalog" format=3]
+
+[ext_resource type="Script" path="res://core/stats/part_catalog.gd" id="1_cat"]
+[ext_resource type="Script" path="res://core/stats/part_data.gd" id="2_part"]
+[ext_resource type="Resource" path="res://data/parts/accel_actuator.tres" id="p0"]
+[ext_resource type="Resource" path="res://data/parts/armor_plate.tres" id="p1"]
+[ext_resource type="Resource" path="res://data/parts/absorb_circuit.tres" id="p2"]
+[ext_resource type="Resource" path="res://data/parts/compute_amp.tres" id="p3"]
+[ext_resource type="Resource" path="res://data/parts/overcharge_coil.tres" id="p4"]
+[ext_resource type="Resource" path="res://data/parts/cooling_fin.tres" id="p5"]
+[ext_resource type="Resource" path="res://data/parts/reflex_net.tres" id="p6"]
+[ext_resource type="Resource" path="res://data/parts/data_intake.tres" id="p7"]
+[ext_resource type="Resource" path="res://data/parts/shock_absorber.tres" id="p8"]
+[ext_resource type="Resource" path="res://data/parts/overclock_chip.tres" id="p9"]
+[ext_resource type="Resource" path="res://data/parts/slot_module.tres" id="p10"]
+
+[resource]
+script = ExtResource("1_cat")
+parts = Array[ExtResource("2_part")]([ExtResource("p0"), ExtResource("p1"), ExtResource("p2"), ExtResource("p3"), ExtResource("p4"), ExtResource("p5"), ExtResource("p6"), ExtResource("p7"), ExtResource("p8"), ExtResource("p9"), ExtResource("p10")])

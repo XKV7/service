@@ -14,8 +14,9 @@ var _hitbox: HitboxComponent
 
 
 ## origin에서 direction 방향으로 쏜다. hitbox_layer는 공격 판정이 속할 레이어.
+## damage_mult는 공격력 배율 (부품 효과 등)
 func fire(origin: Vector2, direction: Vector2, attack: AttackData, max_length: float, width: float,
-		target_mask: int, world_mask: int, color: Color, hitbox_layer: int = 0) -> void:
+		target_mask: int, world_mask: int, color: Color, hitbox_layer: int = 0, damage_mult: float = 1.0) -> void:
 	var dir: Vector2 = direction.normalized()
 	global_position = origin
 	rotation = dir.angle()
@@ -25,6 +26,7 @@ func fire(origin: Vector2, direction: Vector2, attack: AttackData, max_length: f
 	_hitbox.collision_layer = hitbox_layer
 	_hitbox.collision_mask = target_mask
 	_hitbox.draw_color = Color.TRANSPARENT
+	_hitbox.damage_mult = damage_mult
 	add_child(_hitbox)
 	_hitbox.hit_landed.connect(hit_landed.emit)
 	# 히트박스는 회전된 이 노드의 자식이므로 로컬 x축이 빔 방향이다.

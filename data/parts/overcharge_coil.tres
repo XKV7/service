@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="PartData" format=3]
+
+[ext_resource type="Script" path="res://core/stats/part_data.gd" id="1_part"]
+[ext_resource type="Script" path="res://core/stats/part_level.gd" id="2_lvl"]
+[ext_resource type="Script" path="res://core/stats/stat_modifier.gd" id="3_mod"]
+
+[sub_resource type="Resource" id="StatModifier_0_0"]
+script = ExtResource("3_mod")
+stat = &"railgun_charge_time"
+op = 1
+value = 0.8
+
+[sub_resource type="Resource" id="PartLevel_0"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_0_0")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "레일건 충전 시간 -20%"
+
+[sub_resource type="Resource" id="StatModifier_1_0"]
+script = ExtResource("3_mod")
+stat = &"railgun_charge_time"
+op = 1
+value = 0.65
+
+[sub_resource type="Resource" id="StatModifier_1_1"]
+script = ExtResource("3_mod")
+stat = &"railgun_damage"
+op = 0
+value = 10.0
+
+[sub_resource type="Resource" id="PartLevel_1"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_1_0"), SubResource("StatModifier_1_1")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "충전 시간 -35%, 피해 +10"
+
+[sub_resource type="Resource" id="StatModifier_2_0"]
+script = ExtResource("3_mod")
+stat = &"railgun_charge_time"
+op = 1
+value = 0.5
+
+[sub_resource type="Resource" id="StatModifier_2_1"]
+script = ExtResource("3_mod")
+stat = &"railgun_damage"
+op = 0
+value = 20.0
+
+[sub_resource type="Resource" id="PartLevel_2"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_2_0"), SubResource("StatModifier_2_1")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "충전 시간 -50%, 피해 +20"
+
+[resource]
+script = ExtResource("1_part")
+id = &"overcharge_coil"
+display_name = "과충전 코일"
+description = "레일건 충전 시간을 줄이고 피해를 늘린다."
+levels = Array[ExtResource("2_lvl")]([SubResource("PartLevel_0"), SubResource("PartLevel_1"), SubResource("PartLevel_2")])
+upgrade_costs = Array[int]([200, 500])

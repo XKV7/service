@@ -8,9 +8,23 @@ extends CharacterBody2D
 @export var weapon: WeaponData
 @export var railgun: RailgunData
 @export var hack: HackData
-## 스킬 해금 여부. M8에서 GameState가 관리한다.
-@export var railgun_unlocked: bool = true
-@export var hack_unlocked: bool = true
+
+## 스탯 이름. 부품(StatModifier)은 이 이름으로 수치를 바꾼다.
+const STAT_MAX_HP: StringName = &"max_hp"
+const STAT_HURT_INVULN: StringName = &"hurt_invuln"
+const STAT_DASH_COOLDOWN: StringName = &"dash_cooldown"
+const STAT_ATTACK_MULT: StringName = &"attack_mult"
+const STAT_DAMAGE_TAKEN_MULT: StringName = &"damage_taken_mult"
+const STAT_ENERGY_PER_HIT: StringName = &"energy_per_hit"
+const STAT_RAILGUN_CHARGE_TIME: StringName = &"railgun_charge_time"
+const STAT_RAILGUN_DAMAGE: StringName = &"railgun_damage"
+const STAT_HACK_STUN_DURATION: StringName = &"hack_stun_duration"
+const STAT_HACK_REACH: StringName = &"hack_reach"
+const STAT_KNOCKBACK_TAKEN_MULT: StringName = &"knockback_taken_mult"
+const STAT_HURT_TIME_MULT: StringName = &"hurt_time_mult"
+const STAT_DATA_GAIN_MULT: StringName = &"data_gain_mult"
+const SKILL_RAILGUN: StringName = &"railgun"
+const SKILL_HACK: StringName = &"hack"
 
 ## 바라보는 방향. 1.0 = 오른쪽, -1.0 = 왼쪽
 var facing: float = 1.0
@@ -42,11 +56,15 @@ var _safe_history: Array[Vector2] = []
 @onready var hitbox: HitboxComponent = %Hitbox
 @onready var charge_bar: Node2D = %ChargeBar
 @onready var hit_flash: HitFlash = %HitFlash
+@onready var stats: StatSheet = %Stats
+@onready var knockback: KnockbackComponent = %Knockback
+@onready var interact_sensor: Area2D = %InteractSensor
 
 
 func _ready() -> void:
 	assert(movement != null and combat != null and weapon != null, "Player: 데이터가 지정되지 않았다.")
 	add_to_group(&"player")
+	_init_stats()
 	_air_dashes_left = movement.air_dash_count
 	respawn_position = global_position
 	hitbox.hit_landed.connect(_on_melee_hit_landed)
@@ -74,6 +92,8 @@ func _physics_process(delta: float) -> void:
 		_jump_buffer_timer = movement.jump_buffer_time
 	if Input.is_action_just_pressed("attack"):
 		_attack_buffer_timer = combat.attack_buffer_time
+	if Input.is_action_just_pressed("menu") and not is_dead():
+		EventBus.body_menu_requested.emit(false)
 
 
 func _process(_delta: float) -> void:
@@ -115,6 +135,10 @@ func is_fire_held() -> bool:
 
 func is_hack_pressed() -> bool:
 	return not input_locked and Input.is_action_just_pressed("hack")
+
+
+func is_interact_pressed() -> bool:
+	return not input_locked and Input.is_action_just_pressed("interact")
 
 
 ## 버퍼에 공격 입력이 있으면 소모하고 true
@@ -184,7 +208,7 @@ func can_dash() -> bool:
 
 
 func consume_dash() -> void:
-	_dash_cooldown_timer = movement.dash_cooldown
+	_dash_cooldown_timer = stats.get_value(STAT_DASH_COOLDOWN)
 	health.add_invulnerability(movement.dash_invuln_time)
 	if not is_on_floor():
 		_air_dashes_left -= 1
@@ -196,12 +220,46 @@ func get_dash_cooldown_left() -> float:
 
 # --- 전투 ---
 
+func can_fire() -> bool:
+	return railgun != null and GameState.has_skill(SKILL_RAILGUN)
+
+
 func can_hack() -> bool:
-	return hack_unlocked and hack != null and energy.can_spend(hack.energy_cost)
+	return hack != null and GameState.has_skill(SKILL_HACK) and energy.can_spend(hack.energy_cost)
+
+
+## 레일건 피해 배율 (기본 피해 대비 부품 보너스 × 공격력 배율)
+func get_railgun_damage_mult() -> float:
+	var base: float = float(railgun.attack.damage)
+	return stats.get_value(STAT_RAILGUN_DAMAGE) / base * stats.get_value(STAT_ATTACK_MULT)
+
+
+func heal(amount: int) -> void:
+	health.heal(amount)
+
+
+## 데이터를 얻는다. 부품의 획득 배율이 적용된다.
+func collect_data(amount: int) -> void:
+	GameState.add_data(roundi(amount * stats.get_value(STAT_DATA_GAIN_MULT)))
+
+
+## 범위 안의 상호작용 대상 중 가장 가까운 것. 없으면 null
+func find_interactable() -> InteractableComponent:
+	var best: InteractableComponent = null
+	var best_dist: float = INF
+	for area: Area2D in interact_sensor.get_overlapping_areas():
+		var target := area as InteractableComponent
+		if target == null or not target.enabled:
+			continue
+		var dist: float = global_position.distance_to(target.global_position)
+		if dist < best_dist:
+			best = target
+			best_dist = dist
+	return best
 
 
 func _on_melee_hit_landed(hurtbox_hit: HurtboxComponent, damage: int, killed: bool) -> void:
-	var gain: float = combat.energy_per_hit
+	var gain: float = stats.get_value(STAT_ENERGY_PER_HIT)
 	if killed:
 		gain += combat.energy_per_kill
 	energy.add(gain)
@@ -232,7 +290,23 @@ func _on_hurt(hit_by: HitboxComponent, _damage: int) -> void:
 		return
 	_blink_left = health.invuln_time
 	pending_safe_return = hit_by.attack_data.sends_to_safe_point
-	state_machine.transition_to(&"Hurt")
+	if get_hurt_time() > 0.0:
+		state_machine.transition_to(&"Hurt")
+	elif pending_safe_return:
+		pending_safe_return = false
+		return_to_safe_point()
+
+
+## 피격 경직 시간 (부품으로 0이 될 수 있다)
+func get_hurt_time() -> float:
+	return combat.hurt_time * stats.get_value(STAT_HURT_TIME_MULT)
+
+
+## 의체 잔해가 남을 위치. 공중(구덩이 등)에서 파괴되면 마지막 안전 지점에 남는다.
+func get_wreck_position() -> Vector2:
+	if is_on_floor() or _safe_history.is_empty():
+		return global_position
+	return _safe_history.back()
 
 
 ## 환경 피해 (구덩이 낙하 등). 히트박스 없이 피해를 주고 안전 지점으로 되돌린다.
@@ -265,6 +339,35 @@ func revive() -> void:
 	visual.modulate = Color.WHITE
 	state_machine.transition_to(&"Idle")
 	EventBus.player_respawned.emit()
+
+
+# --- 스탯 ---
+
+func _init_stats() -> void:
+	stats.set_base(STAT_MAX_HP, health.max_hp)
+	stats.set_base(STAT_HURT_INVULN, health.invuln_time)
+	stats.set_base(STAT_DASH_COOLDOWN, movement.dash_cooldown)
+	stats.set_base(STAT_ATTACK_MULT, 1.0)
+	stats.set_base(STAT_DAMAGE_TAKEN_MULT, 1.0)
+	stats.set_base(STAT_ENERGY_PER_HIT, combat.energy_per_hit)
+	stats.set_base(STAT_RAILGUN_CHARGE_TIME, railgun.charge_time)
+	stats.set_base(STAT_RAILGUN_DAMAGE, railgun.attack.damage)
+	stats.set_base(STAT_HACK_STUN_DURATION, hack.stun_duration)
+	stats.set_base(STAT_HACK_REACH, hack.reach)
+	stats.set_base(STAT_KNOCKBACK_TAKEN_MULT, 1.0)
+	stats.set_base(STAT_HURT_TIME_MULT, 1.0)
+	stats.set_base(STAT_DATA_GAIN_MULT, 1.0)
+	stats.stats_changed.connect(_apply_stats)
+	_apply_stats()
+
+
+## 스탯을 각 컴포넌트에 반영한다.
+func _apply_stats() -> void:
+	health.set_max_hp(roundi(stats.get_value(STAT_MAX_HP)))
+	health.invuln_time = stats.get_value(STAT_HURT_INVULN)
+	hitbox.damage_mult = stats.get_value(STAT_ATTACK_MULT)
+	hurtbox.damage_taken_mult = stats.get_value(STAT_DAMAGE_TAKEN_MULT)
+	knockback.knockback_mult = stats.get_value(STAT_KNOCKBACK_TAKEN_MULT)
 
 
 func _sample_safe_point(delta: float) -> void:

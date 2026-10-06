@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/components/attack_data.gd" id="1_atk"]
+
+[resource]
+script = ExtResource("1_atk")
+damage = 22
+startup = 0.14
+active = 0.12
+recovery = 0.32
+lunge_speed = 0
+hitbox_size = Vector2(96, 24)
+hitbox_offset = Vector2(57, -26)
+knockback = -260
+knockback_up = 0
+hitstop = 0.08
+shake = 0.3

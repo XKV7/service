@@ -19,6 +19,12 @@
 [ext_resource type="Resource" path="res://data/attacks/trap_shock.tres" id="17_m"]
 [ext_resource type="Resource" path="res://data/attacks/trap_laser.tres" id="18_m"]
 
+[ext_resource type="Script" path="res://game/objects/relay.gd" id="r_relay"]
+[ext_resource type="Script" path="res://game/objects/item_pickup.gd" id="r_item"]
+[ext_resource type="Script" path="res://game/objects/data_cache.gd" id="r_cache"]
+[ext_resource type="Script" path="res://game/ui/toast.gd" id="r_toast"]
+[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="r_menu"]
+
 [node name="TestMap" type="Node2D"]
 script = ExtResource("1_m")
 platforms = Array[Rect2]([Rect2(-400, 300, 900, 200), Rect2(-400, -200, 40, 500), Rect2(120, 236, 140, 16), Rect2(300, 172, 140, 16), Rect2(580, 300, 240, 200), Rect2(900, 300, 200, 200), Rect2(1180, 240, 100, 260), Rect2(1340, 180, 100, 320), Rect2(1500, 300, 400, 200), Rect2(1560, 236, 120, 16), Rect2(1720, 172, 120, 16), Rect2(2100, 300, 1400, 200), Rect2(3900, 300, 1600, 200), Rect2(4200, 140, 400, 20), Rect2(5500, -200, 40, 700)])
@@ -66,7 +72,7 @@ position = Vector2(1000, 150)
 use_gravity = false
 
 [node name="SandbagBeforeLaser" parent="." instance=ExtResource("6_m")]
-position = Vector2(3960, 300)
+position = Vector2(3990, 300)
 
 [node name="SpawnGuard" type="Marker2D" parent="."]
 position = Vector2(1700, 300)
@@ -133,6 +139,136 @@ script = ExtResource("16_m")
 position = Vector2(3780, 250)
 script = ExtResource("16_m")
 
+[node name="RelayStart" type="Node2D" parent="."]
+position = Vector2(60, 300)
+script = ExtResource("r_relay")
+relay_id = &"test_start"
+
+[node name="RelayMid" type="Node2D" parent="."]
+position = Vector2(3920, 300)
+script = ExtResource("r_relay")
+relay_id = &"test_mid"
+
+[node name="Pickup_railgun" type="Area2D" parent="."]
+position = Vector2(-60, 300)
+script = ExtResource("r_item")
+kind = 2
+item_id = &"railgun"
+
+[node name="Pickup_hack" type="Area2D" parent="."]
+position = Vector2(-80, 300)
+script = ExtResource("r_item")
+kind = 2
+item_id = &"hack"
+
+[node name="Pickup_mono_wire" type="Area2D" parent="."]
+position = Vector2(-100, 300)
+script = ExtResource("r_item")
+kind = 1
+item_id = &"mono_wire"
+
+[node name="Pickup_slot_module" type="Area2D" parent="."]
+position = Vector2(-120, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"slot_module"
+
+[node name="Pickup_accel_actuator" type="Area2D" parent="."]
+position = Vector2(-140, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"accel_actuator"
+
+[node name="Pickup_armor_plate" type="Area2D" parent="."]
+position = Vector2(-160, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"armor_plate"
+
+[node name="Pickup_absorb_circuit" type="Area2D" parent="."]
+position = Vector2(-180, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"absorb_circuit"
+
+[node name="Pickup_compute_amp" type="Area2D" parent="."]
+position = Vector2(-200, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"compute_amp"
+
+[node name="Pickup_overcharge_coil" type="Area2D" parent="."]
+position = Vector2(-220, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"overcharge_coil"
+
+[node name="Pickup_cooling_fin" type="Area2D" parent="."]
+position = Vector2(-240, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"cooling_fin"
+
+[node name="Pickup_reflex_net" type="Area2D" parent="."]
+position = Vector2(-260, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"reflex_net"
+
+[node name="Pickup_data_intake" type="Area2D" parent="."]
+position = Vector2(-280, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"data_intake"
+
+[node name="Pickup_shock_absorber" type="Area2D" parent="."]
+position = Vector2(-300, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"shock_absorber"
+
+[node name="Pickup_overclock_chip" type="Area2D" parent="."]
+position = Vector2(-320, 300)
+script = ExtResource("r_item")
+kind = 0
+item_id = &"overclock_chip"
+
+[node name="DataCache0" type="Node2D" parent="."]
+position = Vector2(160, 236)
+script = ExtResource("r_cache")
+data_amount = 80
+
+[node name="DataCache1" type="Node2D" parent="."]
+position = Vector2(220, 236)
+script = ExtResource("r_cache")
+data_amount = 80
+
+[node name="DataCache2" type="Node2D" parent="."]
+position = Vector2(330, 172)
+script = ExtResource("r_cache")
+data_amount = 80
+
+[node name="DataCache3" type="Node2D" parent="."]
+position = Vector2(390, 172)
+script = ExtResource("r_cache")
+data_amount = 80
+
+[node name="DataCache4" type="Node2D" parent="."]
+position = Vector2(150, 300)
+script = ExtResource("r_cache")
+data_amount = 80
+
+[node name="DataCache5" type="Node2D" parent="."]
+position = Vector2(250, 300)
+script = ExtResource("r_cache")
+data_amount = 80
+
+[node name="Toast" type="CanvasLayer" parent="."]
+script = ExtResource("r_toast")
+
+[node name="BodyMenu" type="CanvasLayer" parent="."]
+script = ExtResource("r_menu")
+
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="DebugLabel" type="Label" parent="HUD"]
@@ -154,4 +290,4 @@ offset_right = 632.0
 offset_bottom = -4.0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 12
-text = "A/D 이동  Space 점프  L 대시  J 공격(공중 S+J 아래 찍기)  K 레일건(길게 눌렀다 떼기)  I 시스템 정지"
+text = "A/D 이동  Space 점프  L 대시  J 공격  S+J 아래 찍기  K 레일건  I 정지  W 상호작용  Tab 의체 메뉴"

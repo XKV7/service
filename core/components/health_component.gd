@@ -60,6 +60,13 @@ func heal(amount: int) -> void:
 		health_changed.emit(hp, max_hp)
 
 
+## 최대 체력을 바꾼다. 현재 체력은 새 최대치를 넘지 않게 줄인다.
+func set_max_hp(value: int) -> void:
+	max_hp = maxi(value, 1)
+	hp = mini(hp, max_hp)
+	health_changed.emit(hp, max_hp)
+
+
 ## 체력을 최대로 되돌린다. (부활, 중계기)
 func reset() -> void:
 	hp = max_hp

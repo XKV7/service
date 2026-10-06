@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="PartData" format=3]
+
+[ext_resource type="Script" path="res://core/stats/part_data.gd" id="1_part"]
+[ext_resource type="Script" path="res://core/stats/part_level.gd" id="2_lvl"]
+[ext_resource type="Script" path="res://core/stats/stat_modifier.gd" id="3_mod"]
+
+[sub_resource type="Resource" id="StatModifier_0_0"]
+script = ExtResource("3_mod")
+stat = &"attack_mult"
+op = 0
+value = 0.4
+
+[sub_resource type="Resource" id="StatModifier_0_1"]
+script = ExtResource("3_mod")
+stat = &"damage_taken_mult"
+op = 1
+value = 2.0
+
+[sub_resource type="Resource" id="PartLevel_0"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_0_0"), SubResource("StatModifier_0_1")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "공격력 +40%, 받는 피해 2배"
+
+[sub_resource type="Resource" id="StatModifier_1_0"]
+script = ExtResource("3_mod")
+stat = &"attack_mult"
+op = 0
+value = 0.55
+
+[sub_resource type="Resource" id="StatModifier_1_1"]
+script = ExtResource("3_mod")
+stat = &"damage_taken_mult"
+op = 1
+value = 2.0
+
+[sub_resource type="Resource" id="PartLevel_1"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_1_0"), SubResource("StatModifier_1_1")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "공격력 +55%, 받는 피해 2배"
+
+[sub_resource type="Resource" id="StatModifier_2_0"]
+script = ExtResource("3_mod")
+stat = &"attack_mult"
+op = 0
+value = 0.7
+
+[sub_resource type="Resource" id="StatModifier_2_1"]
+script = ExtResource("3_mod")
+stat = &"damage_taken_mult"
+op = 1
+value = 2.0
+
+[sub_resource type="Resource" id="PartLevel_2"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([SubResource("StatModifier_2_0"), SubResource("StatModifier_2_1")])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "공격력 +70%, 받는 피해 2배"
+
+[resource]
+script = ExtResource("1_part")
+id = &"overclock_chip"
+display_name = "오버클럭 칩"
+description = "공격력이 크게 오르지만 받는 피해가 2배가 된다."
+levels = Array[ExtResource("2_lvl")]([SubResource("PartLevel_0"), SubResource("PartLevel_1"), SubResource("PartLevel_2")])
+upgrade_costs = Array[int]([200, 500])

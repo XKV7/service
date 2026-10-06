@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="PartData" format=3]
+
+[ext_resource type="Script" path="res://core/stats/part_data.gd" id="1_part"]
+[ext_resource type="Script" path="res://core/stats/part_level.gd" id="2_lvl"]
+[ext_resource type="Script" path="res://core/stats/stat_modifier.gd" id="3_mod"]
+
+[sub_resource type="Resource" id="PartLevel_0"]
+script = ExtResource("2_lvl")
+modifiers = Array[ExtResource("3_mod")]([])
+effect_value = 0.0
+effect_value_2 = 0.0
+description = "부품 슬롯 +1"
+
+[resource]
+script = ExtResource("1_part")
+id = &"slot_module"
+display_name = "슬롯 확장 모듈"
+description = "부품 슬롯이 하나 늘어난다. 장착하지 않아도 효과가 있다."
+levels = Array[ExtResource("2_lvl")]([SubResource("PartLevel_0")])
+upgrade_costs = Array[int]([])
+passive_only = true

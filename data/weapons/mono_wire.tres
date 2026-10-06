@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://core/components/weapon_data.gd" id="1_wpn"]
+[ext_resource type="Script" path="res://core/components/attack_data.gd" id="2_atk"]
+[ext_resource type="Resource" path="res://data/attacks/wire_1.tres" id="3_a1"]
+[ext_resource type="Resource" path="res://data/attacks/wire_2.tres" id="4_a2"]
+
+[resource]
+script = ExtResource("1_wpn")
+id = &"mono_wire"
+display_name = "단분자 와이어"
+description = "사거리가 두 배인 2연격. 공격 속도는 느리다. 2타째에 맞은 적을 끌어당긴다."
+combo = Array[ExtResource("2_atk")]([ExtResource("3_a1"), ExtResource("4_a2")])
+attack_range = 96.0
+special_effect = &"pull"

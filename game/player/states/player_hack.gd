@@ -28,8 +28,9 @@ func physics_update(delta: float) -> void:
 
 
 func _release(data: HackData) -> void:
-	var center := player.global_position + Vector2(player.facing * data.reach * 0.5, data.center_y)
-	var size := Vector2(data.reach, data.height)
+	var reach: float = player.stats.get_value(Player.STAT_HACK_REACH)
+	var center := player.global_position + Vector2(player.facing * reach * 0.5, data.center_y)
+	var size := Vector2(reach, data.height)
 
 	var shape := RectangleShape2D.new()
 	shape.size = size
@@ -42,7 +43,7 @@ func _release(data: HackData) -> void:
 	for result: Dictionary in player.get_world_2d().direct_space_state.intersect_shape(query):
 		var hurtbox := result.get("collider") as HurtboxComponent
 		if hurtbox and hurtbox.stun:
-			hurtbox.stun.stun(data.stun_duration)
+			hurtbox.stun.stun(player.stats.get_value(Player.STAT_HACK_STUN_DURATION))
 
 	var wave: HackWave = HackWaveScript.new() as HackWave
 	player.get_parent().add_child(wave)

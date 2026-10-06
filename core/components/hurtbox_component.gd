@@ -15,6 +15,8 @@ signal blocked(hitbox: HitboxComponent)
 
 ## 막기 판정. (hitbox: HitboxComponent) -> bool. true를 반환하면 피해 없이 막는다.
 var block_check: Callable
+## 받는 피해 배율 (부품 효과 등)
+var damage_taken_mult: float = 1.0
 
 
 func _ready() -> void:
@@ -35,7 +37,7 @@ func receive_hit(hitbox: HitboxComponent) -> bool:
 		blocked.emit(hitbox)
 		hitbox.notify_blocked(self)
 		return false
-	var mult: float = hitbox.damage_mult
+	var mult: float = hitbox.damage_mult * damage_taken_mult
 	if stun:
 		mult *= stun.get_damage_taken_mult()
 	var damage: int = maxi(roundi(hitbox.attack_data.damage * mult), 1)

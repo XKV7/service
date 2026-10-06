@@ -16,7 +16,7 @@ func enter() -> void:
 	beam.hit_landed.connect(_on_beam_hit)
 	var muzzle := Vector2(data.muzzle_offset.x * player.facing, data.muzzle_offset.y)
 	beam.fire(player.global_position + muzzle, Vector2(player.facing, 0.0), data.attack, data.max_length,
-			data.beam_width, data.target_mask, data.world_mask, data.beam_color)
+			data.beam_width, data.target_mask, data.world_mask, data.beam_color, 0, player.get_railgun_damage_mult())
 
 	player.velocity.x = -player.facing * data.recoil_speed
 	EventBus.screen_flash_requested.emit(data.flash_color, data.flash_time)

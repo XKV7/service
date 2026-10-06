@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WeaponCatalog" format=3]
+
+[ext_resource type="Script" path="res://core/components/weapon_catalog.gd" id="1_cat"]
+[ext_resource type="Script" path="res://core/components/weapon_data.gd" id="2_wpn"]
+[ext_resource type="Resource" path="res://data/weapons/blade.tres" id="3_blade"]
+[ext_resource type="Resource" path="res://data/weapons/mono_wire.tres" id="4_wire"]
+
+[resource]
+script = ExtResource("1_cat")
+weapons = Array[ExtResource("2_wpn")]([ExtResource("3_blade"), ExtResource("4_wire")])
