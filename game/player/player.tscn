@@ -90,7 +90,7 @@ color = Color(0, 1, 0.9, 1)
 [node name="Health" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("13_health")
-max_hp = 5
+max_hp = 100
 invuln_time = 1.0
 
 [node name="Energy" type="Node" parent="."]

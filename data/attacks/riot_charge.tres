@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_atk")
-damage = 2
+damage = 40
 startup = 0.0
 active = 0.8
 recovery = 0

@@ -6,7 +6,7 @@ extends Resource
 @export var display_name: String = ""
 @export var max_hp: int = 30
 ## 기본 공격 피해 (표시용, 실제 피해는 각 AttackData)
-@export var damage: int = 1
+@export var damage: int = 20
 ## 순찰 속도 (px/s)
 @export var move_speed: float = 50.0
 ## 추격 속도 (px/s)

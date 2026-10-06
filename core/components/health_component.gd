@@ -7,7 +7,7 @@ signal healed(amount: int)
 signal died
 signal health_changed(current: int, maximum: int)
 
-@export var max_hp: int = 5
+@export var max_hp: int = 100
 ## 피해를 받은 뒤 무적 시간 (초)
 @export var invuln_time: float = 0.0
 

@@ -33,7 +33,7 @@ extends Resource
 ## 방패에 막혔을 때 뒤로 밀리는 속도 (px/s)
 @export var blocked_recoil: float = 160.0
 ## 구덩이에 떨어졌을 때 피해
-@export var pit_damage: int = 1
+@export var pit_damage: int = 20
 
 @export_group("사망")
 ## 파괴 후 재접속까지 (초)

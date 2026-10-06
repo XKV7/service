@@ -53,7 +53,7 @@ func _test_guard_attacks_and_player_hurt() -> void:
 		if p.health.hp < p.health.max_hp:
 			break
 	_check(saw_telegraph, "경비 의체: 예비동작 후 공격")
-	_check(p.health.hp == p.health.max_hp - 1, "경비 의체: 피해 1 (내구도 %d)" % p.health.hp)
+	_check(p.health.max_hp - p.health.hp == 20, "경비 의체: 피해 20 (내구도 %d)" % p.health.hp)
 	_check(p.state_machine.get_state_name() == &"Hurt", "플레이어 피격 경직")
 	_check(p.is_invulnerable, "플레이어 피격 무적")
 	await _cleanup()
@@ -104,7 +104,7 @@ func _test_drone_shoots() -> void:
 	var p: Player = await _setup_player()
 	_spawn(DRONE, Vector2(120, FLOOR_Y - 90))
 	await _wait_until(func() -> bool: return p.health.hp < p.health.max_hp)
-	_check(p.health.hp == p.health.max_hp - 1, "보안 드론: 조준 후 레이저 명중")
+	_check(p.health.max_hp - p.health.hp == 10, "보안 드론: 조준 후 레이저 명중, 피해 10")
 	await _cleanup()
 
 
@@ -129,7 +129,7 @@ func _test_wraith() -> void:
 	await _wait_until(func() -> bool: return wraith.state_machine.get_state_name() == &"Attack")
 	_check(absf(wraith.global_position.x - p.global_position.x) < 80.0, "홀로 망령: 플레이어 옆으로 순간이동")
 	await _wait_until(func() -> bool: return p.health.hp < p.health.max_hp)
-	_check(p.health.hp == p.health.max_hp - 1, "홀로 망령: 공격 명중")
+	_check(p.health.max_hp - p.health.hp == 20, "홀로 망령: 공격 명중, 피해 20")
 	await _wait_until(func() -> bool: return p.state_machine.get_state_name() == &"Idle")
 	p.facing = signf(wraith.global_position.x - p.global_position.x)
 	var hp_before: int = wraith.health.hp
@@ -149,7 +149,7 @@ func _test_executioner_appears_behind() -> void:
 	var side: float = signf(ex.global_position.x - p.global_position.x)
 	_check(side == -facing_at_cloak, "처형자: 플레이어 뒤에서 출현")
 	await _wait_until(func() -> bool: return p.health.hp < p.health.max_hp)
-	_check(p.health.hp == p.health.max_hp - 2, "처형자: 피해 2")
+	_check(p.health.max_hp - p.health.hp == 40, "처형자: 피해 40")
 	await _cleanup()
 
 
@@ -162,7 +162,7 @@ func _test_electric_rail() -> void:
 	rail.position = Vector2(-50, FLOOR_Y - 6)
 	add_child(rail)
 	await _wait_until(func() -> bool: return p.health.hp < p.health.max_hp)
-	_check(p.health.hp == p.health.max_hp - 1, "감전 선로: 피해 1")
+	_check(p.health.max_hp - p.health.hp == 10, "감전 선로: 피해 10")
 	_check(p.velocity.y < 0.0 or p.global_position.y < FLOOR_Y - 2.0, "감전 선로: 튕겨 오름")
 	await _cleanup()
 
@@ -178,7 +178,7 @@ func _test_laser_grid() -> void:
 	Input.action_press(&"move_right")
 	await _wait_until(func() -> bool: return p.health.hp < p.health.max_hp)
 	Input.action_release(&"move_right")
-	_check(p.health.hp == p.health.max_hp - 1, "레이저 보안망: 피해 1")
+	_check(p.health.max_hp - p.health.hp == 20, "레이저 보안망: 피해 20")
 	await _wait_until(func() -> bool: return p.state_machine.get_state_name() != &"Hurt")
 	_check(p.global_position.x < 80.0 - 20.0 and absf(p.global_position.x - start_x) < 60.0, "레이저 보안망: 안전 지점으로 복귀 (x=%.0f)" % p.global_position.x)
 
@@ -211,7 +211,7 @@ func _test_player_death_and_respawn() -> void:
 	p.respawn_position = Vector2(-100, FLOOR_Y - 1)
 	var respawned: Array[bool] = [false]
 	EventBus.player_respawned.connect(func() -> void: respawned[0] = true, CONNECT_ONE_SHOT)
-	p.health.hp = 1
+	p.health.hp = 10
 	_spawn(GUARD, Vector2(60, FLOOR_Y))
 	await _wait_until(func() -> bool: return p.is_dead())
 	_check(p.state_machine.get_state_name() == &"Dead", "의체 파괴")
