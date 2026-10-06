@@ -1,15 +1,27 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/levels/test/test_map.gd" id="1_map"]
-[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="2_player"]
-[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="3_cam"]
-[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="4_shake"]
-[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="5_flash"]
-[ext_resource type="PackedScene" path="res://game/enemies/sandbag/sandbag.tscn" id="6_bag"]
+[ext_resource type="Script" path="res://game/levels/test/test_map.gd" id="1_m"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="2_m"]
+[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="3_m"]
+[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="4_m"]
+[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="5_m"]
+[ext_resource type="PackedScene" path="res://game/enemies/sandbag/sandbag.tscn" id="6_m"]
+[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="7_m"]
+[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="8_m"]
+[ext_resource type="PackedScene" path="res://game/enemies/drone/drone.tscn" id="9_m"]
+[ext_resource type="PackedScene" path="res://game/enemies/riot/riot.tscn" id="10_m"]
+[ext_resource type="PackedScene" path="res://game/enemies/crawler/crawler.tscn" id="11_m"]
+[ext_resource type="PackedScene" path="res://game/enemies/wraith/wraith.tscn" id="12_m"]
+[ext_resource type="PackedScene" path="res://game/enemies/executioner/executioner.tscn" id="13_m"]
+[ext_resource type="Script" path="res://game/traps/electric_rail.gd" id="14_m"]
+[ext_resource type="Script" path="res://game/traps/laser_grid.gd" id="15_m"]
+[ext_resource type="Script" path="res://game/traps/crumbling_platform.gd" id="16_m"]
+[ext_resource type="Resource" path="res://data/attacks/trap_shock.tres" id="17_m"]
+[ext_resource type="Resource" path="res://data/attacks/trap_laser.tres" id="18_m"]
 
 [node name="TestMap" type="Node2D"]
-script = ExtResource("1_map")
-platforms = Array[Rect2]([Rect2(-400, 300, 900, 200), Rect2(-400, -200, 40, 500), Rect2(120, 236, 140, 16), Rect2(300, 172, 140, 16), Rect2(580, 300, 240, 200), Rect2(900, 300, 200, 200), Rect2(1180, 240, 100, 260), Rect2(1340, 180, 100, 320), Rect2(1500, 300, 400, 200), Rect2(1560, 236, 120, 16), Rect2(1720, 172, 120, 16), Rect2(2100, 300, 400, 200), Rect2(2500, -200, 40, 700)])
+script = ExtResource("1_m")
+platforms = Array[Rect2]([Rect2(-400, 300, 900, 200), Rect2(-400, -200, 40, 500), Rect2(120, 236, 140, 16), Rect2(300, 172, 140, 16), Rect2(580, 300, 240, 200), Rect2(900, 300, 200, 200), Rect2(1180, 240, 100, 260), Rect2(1340, 180, 100, 320), Rect2(1500, 300, 400, 200), Rect2(1560, 236, 120, 16), Rect2(1720, 172, 120, 16), Rect2(2100, 300, 1400, 200), Rect2(3900, 300, 1600, 200), Rect2(4200, 140, 400, 20), Rect2(5500, -200, 40, 700)])
 
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -1
@@ -20,37 +32,106 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.03, 0.03, 0.08, 1)
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="Player" parent="." instance=ExtResource("2_m")]
 unique_name_in_owner = true
 position = Vector2(0, 300)
 
 [node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
-script = ExtResource("3_cam")
+script = ExtResource("3_m")
 target = NodePath("../Player")
 
 [node name="CameraShake" type="Node" parent="Camera" node_paths=PackedStringArray("camera")]
-script = ExtResource("4_shake")
+script = ExtResource("4_m")
 camera = NodePath("..")
 
 [node name="ScreenFlash" type="CanvasLayer" parent="."]
-script = ExtResource("5_flash")
+script = ExtResource("5_m")
 
-[node name="SandbagGround" parent="." instance=ExtResource("6_bag")]
+[node name="SandbagGround" parent="." instance=ExtResource("6_m")]
 position = Vector2(380, 300)
 
-[node name="SandbagHologram" parent="." instance=ExtResource("6_bag")]
+[node name="SandbagHologram" parent="." instance=ExtResource("6_m")]
 position = Vector2(720, 300)
 hologram = true
 
-[node name="SandbagFloatLow" parent="." instance=ExtResource("6_bag")]
+[node name="SandbagFloatLow" parent="." instance=ExtResource("6_m")]
 position = Vector2(1000, 290)
 use_gravity = false
 
-[node name="SandbagFloatHigh" parent="." instance=ExtResource("6_bag")]
+[node name="SandbagFloatHigh" parent="." instance=ExtResource("6_m")]
 position = Vector2(1000, 150)
 use_gravity = false
+
+[node name="SandbagBeforeLaser" parent="." instance=ExtResource("6_m")]
+position = Vector2(3960, 300)
+
+[node name="SpawnGuard" type="Marker2D" parent="."]
+position = Vector2(1700, 300)
+script = ExtResource("7_m")
+enemy_scene = ExtResource("8_m")
+
+[node name="SpawnDrone" type="Marker2D" parent="."]
+position = Vector2(2250, 180)
+script = ExtResource("7_m")
+enemy_scene = ExtResource("9_m")
+
+[node name="SpawnRiot" type="Marker2D" parent="."]
+position = Vector2(3200, 300)
+script = ExtResource("7_m")
+enemy_scene = ExtResource("10_m")
+
+[node name="SpawnCrawlerA" type="Marker2D" parent="."]
+position = Vector2(4250, 294)
+script = ExtResource("7_m")
+enemy_scene = ExtResource("11_m")
+
+[node name="SpawnCrawlerB" type="Marker2D" parent="."]
+position = Vector2(4320, 294)
+script = ExtResource("7_m")
+enemy_scene = ExtResource("11_m")
+
+[node name="SpawnCrawlerCeiling" type="Marker2D" parent="."]
+position = Vector2(4450, 166)
+script = ExtResource("7_m")
+enemy_scene = ExtResource("11_m")
+properties = {"on_ceiling": true}
+
+[node name="SpawnWraith" type="Marker2D" parent="."]
+position = Vector2(4750, 250)
+script = ExtResource("7_m")
+enemy_scene = ExtResource("12_m")
+
+[node name="SpawnExecutioner" type="Marker2D" parent="."]
+position = Vector2(5150, 300)
+script = ExtResource("7_m")
+enemy_scene = ExtResource("13_m")
+
+[node name="ElectricRail" type="Node2D" parent="."]
+position = Vector2(2700, 294)
+script = ExtResource("14_m")
+attack = ExtResource("17_m")
+size = Vector2(100, 6)
+
+[node name="LaserGrid" type="Node2D" parent="."]
+position = Vector2(4060, 120)
+script = ExtResource("15_m")
+attack = ExtResource("18_m")
+length = 180.0
+
+[node name="Crumbling0" type="StaticBody2D" parent="."]
+position = Vector2(3540, 250)
+script = ExtResource("16_m")
+
+[node name="Crumbling1" type="StaticBody2D" parent="."]
+position = Vector2(3660, 230)
+script = ExtResource("16_m")
+
+[node name="Crumbling2" type="StaticBody2D" parent="."]
+position = Vector2(3780, 250)
+script = ExtResource("16_m")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -58,7 +139,7 @@ use_gravity = false
 unique_name_in_owner = true
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 208.0
+offset_right = 260.0
 offset_bottom = 120.0
 theme_override_font_sizes/font_size = 12
 text = "상태"

@@ -1,0 +1,140 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/enemies/drone/drone.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/enemies/drone.tres" id="2_r"]
+[ext_resource type="Script" path="res://core/components/health_component.gd" id="3_r"]
+[ext_resource type="Script" path="res://core/components/stun_component.gd" id="4_r"]
+[ext_resource type="Script" path="res://core/components/knockback_component.gd" id="5_r"]
+[ext_resource type="Script" path="res://core/feel/hit_flash.gd" id="6_r"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="7_r"]
+[ext_resource type="Script" path="res://core/components/hitbox_component.gd" id="8_r"]
+[ext_resource type="Script" path="res://core/state_machine/state_machine.gd" id="9_r"]
+[ext_resource type="Script" path="res://game/enemies/drone/drone_hover.gd" id="10_r"]
+[ext_resource type="Script" path="res://game/enemies/drone/drone_aim.gd" id="11_r"]
+[ext_resource type="Resource" path="res://data/attacks/drone_laser.tres" id="12_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_hurt.gd" id="13_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_stunned.gd" id="14_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_dead.gd" id="15_r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0"]
+size = Vector2(20, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(24, 18)
+
+[node name="Drone" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_r")
+data = ExtResource("2_r")
+flying = true
+number_offset = Vector2(0, -20)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_0")
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Part0" type="ColorRect" parent="Visual"]
+offset_left = -10
+offset_top = -6
+offset_right = 10
+offset_bottom = 6
+mouse_filter = 2
+color = Color(0.85, 0.88, 0.95, 1)
+
+[node name="Part1" type="ColorRect" parent="Visual"]
+offset_left = -14
+offset_top = -9
+offset_right = -6
+offset_bottom = -7
+mouse_filter = 2
+color = Color(0.9, 0.75, 0.3, 1)
+
+[node name="Part2" type="ColorRect" parent="Visual"]
+offset_left = 6
+offset_top = -9
+offset_right = 14
+offset_bottom = -7
+mouse_filter = 2
+color = Color(0.9, 0.75, 0.3, 1)
+
+[node name="Part3" type="ColorRect" parent="Visual"]
+offset_left = 2
+offset_top = -3
+offset_right = 8
+offset_bottom = 3
+mouse_filter = 2
+color = Color(1, 0.25, 0.35, 1)
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_r")
+
+[node name="Stun" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_r")
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("5_r")
+body = NodePath("..")
+knockback_mult = 0.5
+
+[node name="HitFlash" type="Node" parent="." node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("6_r")
+target = NodePath("../Visual")
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health", "stun", "knockback")]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("7_r")
+health = NodePath("../Health")
+stun = NodePath("../Stun")
+knockback = NodePath("../Knockback")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="AttackHitbox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("8_r")
+draw_color = Color(1, 0.25, 0.35, 0.35)
+
+[node name="Muzzle" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 4)
+
+[node name="AimLine" type="Line2D" parent="."]
+unique_name_in_owner = true
+width = 1.0
+default_color = Color(1, 0.25, 0.35, 0.5)
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("9_r")
+initial_state = NodePath("Hover")
+
+[node name="Hover" type="Node" parent="StateMachine"]
+script = ExtResource("10_r")
+
+[node name="Aim" type="Node" parent="StateMachine"]
+script = ExtResource("11_r")
+attack = ExtResource("12_r")
+
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource("13_r")
+next_state = &"Hover"
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("14_r")
+next_state = &"Hover"
+
+[node name="Dead" type="Node" parent="StateMachine"]
+script = ExtResource("15_r")

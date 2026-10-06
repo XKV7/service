@@ -13,11 +13,13 @@ func enter() -> void:
 	_time = 0.0
 	_hitbox_opened = false
 	player.hitbox.hit_landed.connect(_on_hit_landed)
+	player.hitbox.hit_solid.connect(_on_hit_solid)
 
 
 func exit() -> void:
 	player.hitbox.deactivate()
 	player.hitbox.hit_landed.disconnect(_on_hit_landed)
+	player.hitbox.hit_solid.disconnect(_on_hit_solid)
 
 
 func physics_update(delta: float) -> void:
@@ -49,6 +51,15 @@ func _get_offset() -> Vector2:
 
 
 func _on_hit_landed(_hurtbox: HurtboxComponent, _damage: int, _killed: bool) -> void:
+	_bounce()
+
+
+## 함정처럼 체력이 없는 대상을 찍어도 튀어 오른다.
+func _on_hit_solid(_hurtbox: HurtboxComponent) -> void:
+	_bounce()
+
+
+func _bounce() -> void:
 	if not _is_down:
 		return
 	player.pogo_bounce()

@@ -4,9 +4,15 @@ extends Area2D
 ## 충돌 모양은 AttackData에 따라 코드에서 만든다.
 
 signal hit_landed(hurtbox: HurtboxComponent, damage: int, killed: bool)
+## 방패 등에 막힘
+signal hit_blocked(hurtbox: HurtboxComponent)
+## 체력이 없는 단단한 대상(함정 등)에 맞음. 아래 찍기 튕김 등에 사용한다.
+signal hit_solid(hurtbox: HurtboxComponent)
 
 ## 판정이 켜져 있을 때 그리는 색 (플레이스홀더용, 알파 0이면 그리지 않음)
 @export var draw_color: Color = Color(0.0, 1.0, 0.9, 0.35)
+## 켜져 있는 동안 같은 대상을 계속 때린다. (접촉 피해, 함정) 연타는 대상의 무적 시간이 막는다.
+@export var continuous: bool = false
 
 var attack_data: AttackData
 ## 공격력 배율 (부품 효과 등)
@@ -32,9 +38,10 @@ func _physics_process(_delta: float) -> void:
 	if not active:
 		return
 	for area: Area2D in get_overlapping_areas():
-		if area in _already_hit:
-			continue
-		_already_hit.append(area)
+		if not continuous:
+			if area in _already_hit:
+				continue
+			_already_hit.append(area)
 		if area is HurtboxComponent:
 			(area as HurtboxComponent).receive_hit(self)
 
@@ -64,6 +71,14 @@ func deactivate() -> void:
 ## Hurtbox가 피해를 적용한 뒤 호출한다.
 func notify_hit(hurtbox: HurtboxComponent, damage: int, killed: bool) -> void:
 	hit_landed.emit(hurtbox, damage, killed)
+
+
+func notify_blocked(hurtbox: HurtboxComponent) -> void:
+	hit_blocked.emit(hurtbox)
+
+
+func notify_solid(hurtbox: HurtboxComponent) -> void:
+	hit_solid.emit(hurtbox)
 
 
 func _draw() -> void:

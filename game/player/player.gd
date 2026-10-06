@@ -20,12 +20,19 @@ var is_invulnerable: bool:
 		return health.is_invulnerable()
 ## 입력 잠금 (컷신 등)
 var input_locked: bool = false
+## 파괴되었을 때 재접속하는 위치. 레벨(이후 중계기)이 정한다.
+var respawn_position: Vector2
+## 피격 시 안전 지점으로 되돌려야 하는지 (Hurt 상태가 처리)
+var pending_safe_return: bool = false
 
 var _coyote_timer: float = 0.0
 var _jump_buffer_timer: float = 0.0
 var _attack_buffer_timer: float = 0.0
 var _dash_cooldown_timer: float = 0.0
 var _air_dashes_left: int = 0
+var _blink_left: float = 0.0
+var _safe_sample_timer: float = 0.0
+var _safe_history: Array[Vector2] = []
 
 @onready var state_machine: StateMachine = %StateMachine
 @onready var visual: Node2D = %Visual
@@ -34,12 +41,17 @@ var _air_dashes_left: int = 0
 @onready var energy: ResourceGaugeComponent = %Energy
 @onready var hitbox: HitboxComponent = %Hitbox
 @onready var charge_bar: Node2D = %ChargeBar
+@onready var hit_flash: HitFlash = %HitFlash
 
 
 func _ready() -> void:
 	assert(movement != null and combat != null and weapon != null, "Player: 데이터가 지정되지 않았다.")
+	add_to_group(&"player")
 	_air_dashes_left = movement.air_dash_count
+	respawn_position = global_position
 	hitbox.hit_landed.connect(_on_melee_hit_landed)
+	hitbox.hit_blocked.connect(_on_melee_blocked)
+	hurtbox.hurt.connect(_on_hurt)
 
 
 func _physics_process(delta: float) -> void:
@@ -50,9 +62,11 @@ func _physics_process(delta: float) -> void:
 	_attack_buffer_timer = maxf(_attack_buffer_timer - delta, 0.0)
 	_dash_cooldown_timer = maxf(_dash_cooldown_timer - delta, 0.0)
 
+	_blink_left = maxf(_blink_left - delta, 0.0)
 	if is_on_floor():
 		_coyote_timer = movement.coyote_time
 		_air_dashes_left = movement.air_dash_count
+	_sample_safe_point(delta)
 
 	if input_locked:
 		return
@@ -64,6 +78,11 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	visual.scale.x = facing
+	if _blink_left > 0.0:
+		var on: bool = int(_blink_left / combat.blink_period) % 2 == 0
+		visual.modulate.a = 1.0 if on else 0.3
+	elif not is_dead():
+		visual.modulate.a = 1.0
 
 
 # --- 입력 ---
@@ -190,3 +209,81 @@ func _on_melee_hit_landed(hurtbox_hit: HurtboxComponent, damage: int, killed: bo
 	HitStop.trigger(get_tree(), data.hitstop)
 	EventBus.screen_shake_requested.emit(data.shake)
 	EventBus.hit_landed.emit(hurtbox_hit.owner, damage)
+
+
+func _on_melee_blocked(_hurtbox: HurtboxComponent) -> void:
+	velocity.x = -facing * combat.blocked_recoil
+	HitStop.trigger(get_tree(), hitbox.attack_data.hitstop)
+
+
+# --- 피격·사망 ---
+
+func is_dead() -> bool:
+	return health.is_dead()
+
+
+func _on_hurt(hit_by: HitboxComponent, _damage: int) -> void:
+	hit_flash.flash()
+	HitStop.trigger(get_tree(), combat.hurt_hitstop)
+	EventBus.screen_shake_requested.emit(combat.hurt_shake)
+	EventBus.screen_flash_requested.emit(combat.hurt_flash_color, combat.hurt_flash_time)
+	if is_dead():
+		state_machine.transition_to(&"Dead")
+		return
+	_blink_left = health.invuln_time
+	pending_safe_return = hit_by.attack_data.sends_to_safe_point
+	state_machine.transition_to(&"Hurt")
+
+
+## 환경 피해 (구덩이 낙하 등). 히트박스 없이 피해를 주고 안전 지점으로 되돌린다.
+func take_environment_damage(amount: int) -> void:
+	var applied: int = health.take_damage(amount)
+	if applied > 0 and is_dead():
+		hit_flash.flash()
+		state_machine.transition_to(&"Dead")
+		return
+	if applied > 0:
+		_blink_left = health.invuln_time
+		hit_flash.flash()
+		EventBus.screen_flash_requested.emit(combat.hurt_flash_color, combat.hurt_flash_time)
+	return_to_safe_point()
+
+
+func return_to_safe_point() -> void:
+	if not _safe_history.is_empty():
+		global_position = _safe_history[0]
+	velocity = Vector2.ZERO
+
+
+## 재접속: 예비 의체로 다시 시작한다.
+func revive() -> void:
+	global_position = respawn_position
+	velocity = Vector2.ZERO
+	health.reset()
+	_safe_history.clear()
+	_blink_left = 0.0
+	visual.modulate = Color.WHITE
+	state_machine.transition_to(&"Idle")
+	EventBus.player_respawned.emit()
+
+
+func _sample_safe_point(delta: float) -> void:
+	_safe_sample_timer -= delta
+	if _safe_sample_timer > 0.0:
+		return
+	_safe_sample_timer = combat.safe_sample_interval
+	if not is_on_floor() or not _is_on_safe_ground():
+		return
+	_safe_history.append(global_position)
+	if _safe_history.size() > combat.safe_history_size:
+		_safe_history.pop_front()
+
+
+## 무너지는 발판처럼 "unsafe_ground" 그룹 위에 서 있으면 false
+func _is_on_safe_ground() -> bool:
+	for i: int in get_slide_collision_count():
+		var collision: KinematicCollision2D = get_slide_collision(i)
+		var collider: Object = collision.get_collider()
+		if collider is Node and (collider as Node).is_in_group(&"unsafe_ground"):
+			return false
+	return true

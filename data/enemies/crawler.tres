@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/components/enemy_data.gd" id="1_en"]
+
+[resource]
+script = ExtResource("1_en")
+id = &"crawler"
+display_name = "선로 크롤러"
+max_hp = 20
+damage = 1
+move_speed = 55.0
+chase_speed = 110.0
+detect_range = 150.0
+detect_height = 40.0
+attack_range = 80.0
+data_drop = 12
+hurt_time = 0.15

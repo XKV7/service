@@ -1,0 +1,138 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/enemies/enemy.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/enemies/wraith.tres" id="2_r"]
+[ext_resource type="Script" path="res://core/components/health_component.gd" id="3_r"]
+[ext_resource type="Script" path="res://core/components/stun_component.gd" id="4_r"]
+[ext_resource type="Script" path="res://core/components/knockback_component.gd" id="5_r"]
+[ext_resource type="Script" path="res://core/feel/hit_flash.gd" id="6_r"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="7_r"]
+[ext_resource type="Script" path="res://core/components/hitbox_component.gd" id="8_r"]
+[ext_resource type="Script" path="res://core/state_machine/state_machine.gd" id="9_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_idle.gd" id="10_r"]
+[ext_resource type="Script" path="res://game/enemies/wraith/wraith_teleport.gd" id="11_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_melee_attack.gd" id="12_r"]
+[ext_resource type="Resource" path="res://data/attacks/wraith_swipe.tres" id="13_r"]
+[ext_resource type="Script" path="res://core/components/attack_data.gd" id="14_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_hurt.gd" id="15_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_stunned.gd" id="16_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_dead.gd" id="17_r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0"]
+size = Vector2(20, 36)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(22, 38)
+
+[node name="Wraith" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_r")
+data = ExtResource("2_r")
+flying = true
+number_offset = Vector2(0, -30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_0")
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Part0" type="ColorRect" parent="Visual"]
+offset_left = -10
+offset_top = -18
+offset_right = 10
+offset_bottom = 18
+mouse_filter = 2
+color = Color(1.0, 0.3, 0.8, 0.55)
+
+[node name="Part1" type="ColorRect" parent="Visual"]
+offset_left = -10
+offset_top = -12
+offset_right = 10
+offset_bottom = -8
+mouse_filter = 2
+color = Color(0.3, 1.0, 1.0, 0.7)
+
+[node name="Part2" type="ColorRect" parent="Visual"]
+offset_left = 2
+offset_top = -14
+offset_right = 8
+offset_bottom = -11
+mouse_filter = 2
+color = Color(1, 1, 1, 0.9)
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_r")
+
+[node name="Stun" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_r")
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("5_r")
+body = NodePath("..")
+knockback_mult = 1.0
+
+[node name="HitFlash" type="Node" parent="." node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("6_r")
+target = NodePath("../Visual")
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health", "stun", "knockback")]
+unique_name_in_owner = true
+collision_layer = 256
+collision_mask = 0
+script = ExtResource("7_r")
+health = NodePath("../Health")
+stun = NodePath("../Stun")
+knockback = NodePath("../Knockback")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="AttackHitbox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("8_r")
+draw_color = Color(1, 0.25, 0.35, 0.35)
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("9_r")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("10_r")
+react_state = &"Teleport"
+min_wait = 0.6
+
+[node name="Teleport" type="Node" parent="StateMachine"]
+script = ExtResource("11_r")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("12_r")
+attacks = Array[ExtResource("14_r")]([ExtResource("13_r")])
+telegraph_time = 0.5
+telegraph_color = Color(1, 0.3, 0.8, 1)
+next_state = &"Drift"
+
+[node name="Drift" type="Node" parent="StateMachine"]
+script = ExtResource("10_r")
+react_state = &"Teleport"
+min_wait = 1.2
+
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource("15_r")
+next_state = &"Idle"
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("16_r")
+next_state = &"Idle"
+
+[node name="Dead" type="Node" parent="StateMachine"]
+script = ExtResource("17_r")

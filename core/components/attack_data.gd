@@ -29,6 +29,12 @@ extends Resource
 ## 화면 흔들림 세기 (0~1)
 @export var shake: float = 0.2
 
+@export_group("특수")
+## 방패 등 막기 판정을 무시한다. (레일건)
+@export var pierces_guard: bool = false
+## 맞은 대상을 마지막 안전 지점으로 되돌린다. (레이저 보안망)
+@export var sends_to_safe_point: bool = false
+
 
 func get_total_time() -> float:
 	return startup + active + recovery

@@ -66,10 +66,12 @@ func _test_blade_combo() -> void:
 	var setup: Array = await _setup(Vector2(36, FLOOR_Y))
 	var p: Player = setup[0]
 	var bag: Sandbag = setup[1]
-	# 3번 연속 입력 → 10 + 10 + 18
+	# 3번 연속 입력 → 10 + 10 + 18. 다음 입력은 직전 타가 맞은 뒤에 넣는다.
+	# (한 타 동안 여러 번 눌러도 다음 타 하나만 예약된다)
 	for i: int in 3:
+		var hp_before: int = bag.health.hp
 		await _tap(&"attack")
-		await _frames(8)
+		await _wait_until(func() -> bool: return bag.health.hp < hp_before)
 	await _wait_until(func() -> bool: return p.state_machine.get_state_name() == &"Idle")
 	_check(bag.health.hp == bag.health.max_hp - 38, "블레이드 3타 피해 38 (남은 체력 %d)" % bag.health.hp)
 	_check(is_equal_approx(p.energy.value, 24.0), "타격당 연산력 +8 ×3 (현재 %.0f)" % p.energy.value)

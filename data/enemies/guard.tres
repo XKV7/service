@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/components/enemy_data.gd" id="1_en"]
+
+[resource]
+script = ExtResource("1_en")
+id = &"guard"
+display_name = "경비 의체"
+max_hp = 30
+damage = 1
+move_speed = 45.0
+chase_speed = 85.0
+detect_range = 170.0
+detect_height = 60.0
+attack_range = 38.0
+data_drop = 10
+hurt_time = 0.2

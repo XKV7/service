@@ -15,3 +15,4 @@ knockback = 180
 knockback_up = 0
 hitstop = 0.08
 shake = 0.6
+pierces_guard = true

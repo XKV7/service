@@ -59,6 +59,7 @@ func update(delta: float) -> void:
 func _spawn_ghost() -> void:
 	var ghost: Node2D = player.visual.duplicate() as Node2D
 	ghost.unique_name_in_owner = false
+	ghost.material = null
 	ghost.modulate = ghost_color
 	ghost.global_position = player.visual.global_position
 	ghost.scale = player.visual.global_scale

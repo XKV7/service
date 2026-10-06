@@ -1,0 +1,148 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/enemies/crawler/crawler.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/enemies/crawler.tres" id="2_r"]
+[ext_resource type="Resource" path="res://data/attacks/crawler_contact.tres" id="3_r"]
+[ext_resource type="Script" path="res://core/components/health_component.gd" id="4_r"]
+[ext_resource type="Script" path="res://core/components/stun_component.gd" id="5_r"]
+[ext_resource type="Script" path="res://core/components/knockback_component.gd" id="6_r"]
+[ext_resource type="Script" path="res://core/feel/hit_flash.gd" id="7_r"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="8_r"]
+[ext_resource type="Script" path="res://core/components/hitbox_component.gd" id="9_r"]
+[ext_resource type="Script" path="res://core/state_machine/state_machine.gd" id="10_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_patrol.gd" id="11_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_chase.gd" id="12_r"]
+[ext_resource type="Script" path="res://game/enemies/crawler/crawler_pounce.gd" id="13_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_hurt.gd" id="14_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_stunned.gd" id="15_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_dead.gd" id="16_r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0"]
+size = Vector2(20, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(22, 14)
+
+[node name="Crawler" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_r")
+data = ExtResource("2_r")
+contact_attack = ExtResource("3_r")
+number_offset = Vector2(0, -20)
+edge_check_ahead = 10.0
+edge_check_depth = 12.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_0")
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Part0" type="ColorRect" parent="Visual"]
+offset_left = -10
+offset_top = -6
+offset_right = 10
+offset_bottom = 6
+mouse_filter = 2
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Part1" type="ColorRect" parent="Visual"]
+offset_left = -12
+offset_top = 4
+offset_right = -6
+offset_bottom = 7
+mouse_filter = 2
+color = Color(0.3, 0.3, 0.3, 1)
+
+[node name="Part2" type="ColorRect" parent="Visual"]
+offset_left = 6
+offset_top = 4
+offset_right = 12
+offset_bottom = 7
+mouse_filter = 2
+color = Color(0.3, 0.3, 0.3, 1)
+
+[node name="Part3" type="ColorRect" parent="Visual"]
+offset_left = 5
+offset_top = -4
+offset_right = 9
+offset_bottom = -1
+mouse_filter = 2
+color = Color(1, 0.6, 0.1, 1)
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_r")
+
+[node name="Stun" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_r")
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("6_r")
+body = NodePath("..")
+knockback_mult = 1.0
+
+[node name="HitFlash" type="Node" parent="." node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("7_r")
+target = NodePath("../Visual")
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health", "stun", "knockback")]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("8_r")
+health = NodePath("../Health")
+stun = NodePath("../Stun")
+knockback = NodePath("../Knockback")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="AttackHitbox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("9_r")
+draw_color = Color(1, 0.25, 0.35, 0.35)
+
+[node name="ContactHitbox" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 0)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("9_r")
+draw_color = Color(0, 0, 0, 0)
+continuous = true
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("10_r")
+initial_state = NodePath("Patrol")
+
+[node name="Patrol" type="Node" parent="StateMachine"]
+script = ExtResource("11_r")
+
+[node name="Chase" type="Node" parent="StateMachine"]
+script = ExtResource("12_r")
+attack_state = &"Pounce"
+lost_state = &"Patrol"
+attack_cooldown = 0.6
+
+[node name="Pounce" type="Node" parent="StateMachine"]
+script = ExtResource("13_r")
+
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource("14_r")
+next_state = &"Chase"
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("15_r")
+next_state = &"Chase"
+
+[node name="Dead" type="Node" parent="StateMachine"]
+script = ExtResource("16_r")

@@ -62,7 +62,7 @@
 
 ### 6. 오토로드
 - `EventBus`: 전역 시그널 (player_died, enemy_killed, hit_landed, boss_defeated, part_acquired, memory_acquired, relay_activated 등)
-- `GameState`: 현재 지역, 중계기, 보유·장착 부품과 레벨, 무기, 스킬 해금, 데이터, 의체 잔해, 기억 조각, 열린 숨겨진 공간, 본 컷신, 플레이 시간
+- `GameState` (`game/game_state.gd`, 게임 전용이라 game/에 둔다): 현재 지역, 중계기, 보유·장착 부품과 레벨, 무기, 스킬 해금, 데이터, 의체 잔해, 기억 조각, 열린 숨겨진 공간, 본 컷신, 플레이 시간
 - `SaveManager`: GameState를 `user://save.json`으로 저장·로드
 - `AudioManager`: SFX/BGM 재생
 - `SceneLoader`: 스테이지 전환과 페이드
@@ -141,6 +141,7 @@ godot --headless --path . --import
 godot --headless --path . --quit-after 60
 godot --headless --path . res://tests/test_player_movement.tscn
 godot --headless --path . res://tests/test_combat.tscn
+godot --headless --path . res://tests/test_enemies.tscn
 ```
 - 테스트는 오토로드가 필요하므로 `-s`가 아니라 씬(`tests/*.tscn`)으로 실행한다.
 - Input Map은 `tests/tools/setup_input_map.gd`로 다시 생성할 수 있다. (`godot --headless --path . -s res://tests/tools/setup_input_map.gd`)
@@ -165,7 +166,7 @@ python3 tests/tools/split_web_build.py build/web
 ## 진행 상황
 - [x] M1 이동 — 상태머신 core, Idle/Run/Jump/Fall/Dash, FollowCamera, 테스트 맵(`game/levels/test/`), 이동 테스트
 - [x] M2 전투 — 전투 컴포넌트 core, 블레이드 3타·아래 찍기·레일건·시스템 정지, 히트스톱·흔들림·섬광·피격 플래시, 샌드백, 전투 테스트 (플레이어 Hurt/Dead는 M3에서)
-- [ ] M3 적·함정
+- [x] M3 적·함정 — Enemy 베이스와 공통 상태, 적 6종, 함정 3종, 데이터 드랍(GameState), 플레이어 피격·사망·재접속, 안전 지점, 적·함정 테스트
 - [ ] M4 성장
 - [ ] M5 보스
 - [ ] M6 스테이지

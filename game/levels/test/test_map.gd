@@ -6,7 +6,7 @@ extends Node2D
 @export var platform_edge_color: Color = Color(0.0, 1.0, 0.9, 1.0)
 ## 플랫폼 윗면 강조선 두께 (px)
 @export var edge_thickness: float = 2.0
-## 이 높이 아래로 떨어지면 시작 위치로 되돌린다 (px)
+## 이 높이 아래로 떨어지면 피해를 받고 안전 지점으로 돌아간다 (px)
 @export var kill_y: float = 800.0
 ## 월드 물리 레이어 번호 (Project Settings의 "world")
 @export_flags_2d_physics var world_layer: int = 1
@@ -14,24 +14,20 @@ extends Node2D
 @onready var player: Player = %Player
 @onready var debug_label: Label = %DebugLabel
 
-var _spawn_position: Vector2
-
-
 func _ready() -> void:
-	_spawn_position = player.global_position
+	player.respawn_position = player.global_position
 	for rect: Rect2 in platforms:
 		_build_platform(rect)
 
 
 func _physics_process(_delta: float) -> void:
-	if player.global_position.y > kill_y:
-		player.global_position = _spawn_position
-		player.velocity = Vector2.ZERO
+	if player.global_position.y > kill_y and not player.is_dead():
+		player.take_environment_damage(player.combat.pit_damage)
 
 
 func _process(_delta: float) -> void:
-	debug_label.text = "내구도: %d/%d  연산력: %.0f\n상태: %s\n속도: (%.0f, %.0f)\n대시 쿨다운: %.2f\n무적: %s" % [
-		player.health.hp, player.health.max_hp, player.energy.value,
+	debug_label.text = "내구도: %d/%d  연산력: %.0f  데이터: %d\n상태: %s\n속도: (%.0f, %.0f)\n대시 쿨다운: %.2f\n무적: %s" % [
+		player.health.hp, player.health.max_hp, player.energy.value, GameState.data,
 		player.state_machine.get_state_name(),
 		player.velocity.x, player.velocity.y,
 		player.get_dash_cooldown_left(),

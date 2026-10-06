@@ -9,6 +9,8 @@ signal recovered
 @export var damage_taken_mult: float = 1.25
 ## 한 번에 걸리는 최대 정지 시간 (초). 음수면 제한 없음. (보스는 짧게)
 @export var max_duration: float = -1.0
+## 0 이상이면 요청된 시간과 상관없이 항상 이 시간만큼 정지한다. (레이저 보안망 3초 해제 등)
+@export var duration_override: float = -1.0
 
 var _time_left: float = 0.0
 
@@ -23,6 +25,8 @@ func _physics_process(delta: float) -> void:
 
 
 func stun(duration: float) -> void:
+	if duration_override >= 0.0:
+		duration = duration_override
 	if max_duration >= 0.0:
 		duration = minf(duration, max_duration)
 	if duration <= 0.0:

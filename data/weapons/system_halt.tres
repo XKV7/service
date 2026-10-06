@@ -8,3 +8,4 @@ energy_cost = 50.0
 cast_time = 0.3
 reach = 160.0
 stun_duration = 2.0
+target_mask = 388

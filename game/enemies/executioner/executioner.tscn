@@ -1,0 +1,159 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/enemies/enemy.gd" id="1_r"]
+[ext_resource type="Resource" path="res://data/enemies/executioner.tres" id="2_r"]
+[ext_resource type="Resource" path="res://data/attacks/contact_body.tres" id="3_r"]
+[ext_resource type="Script" path="res://core/components/health_component.gd" id="4_r"]
+[ext_resource type="Script" path="res://core/components/stun_component.gd" id="5_r"]
+[ext_resource type="Script" path="res://core/components/knockback_component.gd" id="6_r"]
+[ext_resource type="Script" path="res://core/feel/hit_flash.gd" id="7_r"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="8_r"]
+[ext_resource type="Script" path="res://core/components/hitbox_component.gd" id="9_r"]
+[ext_resource type="Script" path="res://core/state_machine/state_machine.gd" id="10_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_patrol.gd" id="11_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_chase.gd" id="12_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_melee_attack.gd" id="13_r"]
+[ext_resource type="Resource" path="res://data/attacks/exec_slash_1.tres" id="14_r"]
+[ext_resource type="Resource" path="res://data/attacks/exec_slash_2.tres" id="15_r"]
+[ext_resource type="Resource" path="res://data/attacks/exec_slash_3.tres" id="16_r"]
+[ext_resource type="Script" path="res://core/components/attack_data.gd" id="17_r"]
+[ext_resource type="Script" path="res://game/enemies/executioner/executioner_cloak.gd" id="18_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_hurt.gd" id="19_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_stunned.gd" id="20_r"]
+[ext_resource type="Script" path="res://game/enemies/states/enemy_dead.gd" id="21_r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0"]
+size = Vector2(20, 46)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(22, 48)
+
+[node name="Executioner" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_r")
+data = ExtResource("2_r")
+contact_attack = ExtResource("3_r")
+number_offset = Vector2(0, -58)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -23)
+shape = SubResource("RectangleShape2D_0")
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Part0" type="ColorRect" parent="Visual"]
+offset_left = -10
+offset_top = -46
+offset_right = 10
+offset_bottom = 0
+mouse_filter = 2
+color = Color(0.95, 0.95, 0.98, 1)
+
+[node name="Part1" type="ColorRect" parent="Visual"]
+offset_left = -10
+offset_top = -40
+offset_right = 10
+offset_bottom = -37
+mouse_filter = 2
+color = Color(0.9, 0.75, 0.3, 1)
+
+[node name="Part2" type="ColorRect" parent="Visual"]
+offset_left = 2
+offset_top = -42
+offset_right = 10
+offset_bottom = -39
+mouse_filter = 2
+color = Color(0.2, 1, 0.9, 1)
+
+[node name="Part3" type="ColorRect" parent="Visual"]
+offset_left = 10
+offset_top = -30
+offset_right = 30
+offset_bottom = -27
+mouse_filter = 2
+color = Color(0.85, 0.9, 1.0, 1)
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_r")
+
+[node name="Stun" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_r")
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("6_r")
+body = NodePath("..")
+knockback_mult = 0.5
+
+[node name="HitFlash" type="Node" parent="." node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("7_r")
+target = NodePath("../Visual")
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health", "stun", "knockback")]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("8_r")
+health = NodePath("../Health")
+stun = NodePath("../Stun")
+knockback = NodePath("../Knockback")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -23)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="AttackHitbox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("9_r")
+draw_color = Color(1, 0.25, 0.35, 0.35)
+
+[node name="ContactHitbox" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -23)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("9_r")
+draw_color = Color(0, 0, 0, 0)
+continuous = true
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("10_r")
+initial_state = NodePath("Patrol")
+
+[node name="Patrol" type="Node" parent="StateMachine"]
+script = ExtResource("11_r")
+
+[node name="Chase" type="Node" parent="StateMachine"]
+script = ExtResource("12_r")
+attack_state = &"Slash"
+lost_state = &"Patrol"
+alt_attack_state = &"Cloak"
+alt_min_range = 60.0
+alt_max_range = 220.0
+alt_cooldown = 3.0
+
+[node name="Slash" type="Node" parent="StateMachine"]
+script = ExtResource("13_r")
+attacks = Array[ExtResource("17_r")]([ExtResource("14_r"), ExtResource("15_r"), ExtResource("16_r")])
+telegraph_time = 0.3
+
+[node name="Cloak" type="Node" parent="StateMachine"]
+script = ExtResource("18_r")
+
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource("19_r")
+next_state = &"Chase"
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("20_r")
+next_state = &"Chase"
+
+[node name="Dead" type="Node" parent="StateMachine"]
+script = ExtResource("21_r")

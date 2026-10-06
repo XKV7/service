@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/components/enemy_data.gd" id="1_en"]
+
+[resource]
+script = ExtResource("1_en")
+id = &"drone"
+display_name = "보안 드론"
+max_hp = 16
+damage = 1
+move_speed = 90.0
+chase_speed = 90.0
+acceleration = 400.0
+detect_range = 230.0
+detect_height = 170.0
+attack_range = 0.0
+data_drop = 8
+hurt_time = 0.15

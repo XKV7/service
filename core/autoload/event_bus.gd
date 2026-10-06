@@ -6,6 +6,9 @@ extends Node
 signal player_died
 
 @warning_ignore("unused_signal")
+signal player_respawned
+
+@warning_ignore("unused_signal")
 signal player_dashed(direction: float)
 
 ## 플레이어 공격이 대상에 맞음 (부품 효과 등이 구독한다)
