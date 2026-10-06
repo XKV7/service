@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://game/player/player.gd" id="1_player"]
+[ext_resource type="Resource" path="res://data/player/player_movement.tres" id="2_move"]
+[ext_resource type="Script" path="res://core/state_machine/state_machine.gd" id="3_sm"]
+[ext_resource type="Script" path="res://game/player/states/player_idle.gd" id="4_idle"]
+[ext_resource type="Script" path="res://game/player/states/player_run.gd" id="5_run"]
+[ext_resource type="Script" path="res://game/player/states/player_jump.gd" id="6_jump"]
+[ext_resource type="Script" path="res://game/player/states/player_fall.gd" id="7_fall"]
+[ext_resource type="Script" path="res://game/player/states/player_dash.gd" id="8_dash"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(18, 44)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+floor_snap_length = 4.0
+script = ExtResource("1_player")
+movement = ExtResource("2_move")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -22)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Body" type="ColorRect" parent="Visual"]
+offset_left = -11.0
+offset_top = -46.0
+offset_right = 11.0
+color = Color(0.82, 0.86, 0.95, 1)
+
+[node name="Visor" type="ColorRect" parent="Visual"]
+offset_left = 1.0
+offset_top = -40.0
+offset_right = 11.0
+offset_bottom = -36.0
+color = Color(1, 0.2, 0.6, 1)
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("3_sm")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("4_idle")
+
+[node name="Run" type="Node" parent="StateMachine"]
+script = ExtResource("5_run")
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("6_jump")
+
+[node name="Fall" type="Node" parent="StateMachine"]
+script = ExtResource("7_fall")
+
+[node name="Dash" type="Node" parent="StateMachine"]
+script = ExtResource("8_dash")

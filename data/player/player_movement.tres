@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="PlayerMovementData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/player/player_movement_data.gd" id="1_move"]
+
+[resource]
+script = ExtResource("1_move")
+move_speed = 190.0
+accel_time = 0.08
+decel_time = 0.06
+air_control = 0.8
+jump_velocity = -400.0
+gravity = 1000.0
+fall_gravity_mult = 1.6
+max_fall_speed = 620.0
+jump_cut_mult = 0.45
+coyote_time = 0.1
+jump_buffer_time = 0.1
+dash_distance = 100.0
+dash_duration = 0.2
+dash_invuln_time = 0.16
+dash_cooldown = 0.5
+air_dash_count = 1
+dash_exit_speed_mult = 1.0
