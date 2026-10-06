@@ -63,7 +63,8 @@ func close() -> void:
 	_closed_frame = Engine.get_physics_frames()
 
 
-func _unhandled_input(event: InputEvent) -> void:
+## 버튼이 Tab을 포커스 이동에 먼저 쓰지 않도록 GUI보다 먼저 받는다.
+func _input(event: InputEvent) -> void:
 	if not is_open():
 		return
 	if event.is_action_pressed(&"menu") or event.is_action_pressed(&"pause"):
@@ -143,8 +144,16 @@ func _build() -> void:
 	_upgrade_button.pressed.connect(_on_upgrade_pressed)
 	right.add_child(_upgrade_button)
 
+	var footer_row := HBoxContainer.new()
+	outer.add_child(footer_row)
 	_footer = _make_label(muted_color)
-	outer.add_child(_footer)
+	_footer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	footer_row.add_child(_footer)
+	var close_button := _make_button()
+	close_button.text = "닫기"
+	close_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	close_button.pressed.connect(close)
+	footer_row.add_child(close_button)
 
 
 func _make_label(color: Color) -> Label:
