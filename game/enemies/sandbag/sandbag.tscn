@@ -1,0 +1,82 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://game/enemies/sandbag/sandbag.gd" id="1_bag"]
+[ext_resource type="Script" path="res://core/components/health_component.gd" id="2_health"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="3_hurt"]
+[ext_resource type="Script" path="res://core/components/stun_component.gd" id="4_stun"]
+[ext_resource type="Script" path="res://core/components/knockback_component.gd" id="5_kb"]
+[ext_resource type="Script" path="res://core/feel/hit_flash.gd" id="6_flash"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(24, 44)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurt"]
+size = Vector2(26, 46)
+
+[node name="Sandbag" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_bag")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -22)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="BodyRect" type="ColorRect" parent="Visual"]
+unique_name_in_owner = true
+offset_left = -12.0
+offset_top = -44.0
+offset_right = 12.0
+mouse_filter = 2
+color = Color(0.85, 0.55, 0.25, 1)
+
+[node name="Stripe" type="ColorRect" parent="Visual"]
+offset_left = -12.0
+offset_top = -30.0
+offset_right = 12.0
+offset_bottom = -26.0
+mouse_filter = 2
+color = Color(0.2, 0.15, 0.1, 0.6)
+
+[node name="StatusLabel" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -40.0
+offset_top = -64.0
+offset_right = 40.0
+offset_bottom = -48.0
+horizontal_alignment = 1
+text = "0/0"
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_health")
+max_hp = 60
+
+[node name="Stun" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_stun")
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("5_kb")
+body = NodePath("..")
+
+[node name="HitFlash" type="Node" parent="." node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("6_flash")
+target = NodePath("../Visual")
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health", "stun", "knockback")]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_hurt")
+health = NodePath("../Health")
+stun = NodePath("../Stun")
+knockback = NodePath("../Knockback")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -22)
+shape = SubResource("RectangleShape2D_hurt")

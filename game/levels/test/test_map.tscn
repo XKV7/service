@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://game/levels/test/test_map.gd" id="1_map"]
 [ext_resource type="PackedScene" path="res://game/player/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="3_cam"]
+[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="4_shake"]
+[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="5_flash"]
+[ext_resource type="PackedScene" path="res://game/enemies/sandbag/sandbag.tscn" id="6_bag"]
 
 [node name="TestMap" type="Node2D"]
 script = ExtResource("1_map")
@@ -27,6 +30,28 @@ position = Vector2(0, 300)
 script = ExtResource("3_cam")
 target = NodePath("../Player")
 
+[node name="CameraShake" type="Node" parent="Camera" node_paths=PackedStringArray("camera")]
+script = ExtResource("4_shake")
+camera = NodePath("..")
+
+[node name="ScreenFlash" type="CanvasLayer" parent="."]
+script = ExtResource("5_flash")
+
+[node name="SandbagGround" parent="." instance=ExtResource("6_bag")]
+position = Vector2(380, 300)
+
+[node name="SandbagHologram" parent="." instance=ExtResource("6_bag")]
+position = Vector2(720, 300)
+hologram = true
+
+[node name="SandbagFloatLow" parent="." instance=ExtResource("6_bag")]
+position = Vector2(1000, 290)
+use_gravity = false
+
+[node name="SandbagFloatHigh" parent="." instance=ExtResource("6_bag")]
+position = Vector2(1000, 150)
+use_gravity = false
+
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="DebugLabel" type="Label" parent="HUD"]
@@ -34,7 +59,7 @@ unique_name_in_owner = true
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 208.0
-offset_bottom = 80.0
+offset_bottom = 120.0
 theme_override_font_sizes/font_size = 12
 text = "상태"
 
@@ -44,8 +69,8 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
 offset_top = -20.0
-offset_right = 400.0
+offset_right = 632.0
 offset_bottom = -4.0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 12
-text = "A/D 이동  Space 점프(길게 누르면 높게)  L 대시"
+text = "A/D 이동  Space 점프  L 대시  J 공격(공중 S+J 아래 찍기)  K 레일건(길게 눌렀다 떼기)  I 시스템 정지"

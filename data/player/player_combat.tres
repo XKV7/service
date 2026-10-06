@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlayerCombatData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://game/player/player_combat_data.gd" id="1_cmb"]
+[ext_resource type="Resource" path="res://data/attacks/blade_down.tres" id="2_down"]
+
+[resource]
+script = ExtResource("1_cmb")
+energy_per_hit = 8.0
+energy_per_kill = 15.0
+attack_buffer_time = 0.2
+attack_friction = 1800.0
+down_attack = ExtResource("2_down")
+pogo_bounce_mult = 0.85

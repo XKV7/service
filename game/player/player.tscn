@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://game/player/player.gd" id="1_player"]
 [ext_resource type="Resource" path="res://data/player/player_movement.tres" id="2_move"]
@@ -8,9 +8,25 @@
 [ext_resource type="Script" path="res://game/player/states/player_jump.gd" id="6_jump"]
 [ext_resource type="Script" path="res://game/player/states/player_fall.gd" id="7_fall"]
 [ext_resource type="Script" path="res://game/player/states/player_dash.gd" id="8_dash"]
+[ext_resource type="Resource" path="res://data/player/player_combat.tres" id="9_combat"]
+[ext_resource type="Resource" path="res://data/weapons/blade.tres" id="10_blade"]
+[ext_resource type="Resource" path="res://data/weapons/railgun.tres" id="11_railgun"]
+[ext_resource type="Resource" path="res://data/weapons/system_halt.tres" id="12_hack"]
+[ext_resource type="Script" path="res://core/components/health_component.gd" id="13_health"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="14_hurtbox"]
+[ext_resource type="Script" path="res://core/components/resource_gauge_component.gd" id="15_gauge"]
+[ext_resource type="Script" path="res://core/components/hitbox_component.gd" id="16_hitbox"]
+[ext_resource type="Script" path="res://game/player/states/player_attack.gd" id="17_attack"]
+[ext_resource type="Script" path="res://game/player/states/player_air_attack.gd" id="18_air"]
+[ext_resource type="Script" path="res://game/player/states/player_charge.gd" id="19_charge"]
+[ext_resource type="Script" path="res://game/player/states/player_fire.gd" id="20_fire"]
+[ext_resource type="Script" path="res://game/player/states/player_hack.gd" id="21_hack"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(18, 44)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurt"]
+size = Vector2(16, 40)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -18,6 +34,10 @@ collision_mask = 1
 floor_snap_length = 4.0
 script = ExtResource("1_player")
 movement = ExtResource("2_move")
+combat = ExtResource("9_combat")
+weapon = ExtResource("10_blade")
+railgun = ExtResource("11_railgun")
+hack = ExtResource("12_hack")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -22)
@@ -30,6 +50,7 @@ unique_name_in_owner = true
 offset_left = -11.0
 offset_top = -46.0
 offset_right = 11.0
+mouse_filter = 2
 color = Color(0.82, 0.86, 0.95, 1)
 
 [node name="Visor" type="ColorRect" parent="Visual"]
@@ -37,7 +58,57 @@ offset_left = 1.0
 offset_top = -40.0
 offset_right = 11.0
 offset_bottom = -36.0
+mouse_filter = 2
 color = Color(1, 0.2, 0.6, 1)
+
+[node name="ChargeBar" type="Node2D" parent="."]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -56)
+
+[node name="ChargeBack" type="ColorRect" parent="ChargeBar"]
+unique_name_in_owner = true
+offset_left = -14.0
+offset_right = 14.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0.1, 0.1, 0.18, 0.85)
+
+[node name="ChargeFill" type="ColorRect" parent="ChargeBar"]
+unique_name_in_owner = true
+offset_left = -14.0
+offset_right = -14.0
+offset_bottom = 3.0
+mouse_filter = 2
+color = Color(0, 1, 0.9, 1)
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("13_health")
+max_hp = 5
+invuln_time = 1.0
+
+[node name="Energy" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("15_gauge")
+max_value = 100.0
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health")]
+unique_name_in_owner = true
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("14_hurtbox")
+health = NodePath("../Health")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -22)
+shape = SubResource("RectangleShape2D_hurt")
+
+[node name="Hitbox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("16_hitbox")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 unique_name_in_owner = true
@@ -58,3 +129,18 @@ script = ExtResource("7_fall")
 
 [node name="Dash" type="Node" parent="StateMachine"]
 script = ExtResource("8_dash")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("17_attack")
+
+[node name="AirAttack" type="Node" parent="StateMachine"]
+script = ExtResource("18_air")
+
+[node name="Charge" type="Node" parent="StateMachine"]
+script = ExtResource("19_charge")
+
+[node name="Fire" type="Node" parent="StateMachine"]
+script = ExtResource("20_fire")
+
+[node name="Hack" type="Node" parent="StateMachine"]
+script = ExtResource("21_hack")

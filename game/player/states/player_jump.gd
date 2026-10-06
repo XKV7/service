@@ -19,7 +19,7 @@ func physics_update(delta: float) -> void:
 	player.apply_gravity(delta)
 	player.move_and_slide()
 
-	if try_dash():
+	if try_actions():
 		return
 	if player.is_on_floor():
 		go_grounded()

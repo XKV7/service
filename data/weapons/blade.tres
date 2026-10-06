@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://core/components/weapon_data.gd" id="1_wpn"]
+[ext_resource type="Script" path="res://core/components/attack_data.gd" id="5_atk"]
+[ext_resource type="Resource" path="res://data/attacks/blade_1.tres" id="2_a1"]
+[ext_resource type="Resource" path="res://data/attacks/blade_2.tres" id="3_a2"]
+[ext_resource type="Resource" path="res://data/attacks/blade_3.tres" id="4_a3"]
+
+[resource]
+script = ExtResource("1_wpn")
+id = &"blade"
+display_name = "고주파 블레이드"
+description = "빠르고 안정적인 3연격. 마지막 타의 넉백이 강하다."
+combo = Array[ExtResource("5_atk")]([ExtResource("2_a1"), ExtResource("3_a2"), ExtResource("4_a3")])
+attack_range = 44.0
+special_effect = &""

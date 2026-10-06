@@ -7,7 +7,7 @@ func physics_update(delta: float) -> void:
 	player.apply_gravity(delta)
 	player.move_and_slide()
 
-	if try_dash() or try_jump():
+	if try_actions() or try_jump():
 		return
 	if not player.is_on_floor():
 		transitioned.emit(self, &"Fall")

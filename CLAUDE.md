@@ -140,6 +140,7 @@ res://
 godot --headless --path . --import
 godot --headless --path . --quit-after 60
 godot --headless --path . res://tests/test_player_movement.tscn
+godot --headless --path . res://tests/test_combat.tscn
 ```
 - 테스트는 오토로드가 필요하므로 `-s`가 아니라 씬(`tests/*.tscn`)으로 실행한다.
 - Input Map은 `tests/tools/setup_input_map.gd`로 다시 생성할 수 있다. (`godot --headless --path . -s res://tests/tools/setup_input_map.gd`)
@@ -163,7 +164,7 @@ python3 tests/tools/split_web_build.py build/web
 
 ## 진행 상황
 - [x] M1 이동 — 상태머신 core, Idle/Run/Jump/Fall/Dash, FollowCamera, 테스트 맵(`game/levels/test/`), 이동 테스트
-- [ ] M2 전투
+- [x] M2 전투 — 전투 컴포넌트 core, 블레이드 3타·아래 찍기·레일건·시스템 정지, 히트스톱·흔들림·섬광·피격 플래시, 샌드백, 전투 테스트 (플레이어 Hurt/Dead는 M3에서)
 - [ ] M3 적·함정
 - [ ] M4 성장
 - [ ] M5 보스

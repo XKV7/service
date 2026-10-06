@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RailgunData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://game/weapons/railgun_data.gd" id="1_rg"]
+[ext_resource type="Resource" path="res://data/attacks/railgun_beam.tres" id="2_beam"]
+
+[resource]
+script = ExtResource("1_rg")
+attack = ExtResource("2_beam")
+charge_time = 0.8
+energy_cost = 25.0
+move_speed_mult = 0.4
