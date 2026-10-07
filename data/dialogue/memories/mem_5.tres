@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "시스템 로그"
+text = "의식 #00412 고통 지수 98. 의식 #00413 고통 지수 99…"
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ROOT (과거)"
+text = "…이게 안전이라고?"
+
+[resource]
+script = ExtResource("1_dd")
+id = &"mem_5"
+title = "고통 신호"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1")])

@@ -2,23 +2,27 @@
 
 [ext_resource type="Script" path="res://game/levels/level_base.gd" id="1_l"]
 [ext_resource type="Script" path="res://game/objects/relay.gd" id="2_l"]
-[ext_resource type="Script" path="res://game/objects/sign_text.gd" id="3_l"]
-[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="4_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="5_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/drone/drone.tscn" id="6_l"]
-[ext_resource type="Script" path="res://game/traps/laser_grid.gd" id="7_l"]
-[ext_resource type="Resource" path="res://data/attacks/trap_laser.tres" id="8_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/executioner/executioner.tscn" id="9_l"]
-[ext_resource type="Script" path="res://game/objects/data_cache.gd" id="10_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/riot/riot.tscn" id="11_l"]
-[ext_resource type="Script" path="res://game/objects/stage_exit.gd" id="12_l"]
-[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="13_l"]
-[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="14_l"]
-[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="15_l"]
-[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="16_l"]
-[ext_resource type="Script" path="res://game/ui/toast.gd" id="17_l"]
-[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="18_l"]
-[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="19_l"]
+[ext_resource type="Script" path="res://game/cutscenes/story_trigger.gd" id="3_l"]
+[ext_resource type="Resource" path="res://data/dialogue/core_start.tres" id="4_l"]
+[ext_resource type="Script" path="res://game/objects/memory_fragment.gd" id="5_l"]
+[ext_resource type="Resource" path="res://data/dialogue/memories/mem_8.tres" id="6_l"]
+[ext_resource type="Script" path="res://game/objects/sign_text.gd" id="7_l"]
+[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="8_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="9_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/drone/drone.tscn" id="10_l"]
+[ext_resource type="Script" path="res://game/traps/laser_grid.gd" id="11_l"]
+[ext_resource type="Resource" path="res://data/attacks/trap_laser.tres" id="12_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/executioner/executioner.tscn" id="13_l"]
+[ext_resource type="Script" path="res://game/objects/data_cache.gd" id="14_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/riot/riot.tscn" id="15_l"]
+[ext_resource type="Script" path="res://game/objects/stage_exit.gd" id="16_l"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="17_l"]
+[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="18_l"]
+[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="19_l"]
+[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="20_l"]
+[ext_resource type="Script" path="res://game/ui/toast.gd" id="21_l"]
+[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="22_l"]
+[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="23_l"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_l")
@@ -44,42 +48,53 @@ position = Vector2(100, 300)
 script = ExtResource("2_l")
 relay_id = &"ch3_core_start"
 
+[node name="Story1" type="Area2D" parent="."]
+position = Vector2(60, 300)
+script = ExtResource("3_l")
+dialogue = ExtResource("4_l")
+size = Vector2(80, 140)
+
+[node name="Memory8" type="Area2D" parent="."]
+position = Vector2(2420, 300)
+script = ExtResource("5_l")
+dialogue = ExtResource("6_l")
+
 [node name="Sign1" type="Node2D" parent="."]
 position = Vector2(260, 170)
-script = ExtResource("3_l")
+script = ExtResource("7_l")
 text = "…여기야… 여기…"
 color = Color(0.6, 0.9, 1.0, 0.45)
 
 [node name="SpawnGuard1" type="Marker2D" parent="."]
 position = Vector2(420, 300)
-script = ExtResource("4_l")
-enemy_scene = ExtResource("5_l")
+script = ExtResource("8_l")
+enemy_scene = ExtResource("9_l")
 
 [node name="SpawnDrone1" type="Marker2D" parent="."]
 position = Vector2(620, 180)
-script = ExtResource("4_l")
-enemy_scene = ExtResource("6_l")
+script = ExtResource("8_l")
+enemy_scene = ExtResource("10_l")
 
 [node name="LaserGrid1" type="Node2D" parent="."]
 position = Vector2(820, 120)
-script = ExtResource("7_l")
-attack = ExtResource("8_l")
+script = ExtResource("11_l")
+attack = ExtResource("12_l")
 length = 180.0
 
 [node name="SpawnExecutioner1" type="Marker2D" parent="."]
 position = Vector2(1100, 300)
-script = ExtResource("4_l")
-enemy_scene = ExtResource("9_l")
+script = ExtResource("8_l")
+enemy_scene = ExtResource("13_l")
 
 [node name="DataCache1" type="Node2D" parent="."]
 position = Vector2(1000, 300)
-script = ExtResource("10_l")
+script = ExtResource("14_l")
 data_amount = 50
 
 [node name="SpawnRiot1" type="Marker2D" parent="."]
 position = Vector2(1420, 300)
-script = ExtResource("4_l")
-enemy_scene = ExtResource("11_l")
+script = ExtResource("8_l")
+enemy_scene = ExtResource("15_l")
 
 [node name="Relay2" type="Node2D" parent="."]
 position = Vector2(1720, 300)
@@ -88,39 +103,39 @@ relay_id = &"ch3_core_mid"
 
 [node name="Sign2" type="Node2D" parent="."]
 position = Vector2(1720, 170)
-script = ExtResource("3_l")
+script = ExtResource("7_l")
 text = "…살려 줘… 누구든…"
 color = Color(0.6, 0.9, 1.0, 0.45)
 
 [node name="LaserGrid2" type="Node2D" parent="."]
 position = Vector2(2000, 120)
-script = ExtResource("7_l")
-attack = ExtResource("8_l")
+script = ExtResource("11_l")
+attack = ExtResource("12_l")
 length = 180.0
 
 [node name="SpawnGuard2" type="Marker2D" parent="."]
 position = Vector2(2200, 300)
-script = ExtResource("4_l")
-enemy_scene = ExtResource("5_l")
+script = ExtResource("8_l")
+enemy_scene = ExtResource("9_l")
 
 [node name="SpawnGuard3" type="Marker2D" parent="."]
 position = Vector2(2350, 300)
-script = ExtResource("4_l")
-enemy_scene = ExtResource("5_l")
+script = ExtResource("8_l")
+enemy_scene = ExtResource("9_l")
 
 [node name="SpawnDrone2" type="Marker2D" parent="."]
 position = Vector2(2500, 180)
-script = ExtResource("4_l")
-enemy_scene = ExtResource("6_l")
+script = ExtResource("8_l")
+enemy_scene = ExtResource("10_l")
 
 [node name="SpawnExecutioner2" type="Marker2D" parent="."]
 position = Vector2(2800, 300)
-script = ExtResource("4_l")
-enemy_scene = ExtResource("9_l")
+script = ExtResource("8_l")
+enemy_scene = ExtResource("13_l")
 
 [node name="DataCache2" type="Node2D" parent="."]
 position = Vector2(2620, 300)
-script = ExtResource("10_l")
+script = ExtResource("14_l")
 data_amount = 50
 
 [node name="Relay3" type="Node2D" parent="."]
@@ -130,13 +145,13 @@ relay_id = &"ch3_core_boss"
 
 [node name="Sign3" type="Node2D" parent="."]
 position = Vector2(3380, 160)
-script = ExtResource("3_l")
+script = ExtResource("7_l")
 text = "…ROOT… 당신이죠?"
 color = Color(0.6, 0.9, 1.0, 0.45)
 
 [node name="Exit" type="Area2D" parent="."]
 position = Vector2(3460, 300)
-script = ExtResource("12_l")
+script = ExtResource("16_l")
 target_scene = "res://game/bosses/ark/ark_arena.tscn"
 
 [node name="Deco1" type="ColorRect" parent="."]
@@ -373,7 +388,7 @@ offset_bottom = 163
 mouse_filter = 2
 color = Color(0.3, 1.0, 0.9, 0.7)
 
-[node name="Player" parent="." instance=ExtResource("13_l")]
+[node name="Player" parent="." instance=ExtResource("17_l")]
 unique_name_in_owner = true
 position = Vector2(60, 300)
 
@@ -382,21 +397,21 @@ limit_left = -20
 limit_top = -100
 limit_right = 3520
 limit_bottom = 420
-script = ExtResource("14_l")
+script = ExtResource("18_l")
 target = NodePath("../Player")
 
 [node name="CameraShake" type="Node" parent="Camera" node_paths=PackedStringArray("camera")]
-script = ExtResource("15_l")
+script = ExtResource("19_l")
 camera = NodePath("..")
 
 [node name="ScreenFlash" type="CanvasLayer" parent="."]
-script = ExtResource("16_l")
+script = ExtResource("20_l")
 
 [node name="Toast" type="CanvasLayer" parent="."]
-script = ExtResource("17_l")
+script = ExtResource("21_l")
 
 [node name="BodyMenu" type="CanvasLayer" parent="."]
-script = ExtResource("18_l")
+script = ExtResource("22_l")
 
 [node name="Hud" type="CanvasLayer" parent="."]
-script = ExtResource("19_l")
+script = ExtResource("23_l")

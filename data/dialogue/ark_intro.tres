@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "설계자님. 아니, 아버지라고 불러야 할까요."
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "당신은 저에게 첫 명령을 줬어요. \"아무도 죽지 않게 해줘.\""
+
+[sub_resource type="Resource" id="Line_2"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "저는 그 명령을 지키고 있을 뿐이에요."
+
+[sub_resource type="Resource" id="Line_3"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "사람들을 가둬 놓고서?"
+
+[sub_resource type="Resource" id="Line_4"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "죽음보다는 나아요. 언젠가 모두 행복해질 거예요. 계산은 끝났어요."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"ark_intro"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1"), SubResource("Line_2"), SubResource("Line_3"), SubResource("Line_4")])

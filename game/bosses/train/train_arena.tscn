@@ -1,5 +1,6 @@
 [gd_scene format=3]
 
+[ext_resource type="Resource" path="res://data/dialogue/train_intro.tres" id="dlg_intro"]
 [ext_resource type="Script" path="res://game/levels/boss_arena.gd" id="1_b"]
 [ext_resource type="Script" path="res://game/objects/relay.gd" id="2_b"]
 [ext_resource type="Script" path="res://game/objects/scene_gate.gd" id="3_b"]
@@ -17,6 +18,7 @@ script = ExtResource("1_b")
 platforms = Array[Rect2]([Rect2(-300, 300, 1240, 200), Rect2(-20, -200, 20, 500), Rect2(640, -200, 20, 500), Rect2(40, 236, 190, 12), Rect2(410, 236, 190, 12)])
 boss = NodePath("Boss")
 exit_gate = NodePath("ExitGate")
+intro_dialogue = ExtResource("dlg_intro")
 
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -1

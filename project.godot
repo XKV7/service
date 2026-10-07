@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.4")
 EventBus="*res://core/autoload/event_bus.gd"
 GameState="*res://game/game_state.gd"
 SceneLoader="*res://core/autoload/scene_loader.gd"
+Story="*res://game/cutscenes/story.gd"
 
 [display]
 

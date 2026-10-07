@@ -7,6 +7,10 @@ extends LevelBase
 @export var exit_gate: SceneGate
 ## 보스전 시작까지 (초)
 @export var start_delay: float = 1.2
+## 보스전 시작 전 대사 (한 번만)
+@export var intro_dialogue: DialogueData
+## 비워 두지 않으면 처치 대사가 끝난 뒤 이 씬으로 바로 넘어간다. (최종 보스 → 엔딩)
+@export_file("*.tscn") var after_defeat_scene: String = ""
 
 
 func _ready() -> void:
@@ -18,11 +22,23 @@ func _ready() -> void:
 		boss.queue_free()
 		exit_gate.enabled = true
 		return
-	get_tree().create_timer(start_delay, false).timeout.connect(boss.start)
+	get_tree().create_timer(start_delay, false).timeout.connect(_begin)
+
+
+func _begin() -> void:
+	if not Story.has_seen(intro_dialogue):
+		await Story.play_and_wait(intro_dialogue)
+	if is_instance_valid(boss):
+		boss.start()
 
 
 func _on_boss_defeated(_id: StringName) -> void:
 	exit_gate.enabled = true
+	if after_defeat_scene == "":
+		return
+	while Story.is_playing():
+		await Story.dialogue_finished
+	SceneGate.travel(get_tree(), after_defeat_scene)
 
 
 func _on_player_respawned() -> void:

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "미소"
+text = "어서 오세요, 고객님! 오늘만 특가, 영원한 행복을 드려요!"
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "미소"
+text = "…도와… 아니, 지금 바로! 지금 바로 구매하세요!"
+
+[sub_resource type="Resource" id="Line_2"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "광장의 투사기가 저 얼굴을 비추고 있다."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"miso_intro"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1"), SubResource("Line_2")])

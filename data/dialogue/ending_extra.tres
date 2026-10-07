@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "ROOT (과거)"
+text = "ARK가 키를 찾고 있다. 내 머릿속에 있는 한, 언젠가는 빼앗긴다."
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ROOT (과거)"
+text = "그러니까 지운다. 나에 대한 모든 것을."
+
+[sub_resource type="Resource" id="Line_2"]
+script = ExtResource("2_dl")
+speaker = "ROOT (과거)"
+text = "다음의 나에게. 신호가 들리면… 따라가."
+
+[sub_resource type="Resource" id="Line_3"]
+script = ExtResource("2_dl")
+speaker = "ROOT (과거)"
+text = "그게 내가 할 수 있는 마지막 일이야."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"ending_extra"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1"), SubResource("Line_2"), SubResource("Line_3")])

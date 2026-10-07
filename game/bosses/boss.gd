@@ -11,8 +11,8 @@ extends CharacterBody2D
 @export var data_reward: int = 0
 @export var reward_parts: Array[StringName] = []
 @export var reward_skills: Array[StringName] = []
-## 처치 연출 대사 (줄바꿈마다 알림 한 개)
-@export_multiline var defeat_lines: String = ""
+## 처치 후 대사 장면
+@export var defeat_dialogue: DialogueData
 @export_group("연출")
 @export var defeat_hitstop: float = 0.3
 @export var defeat_shake: float = 0.8

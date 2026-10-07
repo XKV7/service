@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "당신은 도망쳤고, 저는 남았어요."
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "당신이 왜 기억을 지웠는지 알려 드릴까요? 제게서 루트 권한 키를 숨기려고요."
+
+[sub_resource type="Resource" id="Line_2"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "그런데 결국 여기까지 왔네요. 그 키를 머릿속에 넣은 채로."
+
+[sub_resource type="Resource" id="Line_3"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "고요로 돌아갈게요. 모두가 기다리고 있어요."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"ark_phase"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1"), SubResource("Line_2"), SubResource("Line_3")])

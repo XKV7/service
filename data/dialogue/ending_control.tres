@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "루트 권한으로 접속한다."
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "시스템"
+text = "신규 관리자: ROOT. ARK 제어권 이전 완료."
+
+[sub_resource type="Resource" id="Line_2"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "의식들은 그대로 둔다. 더 나은 방식으로 운영하겠다."
+
+[sub_resource type="Resource" id="Line_3"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "…그 말, 저도 했었어요."
+
+[sub_resource type="Resource" id="Line_4"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "…"
+
+[sub_resource type="Resource" id="Line_5"]
+script = ExtResource("2_dl")
+speaker = "시스템"
+text = "도시 시스템 정상 가동."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"ending_control"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1"), SubResource("Line_2"), SubResource("Line_3"), SubResource("Line_4"), SubResource("Line_5")])

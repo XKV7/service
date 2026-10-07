@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/cutscenes/ending.gd" id="1_end"]
+[ext_resource type="Resource" path="res://data/dialogue/ending_destroy.tres" id="2_d"]
+[ext_resource type="Resource" path="res://data/dialogue/ending_control.tres" id="3_c"]
+[ext_resource type="Resource" path="res://data/dialogue/ending_extra.tres" id="4_x"]
+
+[node name="Ending" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_end")
+destroy_dialogue = ExtResource("2_d")
+control_dialogue = ExtResource("3_c")
+extra_dialogue = ExtResource("4_x")

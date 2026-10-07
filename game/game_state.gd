@@ -12,6 +12,7 @@ const WEAPON_CATALOG: WeaponCatalog = preload("res://data/weapons/weapon_catalog
 const BASE_SLOT_COUNT: int = 3
 const SLOT_MODULE_ID: StringName = &"slot_module"
 const DEFAULT_WEAPON: StringName = &"blade"
+const MEMORY_TOTAL: int = 8
 
 var data: int = 0
 ## 부품 id -> 레벨
@@ -30,6 +31,12 @@ var defeated_bosses: Array[StringName] = []
 var opened_secrets: Array[StringName] = []
 ## 지금 있는 레벨 씬 경로 (세이브용)
 var current_scene: String = ""
+## 모은 기억 조각 id
+var memories: Array[StringName] = []
+## 본 대사 장면 id
+var seen_scenes: Array[StringName] = []
+## 고른 엔딩 (destroy / control)
+var ending: StringName = &""
 
 
 ## 새 게임 상태로 되돌린다. (테스트, 새 게임)
@@ -46,6 +53,9 @@ func reset() -> void:
 	defeated_bosses.clear()
 	opened_secrets.clear()
 	current_scene = ""
+	memories.clear()
+	seen_scenes.clear()
+	ending = &""
 	data_changed.emit(data)
 	loadout_changed.emit()
 	wreck_changed.emit()
@@ -233,3 +243,29 @@ func open_secret(id: StringName) -> void:
 
 func is_secret_open(id: StringName) -> bool:
 	return id in opened_secrets
+
+
+# --- 스토리 ---
+
+func collect_memory(id: StringName) -> bool:
+	if id == &"" or id in memories:
+		return false
+	memories.append(id)
+	return true
+
+
+func has_memory(id: StringName) -> bool:
+	return id in memories
+
+
+func has_all_memories() -> bool:
+	return memories.size() >= MEMORY_TOTAL
+
+
+func mark_seen(id: StringName) -> void:
+	if id != &"" and not id in seen_scenes:
+		seen_scenes.append(id)
+
+
+func has_seen(id: StringName) -> bool:
+	return id in seen_scenes

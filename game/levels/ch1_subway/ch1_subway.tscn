@@ -5,23 +5,29 @@
 [ext_resource type="Script" path="res://game/objects/item_pickup.gd" id="3_l"]
 [ext_resource type="Script" path="res://game/objects/data_cache.gd" id="4_l"]
 [ext_resource type="Script" path="res://game/objects/relay.gd" id="5_l"]
-[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="6_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="7_l"]
-[ext_resource type="Script" path="res://game/traps/electric_rail.gd" id="8_l"]
-[ext_resource type="Resource" path="res://data/attacks/trap_shock.tres" id="9_l"]
-[ext_resource type="Script" path="res://game/objects/sign_text.gd" id="10_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/drone/drone.tscn" id="11_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/crawler/crawler.tscn" id="12_l"]
-[ext_resource type="Script" path="res://game/traps/cargo_train.gd" id="13_l"]
-[ext_resource type="Resource" path="res://data/attacks/cargo_train.tres" id="14_l"]
-[ext_resource type="Script" path="res://game/objects/stage_exit.gd" id="15_l"]
-[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="16_l"]
-[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="17_l"]
-[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="18_l"]
-[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="19_l"]
-[ext_resource type="Script" path="res://game/ui/toast.gd" id="20_l"]
-[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="21_l"]
-[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="22_l"]
+[ext_resource type="Script" path="res://game/cutscenes/story_trigger.gd" id="6_l"]
+[ext_resource type="Resource" path="res://data/dialogue/ch1_start.tres" id="7_l"]
+[ext_resource type="Script" path="res://game/objects/memory_fragment.gd" id="8_l"]
+[ext_resource type="Resource" path="res://data/dialogue/memories/mem_1.tres" id="9_l"]
+[ext_resource type="Resource" path="res://data/dialogue/memories/mem_2.tres" id="10_l"]
+[ext_resource type="Resource" path="res://data/dialogue/memories/mem_3.tres" id="11_l"]
+[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="12_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="13_l"]
+[ext_resource type="Script" path="res://game/traps/electric_rail.gd" id="14_l"]
+[ext_resource type="Resource" path="res://data/attacks/trap_shock.tres" id="15_l"]
+[ext_resource type="Script" path="res://game/objects/sign_text.gd" id="16_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/drone/drone.tscn" id="17_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/crawler/crawler.tscn" id="18_l"]
+[ext_resource type="Script" path="res://game/traps/cargo_train.gd" id="19_l"]
+[ext_resource type="Resource" path="res://data/attacks/cargo_train.tres" id="20_l"]
+[ext_resource type="Script" path="res://game/objects/stage_exit.gd" id="21_l"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="22_l"]
+[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="23_l"]
+[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="24_l"]
+[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="25_l"]
+[ext_resource type="Script" path="res://game/ui/toast.gd" id="26_l"]
+[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="27_l"]
+[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="28_l"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_l")
@@ -64,10 +70,31 @@ position = Vector2(100, 300)
 script = ExtResource("5_l")
 relay_id = &"ch1_start"
 
+[node name="Story1" type="Area2D" parent="."]
+position = Vector2(60, 300)
+script = ExtResource("6_l")
+dialogue = ExtResource("7_l")
+size = Vector2(80, 140)
+
+[node name="Memory1" type="Area2D" parent="."]
+position = Vector2(1260, 300)
+script = ExtResource("8_l")
+dialogue = ExtResource("9_l")
+
+[node name="Memory2" type="Area2D" parent="."]
+position = Vector2(2560, 300)
+script = ExtResource("8_l")
+dialogue = ExtResource("10_l")
+
+[node name="Memory3" type="Area2D" parent="."]
+position = Vector2(4190, 236)
+script = ExtResource("8_l")
+dialogue = ExtResource("11_l")
+
 [node name="SpawnGuard1" type="Marker2D" parent="."]
 position = Vector2(500, 300)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("7_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("13_l")
 
 [node name="DataCache2" type="Node2D" parent="."]
 position = Vector2(620, 300)
@@ -76,34 +103,34 @@ data_amount = 50
 
 [node name="ElectricRail1" type="Node2D" parent="."]
 position = Vector2(700, 294)
-script = ExtResource("8_l")
-attack = ExtResource("9_l")
+script = ExtResource("14_l")
+attack = ExtResource("15_l")
 size = Vector2(200, 6)
 
 [node name="Sign1" type="Node2D" parent="."]
 position = Vector2(800, 190)
-script = ExtResource("10_l")
+script = ExtResource("16_l")
 text = "감전 선로 — 위로 건너자"
 
 [node name="SpawnDrone1" type="Marker2D" parent="."]
 position = Vector2(1200, 180)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("11_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("17_l")
 
 [node name="SpawnCrawler1" type="Marker2D" parent="."]
 position = Vector2(1320, 294)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("12_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("18_l")
 
 [node name="SpawnCrawler2" type="Marker2D" parent="."]
 position = Vector2(1380, 294)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("12_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("18_l")
 
 [node name="SpawnCrawler3" type="Marker2D" parent="."]
 position = Vector2(1440, 294)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("12_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("18_l")
 
 [node name="Relay2" type="Node2D" parent="."]
 position = Vector2(2280, 300)
@@ -118,24 +145,24 @@ item_id = &"railgun"
 
 [node name="Sign2" type="Node2D" parent="."]
 position = Vector2(2420, 200)
-script = ExtResource("10_l")
+script = ExtResource("16_l")
 text = "K 를 길게 눌렀다 떼기: 레일건
 (연산력 25 소모)"
 
 [node name="SpawnGuard2" type="Marker2D" parent="."]
 position = Vector2(2600, 300)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("7_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("13_l")
 
 [node name="SpawnGuard3" type="Marker2D" parent="."]
 position = Vector2(2980, 300)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("7_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("13_l")
 
 [node name="SpawnDrone2" type="Marker2D" parent="."]
 position = Vector2(2700, 140)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("11_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("17_l")
 
 [node name="Pickup_armor_plate" type="Area2D" parent="."]
 position = Vector2(2860, 236)
@@ -155,20 +182,20 @@ data_amount = 50
 
 [node name="Sign3" type="Node2D" parent="."]
 position = Vector2(3300, 160)
-script = ExtResource("10_l")
+script = ExtResource("16_l")
 text = "화물차가 지나간다!
 승강장 발판으로 피하자"
 
 [node name="CargoTrain1" type="Node2D" parent="."]
 position = Vector2(3200, 300)
-script = ExtResource("13_l")
-attack = ExtResource("14_l")
+script = ExtResource("19_l")
+attack = ExtResource("20_l")
 track_length = 1600.0
 
 [node name="SpawnCrawler4" type="Marker2D" parent="."]
 position = Vector2(4000, 146)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("12_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("18_l")
 properties = {"on_ceiling": true}
 
 [node name="Pickup_absorb_circuit" type="Area2D" parent="."]
@@ -179,18 +206,18 @@ item_id = &"absorb_circuit"
 
 [node name="SpawnGuard4" type="Marker2D" parent="."]
 position = Vector2(5100, 300)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("7_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("13_l")
 
 [node name="SpawnGuard5" type="Marker2D" parent="."]
 position = Vector2(5320, 300)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("7_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("13_l")
 
 [node name="SpawnDrone3" type="Marker2D" parent="."]
 position = Vector2(5200, 180)
-script = ExtResource("6_l")
-enemy_scene = ExtResource("11_l")
+script = ExtResource("12_l")
+enemy_scene = ExtResource("17_l")
 
 [node name="DataCache5" type="Node2D" parent="."]
 position = Vector2(4950, 300)
@@ -209,14 +236,14 @@ relay_id = &"ch1_boss"
 
 [node name="Sign4" type="Node2D" parent="."]
 position = Vector2(5880, 200)
-script = ExtResource("10_l")
+script = ExtResource("16_l")
 text = "종착역 →
 …무언가 달려온다"
 color = Color(0.6, 0.9, 1.0, 0.45)
 
 [node name="Exit" type="Area2D" parent="."]
 position = Vector2(5960, 300)
-script = ExtResource("15_l")
+script = ExtResource("21_l")
 target_scene = "res://game/bosses/train/train_arena.tscn"
 
 [node name="Deco1" type="ColorRect" parent="."]
@@ -255,7 +282,7 @@ offset_bottom = 300
 mouse_filter = 2
 color = Color(0.9, 0.2, 0.2, 0.25)
 
-[node name="Player" parent="." instance=ExtResource("16_l")]
+[node name="Player" parent="." instance=ExtResource("22_l")]
 unique_name_in_owner = true
 position = Vector2(60, 300)
 
@@ -264,21 +291,21 @@ limit_left = -260
 limit_top = -100
 limit_right = 6020
 limit_bottom = 420
-script = ExtResource("17_l")
+script = ExtResource("23_l")
 target = NodePath("../Player")
 
 [node name="CameraShake" type="Node" parent="Camera" node_paths=PackedStringArray("camera")]
-script = ExtResource("18_l")
+script = ExtResource("24_l")
 camera = NodePath("..")
 
 [node name="ScreenFlash" type="CanvasLayer" parent="."]
-script = ExtResource("19_l")
+script = ExtResource("25_l")
 
 [node name="Toast" type="CanvasLayer" parent="."]
-script = ExtResource("20_l")
+script = ExtResource("26_l")
 
 [node name="BodyMenu" type="CanvasLayer" parent="."]
-script = ExtResource("21_l")
+script = ExtResource("27_l")
 
 [node name="Hud" type="CanvasLayer" parent="."]
-script = ExtResource("22_l")
+script = ExtResource("28_l")

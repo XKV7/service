@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "거리에서 사람들이 사라지고 있다는 소문. 그리고 한을 그룹의 '영원' 서비스."
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "우연은 아니겠지."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"prologue_exit"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1")])

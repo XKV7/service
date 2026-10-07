@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "스피커"
+text = "…여기가… 천국인가요?"
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "…사람의 목소리다."
+
+[sub_resource type="Resource" id="Line_2"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "기관사였던 사람의 의식이 이 전동차 안에 갇혀 있었다."
+
+[sub_resource type="Resource" id="Line_3"]
+script = ExtResource("2_dl")
+speaker = "시스템"
+text = "해킹 모듈 복원: 시스템 정지."
+
+[sub_resource type="Resource" id="Line_4"]
+script = ExtResource("2_dl")
+speaker = "ROOT"
+text = "업로드된 사람들은 천국에 있지 않다."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"train_defeat"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1"), SubResource("Line_2"), SubResource("Line_3"), SubResource("Line_4")])

@@ -1,5 +1,6 @@
 [gd_scene format=3]
 
+[ext_resource type="Resource" path="res://data/dialogue/ark_intro.tres" id="dlg_intro"]
 [ext_resource type="Script" path="res://game/levels/boss_arena.gd" id="1_b"]
 [ext_resource type="Script" path="res://game/objects/relay.gd" id="2_b"]
 [ext_resource type="Script" path="res://game/objects/scene_gate.gd" id="3_b"]
@@ -17,6 +18,8 @@ script = ExtResource("1_b")
 platforms = Array[Rect2]([Rect2(-20, 300, 680, 200), Rect2(-20, -200, 20, 500), Rect2(640, -200, 20, 500)])
 boss = NodePath("Boss")
 exit_gate = NodePath("ExitGate")
+intro_dialogue = ExtResource("dlg_intro")
+after_defeat_scene = "res://game/cutscenes/ending.tscn"
 
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -1
@@ -88,7 +91,7 @@ relay_id = &"boss_ark"
 [node name="ExitGate" type="Node2D" parent="."]
 position = Vector2(56, 300)
 script = ExtResource("3_b")
-target_scene = "res://game/ui/end_screen.tscn"
+target_scene = "res://game/cutscenes/ending.tscn"
 prompt = "W 나가기"
 
 [node name="Boss" parent="." instance=ExtResource("4_b")]

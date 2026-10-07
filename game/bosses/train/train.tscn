@@ -1,5 +1,6 @@
 [gd_scene format=3]
 
+[ext_resource type="Resource" path="res://data/dialogue/train_defeat.tres" id="dlg_defeat"]
 [ext_resource type="Script" path="res://game/bosses/train/train_boss.gd" id="1_b"]
 [ext_resource type="Script" path="res://core/components/health_component.gd" id="2_b"]
 [ext_resource type="Script" path="res://core/components/stun_component.gd" id="3_b"]
@@ -52,8 +53,7 @@ max_hp = 600
 data_reward = 300
 reward_parts = Array[StringName]([&"compute_amp"])
 reward_skills = Array[StringName]([&"hack"])
-defeat_lines = "전동차가 멈췄다.
-스피커: 「여기가… 천국인가요?」"
+defeat_dialogue = ExtResource("dlg_defeat")
 number_offset = Vector2(0, -70)
 facing = -1.0
 

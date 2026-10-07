@@ -16,6 +16,8 @@ var _seen: Dictionary = {}
 
 
 func _ready() -> void:
+	# 대사 장면은 멈춤 없이 바로 넘긴다.
+	Story.auto_skip = true
 	_run.call_deferred()
 
 
@@ -222,6 +224,8 @@ func _setup(arena_scene: PackedScene) -> Boss:
 	GameState.reset()
 	GameState.unlock_skill(&"railgun")
 	_arena = arena_scene.instantiate()
+	# 처치 후 엔딩 씬으로 넘어가면 테스트 씬이 바뀌므로 끈다.
+	(_arena as BossArena).after_defeat_scene = ""
 	add_child(_arena)
 	var boss := _arena.get_node(^"Boss") as Boss
 	await _wait_until(func() -> bool: return boss.state_machine.get_state_name() == &"Idle")

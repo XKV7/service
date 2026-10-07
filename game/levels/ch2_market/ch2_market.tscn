@@ -2,27 +2,33 @@
 
 [ext_resource type="Script" path="res://game/levels/level_base.gd" id="1_l"]
 [ext_resource type="Script" path="res://game/objects/relay.gd" id="2_l"]
-[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="3_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="4_l"]
-[ext_resource type="Script" path="res://game/objects/data_cache.gd" id="5_l"]
-[ext_resource type="Script" path="res://game/objects/sign_text.gd" id="6_l"]
-[ext_resource type="Script" path="res://game/traps/holo_platform.gd" id="7_l"]
-[ext_resource type="Script" path="res://game/objects/fake_wall.gd" id="8_l"]
-[ext_resource type="Script" path="res://game/objects/item_pickup.gd" id="9_l"]
-[ext_resource type="Script" path="res://game/traps/surveillance_camera.gd" id="10_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/drone/drone.tscn" id="11_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/riot/riot.tscn" id="12_l"]
-[ext_resource type="Script" path="res://game/objects/shutter.gd" id="13_l"]
-[ext_resource type="Script" path="res://game/objects/rail_switch.gd" id="14_l"]
-[ext_resource type="PackedScene" path="res://game/enemies/wraith/wraith.tscn" id="15_l"]
-[ext_resource type="Script" path="res://game/objects/stage_exit.gd" id="16_l"]
-[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="17_l"]
-[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="18_l"]
-[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="19_l"]
-[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="20_l"]
-[ext_resource type="Script" path="res://game/ui/toast.gd" id="21_l"]
-[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="22_l"]
-[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="23_l"]
+[ext_resource type="Script" path="res://game/cutscenes/story_trigger.gd" id="3_l"]
+[ext_resource type="Resource" path="res://data/dialogue/ch2_start.tres" id="4_l"]
+[ext_resource type="Script" path="res://game/objects/memory_fragment.gd" id="5_l"]
+[ext_resource type="Resource" path="res://data/dialogue/memories/mem_4.tres" id="6_l"]
+[ext_resource type="Resource" path="res://data/dialogue/memories/mem_5.tres" id="7_l"]
+[ext_resource type="Resource" path="res://data/dialogue/memories/mem_6.tres" id="8_l"]
+[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="9_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="10_l"]
+[ext_resource type="Script" path="res://game/objects/data_cache.gd" id="11_l"]
+[ext_resource type="Script" path="res://game/objects/sign_text.gd" id="12_l"]
+[ext_resource type="Script" path="res://game/traps/holo_platform.gd" id="13_l"]
+[ext_resource type="Script" path="res://game/objects/fake_wall.gd" id="14_l"]
+[ext_resource type="Script" path="res://game/objects/item_pickup.gd" id="15_l"]
+[ext_resource type="Script" path="res://game/traps/surveillance_camera.gd" id="16_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/drone/drone.tscn" id="17_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/riot/riot.tscn" id="18_l"]
+[ext_resource type="Script" path="res://game/objects/shutter.gd" id="19_l"]
+[ext_resource type="Script" path="res://game/objects/rail_switch.gd" id="20_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/wraith/wraith.tscn" id="21_l"]
+[ext_resource type="Script" path="res://game/objects/stage_exit.gd" id="22_l"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="23_l"]
+[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="24_l"]
+[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="25_l"]
+[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="26_l"]
+[ext_resource type="Script" path="res://game/ui/toast.gd" id="27_l"]
+[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="28_l"]
+[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="29_l"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_l")
@@ -48,57 +54,78 @@ position = Vector2(100, 300)
 script = ExtResource("2_l")
 relay_id = &"ch2_start"
 
+[node name="Story1" type="Area2D" parent="."]
+position = Vector2(60, 300)
+script = ExtResource("3_l")
+dialogue = ExtResource("4_l")
+size = Vector2(80, 140)
+
+[node name="Memory4" type="Area2D" parent="."]
+position = Vector2(1620, 300)
+script = ExtResource("5_l")
+dialogue = ExtResource("6_l")
+
+[node name="Memory5" type="Area2D" parent="."]
+position = Vector2(2590, 246)
+script = ExtResource("5_l")
+dialogue = ExtResource("7_l")
+
+[node name="Memory6" type="Area2D" parent="."]
+position = Vector2(5050, 300)
+script = ExtResource("5_l")
+dialogue = ExtResource("8_l")
+
 [node name="SpawnGuard1" type="Marker2D" parent="."]
 position = Vector2(420, 300)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("4_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("10_l")
 
 [node name="DataCache1" type="Node2D" parent="."]
 position = Vector2(560, 300)
-script = ExtResource("5_l")
+script = ExtResource("11_l")
 data_amount = 50
 
 [node name="Sign1" type="Node2D" parent="."]
 position = Vector2(900, 170)
-script = ExtResource("6_l")
+script = ExtResource("12_l")
 text = "광고 홀로그램 발판은
 켜졌다 꺼진다"
 
 [node name="Holo1" type="StaticBody2D" parent="."]
 position = Vector2(760, 264)
-script = ExtResource("7_l")
+script = ExtResource("13_l")
 phase_offset = 0.0
 
 [node name="Holo2" type="StaticBody2D" parent="."]
 position = Vector2(900, 240)
-script = ExtResource("7_l")
+script = ExtResource("13_l")
 phase_offset = 1.9
 
 [node name="SpawnGuard2" type="Marker2D" parent="."]
 position = Vector2(1280, 300)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("4_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("10_l")
 
 [node name="Sign2" type="Node2D" parent="."]
 position = Vector2(1250, 160)
-script = ExtResource("6_l")
+script = ExtResource("12_l")
 text = "간판을 밟고 위로"
 
 [node name="FakeWall1" type="StaticBody2D" parent="."]
 position = Vector2(1500, 72)
-script = ExtResource("8_l")
+script = ExtResource("14_l")
 secret_id = &"ch2_wire_room"
 size = Vector2(20, 228)
 
 [node name="Pickup_mono_wire" type="Area2D" parent="."]
 position = Vector2(1700, 300)
-script = ExtResource("9_l")
+script = ExtResource("15_l")
 kind = 1
 item_id = &"mono_wire"
 
 [node name="DataCache2" type="Node2D" parent="."]
 position = Vector2(1820, 300)
-script = ExtResource("5_l")
+script = ExtResource("11_l")
 data_amount = 60
 
 [node name="Relay2" type="Node2D" parent="."]
@@ -108,121 +135,121 @@ relay_id = &"ch2_mid"
 
 [node name="SurveillanceCamera1" type="Node2D" parent="."]
 position = Vector2(2300, 120)
-script = ExtResource("10_l")
-drone_scene = ExtResource("11_l")
+script = ExtResource("16_l")
+drone_scene = ExtResource("17_l")
 
 [node name="SurveillanceCamera2" type="Node2D" parent="."]
 position = Vector2(2900, 120)
-script = ExtResource("10_l")
-drone_scene = ExtResource("11_l")
+script = ExtResource("16_l")
+drone_scene = ExtResource("17_l")
 
 [node name="Sign3" type="Node2D" parent="."]
 position = Vector2(2600, 60)
-script = ExtResource("6_l")
+script = ExtResource("12_l")
 text = "감시 카메라 — I 로 잠시 끌 수 있다"
 
 [node name="SpawnGuard3" type="Marker2D" parent="."]
 position = Vector2(2460, 300)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("4_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("10_l")
 
 [node name="SpawnGuard4" type="Marker2D" parent="."]
 position = Vector2(2760, 300)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("4_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("10_l")
 
 [node name="SpawnRiot1" type="Marker2D" parent="."]
 position = Vector2(3060, 300)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("12_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("18_l")
 
 [node name="Pickup_overcharge_coil" type="Area2D" parent="."]
 position = Vector2(2660, 192)
-script = ExtResource("9_l")
+script = ExtResource("15_l")
 kind = 0
 item_id = &"overcharge_coil"
 
 [node name="DataCache3" type="Node2D" parent="."]
 position = Vector2(2500, 300)
-script = ExtResource("5_l")
+script = ExtResource("11_l")
 data_amount = 50
 
 [node name="DataCache4" type="Node2D" parent="."]
 position = Vector2(3000, 300)
-script = ExtResource("5_l")
+script = ExtResource("11_l")
 data_amount = 50
 
 [node name="Shutter1" type="StaticBody2D" parent="."]
 position = Vector2(3500, 300)
-script = ExtResource("13_l")
+script = ExtResource("19_l")
 secret_id = &"ch2_reflex_shutter"
 size = Vector2(60, 12)
 
 [node name="RailSwitch1" type="Node2D" parent="." node_paths=PackedStringArray("shutter")]
 position = Vector2(3390, 164)
-script = ExtResource("14_l")
+script = ExtResource("20_l")
 shutter = NodePath("../Shutter1")
 
 [node name="Pickup_reflex_net" type="Area2D" parent="."]
 position = Vector2(3610, 360)
-script = ExtResource("9_l")
+script = ExtResource("15_l")
 kind = 0
 item_id = &"reflex_net"
 
 [node name="DataCache5" type="Node2D" parent="."]
 position = Vector2(3465, 360)
-script = ExtResource("5_l")
+script = ExtResource("11_l")
 data_amount = 60
 
 [node name="SpawnWraith1" type="Marker2D" parent="."]
 position = Vector2(3950, 250)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("15_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("21_l")
 
 [node name="SpawnWraith2" type="Marker2D" parent="."]
 position = Vector2(4100, 240)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("15_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("21_l")
 
 [node name="Holo3" type="StaticBody2D" parent="."]
 position = Vector2(4260, 264)
-script = ExtResource("7_l")
+script = ExtResource("13_l")
 phase_offset = 0.0
 
 [node name="Holo4" type="StaticBody2D" parent="."]
 position = Vector2(4400, 236)
-script = ExtResource("7_l")
+script = ExtResource("13_l")
 phase_offset = 1.9
 
 [node name="Holo5" type="StaticBody2D" parent="."]
 position = Vector2(4540, 264)
-script = ExtResource("7_l")
+script = ExtResource("13_l")
 phase_offset = 0.0
 
 [node name="Pickup_cooling_fin" type="Area2D" parent="."]
 position = Vector2(4950, 300)
-script = ExtResource("9_l")
+script = ExtResource("15_l")
 kind = 0
 item_id = &"cooling_fin"
 
 [node name="SpawnDrone1" type="Marker2D" parent="."]
 position = Vector2(5000, 180)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("11_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("17_l")
 
 [node name="SpawnRiot2" type="Marker2D" parent="."]
 position = Vector2(5150, 300)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("12_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("18_l")
 
 [node name="SpawnGuard5" type="Marker2D" parent="."]
 position = Vector2(5300, 300)
-script = ExtResource("3_l")
-enemy_scene = ExtResource("4_l")
+script = ExtResource("9_l")
+enemy_scene = ExtResource("10_l")
 
 [node name="DataCache6" type="Node2D" parent="."]
 position = Vector2(4800, 300)
-script = ExtResource("5_l")
+script = ExtResource("11_l")
 data_amount = 50
 
 [node name="Relay3" type="Node2D" parent="."]
@@ -232,14 +259,14 @@ relay_id = &"ch2_boss"
 
 [node name="Sign4" type="Node2D" parent="."]
 position = Vector2(5480, 160)
-script = ExtResource("6_l")
+script = ExtResource("12_l")
 text = "중앙 광장 →
 「지금 바로! 영원을 만나세요!」"
 color = Color(1.0, 0.4, 0.8, 0.8)
 
 [node name="Exit" type="Area2D" parent="."]
 position = Vector2(5570, 300)
-script = ExtResource("16_l")
+script = ExtResource("22_l")
 target_scene = "res://game/bosses/miso/miso_arena.tscn"
 
 [node name="Deco1" type="ColorRect" parent="."]
@@ -287,7 +314,7 @@ offset_bottom = 150
 mouse_filter = 2
 color = Color(0.3, 1, 0.9, 0.3)
 
-[node name="Player" parent="." instance=ExtResource("17_l")]
+[node name="Player" parent="." instance=ExtResource("23_l")]
 unique_name_in_owner = true
 position = Vector2(60, 300)
 
@@ -296,21 +323,21 @@ limit_left = -20
 limit_top = -100
 limit_right = 5620
 limit_bottom = 420
-script = ExtResource("18_l")
+script = ExtResource("24_l")
 target = NodePath("../Player")
 
 [node name="CameraShake" type="Node" parent="Camera" node_paths=PackedStringArray("camera")]
-script = ExtResource("19_l")
+script = ExtResource("25_l")
 camera = NodePath("..")
 
 [node name="ScreenFlash" type="CanvasLayer" parent="."]
-script = ExtResource("20_l")
+script = ExtResource("26_l")
 
 [node name="Toast" type="CanvasLayer" parent="."]
-script = ExtResource("21_l")
+script = ExtResource("27_l")
 
 [node name="BodyMenu" type="CanvasLayer" parent="."]
-script = ExtResource("22_l")
+script = ExtResource("28_l")
 
 [node name="Hud" type="CanvasLayer" parent="."]
-script = ExtResource("23_l")
+script = ExtResource("29_l")

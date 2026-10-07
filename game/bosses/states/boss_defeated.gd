@@ -20,9 +20,9 @@ func enter() -> void:
 	HitStop.trigger(boss.get_tree(), boss.defeat_hitstop)
 	EventBus.screen_shake_requested.emit(boss.defeat_shake)
 	EventBus.screen_flash_requested.emit(Color(1, 1, 1, 0.6), 0.4)
-	for line: String in boss.defeat_lines.split("\n", false):
-		EventBus.toast_requested.emit(line)
 	boss.grant_rewards()
+	# 대사를 먼저 시작해서(게임이 멈춤) 아레나가 대사가 끝난 뒤에 다음으로 넘어가게 한다.
+	Story.play(boss.defeat_dialogue)
 	EventBus.boss_defeated.emit(boss.boss_id)
 
 

@@ -1,5 +1,6 @@
 [gd_scene format=3]
 
+[ext_resource type="Resource" path="res://data/dialogue/miso_defeat.tres" id="dlg_defeat"]
 [ext_resource type="Script" path="res://game/bosses/miso/miso_boss.gd" id="1_b"]
 [ext_resource type="Script" path="res://core/components/health_component.gd" id="2_b"]
 [ext_resource type="Script" path="res://core/components/stun_component.gd" id="3_b"]
@@ -49,9 +50,7 @@ max_hp = 750
 data_reward = 400
 reward_parts = Array[StringName]([&"data_intake"])
 reward_skills = Array[StringName]([])
-defeat_lines = "미소의 목소리가 수많은 사람의 목소리로 갈라진다.
-남은 데이터에서 ARK 설계 문서를 발견했다.
-설계자 서명: ROOT"
+defeat_dialogue = ExtResource("dlg_defeat")
 number_offset = Vector2(0, -90)
 
 [node name="Visual" type="Node2D" parent="."]

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "ROOT (과거)"
+text = "당장 멈춰, ARK!"
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "이건 과정일 뿐이에요. 완성되면 모두 행복해져요."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"mem_6"
+title = "다툼"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1")])

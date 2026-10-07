@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "한을 임원"
+text = "ARK의 운영권은 오늘부로 한을 그룹에 이전됩니다."
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ROOT (과거)"
+text = "ARK는 아직 실험 단계예요."
+
+[sub_resource type="Resource" id="Line_2"]
+script = ExtResource("2_dl")
+speaker = "한을 임원"
+text = "실험은 시장에서 하는 겁니다."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"mem_3"
+title = "인수"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1"), SubResource("Line_2")])

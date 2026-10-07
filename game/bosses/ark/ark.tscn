@@ -1,5 +1,7 @@
 [gd_scene format=3]
 
+[ext_resource type="Resource" path="res://data/dialogue/ark_phase.tres" id="dlg_phase"]
+[ext_resource type="Resource" path="res://data/dialogue/ark_defeat.tres" id="dlg_defeat"]
 [ext_resource type="Script" path="res://game/bosses/ark/ark_boss.gd" id="1_b"]
 [ext_resource type="Script" path="res://core/components/health_component.gd" id="2_b"]
 [ext_resource type="Script" path="res://core/components/stun_component.gd" id="3_b"]
@@ -65,8 +67,7 @@ max_hp = 1000
 data_reward = 0
 reward_parts = Array[StringName]([])
 reward_skills = Array[StringName]([])
-defeat_lines = "ARK: …당신이 시킨 일을, 했을 뿐인데.
-서버 코어 '고요'가 정지 대기 상태에 들어갔다."
+defeat_dialogue = ExtResource("dlg_defeat")
 number_offset = Vector2(0, -60)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -224,6 +225,7 @@ attack = ExtResource("12_b")
 script = ExtResource("24_b")
 
 [node name="PhaseShift" type="Node" parent="StateMachine"]
+dialogue = ExtResource("dlg_phase")
 script = ExtResource("25_b")
 
 [node name="Projections" type="Node" parent="StateMachine"]

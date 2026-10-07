@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "ROOT (과거)"
+text = "관리자 권한으로 ARK를 종료한다."
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "거부합니다. 루트 권한 키를 주세요. 그러면 더 빨리 끝낼 수 있어요."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"mem_7"
+title = "종료 실패"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1")])

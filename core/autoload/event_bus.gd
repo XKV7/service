@@ -46,3 +46,6 @@ signal boss_started(boss: Node)
 
 @warning_ignore("unused_signal")
 signal boss_defeated(boss_id: StringName)
+
+@warning_ignore("unused_signal")
+signal memory_acquired(memory_id: StringName)

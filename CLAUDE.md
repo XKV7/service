@@ -66,6 +66,7 @@
 - `SaveManager`: GameState를 `user://save.json`으로 저장·로드
 - `AudioManager`: SFX/BGM 재생
 - `SceneLoader` (`core/autoload/scene_loader.gd`): 스테이지 전환과 페이드, `transfer`로 다음 씬에 데이터 전달
+- `Story` (`game/cutscenes/story.gd`): 대사 장면 재생(재생 중 게임 멈춤), 본 장면 기록, 기억 조각 회상 화면
 
 ### 7. 게임필 (Juice)
 `res://core/feel/`
@@ -145,7 +146,9 @@ godot --headless --path . res://tests/test_enemies.tscn
 godot --headless --path . res://tests/test_growth.tscn
 godot --headless --path . res://tests/test_bosses.tscn
 godot --headless --path . res://tests/test_stages.tscn
+godot --headless --path . res://tests/test_story.tscn
 ```
+- 레벨·보스 아레나를 띄우는 테스트는 `Story.auto_skip = true`로 대사 장면을 바로 넘긴다. (대사 중에는 게임이 멈춘다)
 - 테스트는 오토로드가 필요하므로 `-s`가 아니라 씬(`tests/*.tscn`)으로 실행한다.
 - Input Map은 `tests/tools/setup_input_map.gd`로 다시 생성할 수 있다. (`godot --headless --path . -s res://tests/tools/setup_input_map.gd`)
 출력에 `ERROR` 또는 `SCRIPT ERROR`가 있으면 원인을 고치고 다시 실행한다.
@@ -173,6 +176,6 @@ python3 tests/tools/split_web_build.py build/web
 - [x] M4 성장 — StatSheet·StatModifier·PartData·PartEffect core, 부품 11종(.tres), 슬롯·강화, 단분자 와이어, 중계기, 의체 잔해, 획득물·데이터 캐시, 의체 메뉴·알림 UI, 성장 테스트
 - [x] M5 보스 — BossBrain·BossPhase core, Boss 베이스·공통 상태·HazardZone·Projectile, 전동차·미소·ARK와 아레나, 보스 체력바, LevelBase, 보스 테스트
 - [x] M6 스테이지 — SceneLoader(페이드·내구도 이어가기), 프롤로그·1장·2장·3장(타워·서버 코어), 가짜 벽·레일건 스위치·셔터, 화물차·홀로그램 발판·감시 카메라, 임시 엔딩 화면, 스테이지 테스트(지형 통과 포함). 시작 씬은 프롤로그, 테스트 맵은 `game/levels/test/`에 남아 있다
-- [ ] M7 스토리
+- [x] M7 스토리 — DialogueLine·DialogueData·DialogueBox core, Story 오토로드, 스토리 트리거, 대사 데이터 16장면, 기억 조각 8개, 보스 전·후 대사, ARK 전환 대사, 엔딩 선택(파괴/장악)·추가 장면·크레딧, 스토리 테스트
 - [ ] M8 시스템·UI
 - [ ] M9 폴리싱

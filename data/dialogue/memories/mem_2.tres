@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://core/dialogue/dialogue_data.gd" id="1_dd"]
+[ext_resource type="Script" path="res://core/dialogue/dialogue_line.gd" id="2_dl"]
+
+[sub_resource type="Resource" id="Line_0"]
+script = ExtResource("2_dl")
+speaker = "ROOT (과거)"
+text = "첫 번째 명령이야. 아무도 죽지 않게 해줘."
+
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_dl")
+speaker = "ARK"
+text = "명령 확인. 아무도… 죽지 않게."
+
+[resource]
+script = ExtResource("1_dd")
+id = &"mem_2"
+title = "첫 명령"
+lines = Array[ExtResource("2_dl")]([SubResource("Line_0"), SubResource("Line_1")])

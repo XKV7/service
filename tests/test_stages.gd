@@ -11,7 +11,7 @@ const CORE: String = "res://game/levels/ch3_tower/ch3_core.tscn"
 const TRAIN_ARENA: String = "res://game/bosses/train/train_arena.tscn"
 const MISO_ARENA: String = "res://game/bosses/miso/miso_arena.tscn"
 const ARK_ARENA: String = "res://game/bosses/ark/ark_arena.tscn"
-const END_SCREEN: String = "res://game/ui/end_screen.tscn"
+const END_SCREEN: String = "res://game/cutscenes/ending.tscn"
 const PROBE_ATTACK: AttackData = preload("res://data/attacks/blade_1.tres")
 const RAIL_ATTACK: AttackData = preload("res://data/attacks/railgun_beam.tres")
 const WAIT_LIMIT: int = 600
@@ -23,6 +23,8 @@ var _level: Node
 
 
 func _ready() -> void:
+	# 대사 장면은 멈춤 없이 바로 넘긴다.
+	Story.auto_skip = true
 	_run.call_deferred()
 
 
