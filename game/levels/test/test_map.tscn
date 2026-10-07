@@ -24,6 +24,7 @@
 [ext_resource type="Script" path="res://game/objects/data_cache.gd" id="r_cache"]
 [ext_resource type="Script" path="res://game/ui/toast.gd" id="r_toast"]
 [ext_resource type="Script" path="res://game/ui/body_menu.gd" id="r_menu"]
+[ext_resource type="Script" path="res://game/objects/scene_gate.gd" id="r_gate"]
 
 [node name="TestMap" type="Node2D"]
 script = ExtResource("1_m")
@@ -60,7 +61,7 @@ script = ExtResource("5_m")
 position = Vector2(380, 300)
 
 [node name="SandbagHologram" parent="." instance=ExtResource("6_m")]
-position = Vector2(720, 300)
+position = Vector2(790, 300)
 hologram = true
 
 [node name="SandbagFloatLow" parent="." instance=ExtResource("6_m")]
@@ -268,6 +269,24 @@ script = ExtResource("r_toast")
 
 [node name="BodyMenu" type="CanvasLayer" parent="."]
 script = ExtResource("r_menu")
+
+[node name="GateTrain" type="Node2D" parent="."]
+position = Vector2(610, 300)
+script = ExtResource("r_gate")
+target_scene = "res://game/bosses/train/train_arena.tscn"
+prompt = "W 보스1 전동차"
+
+[node name="GateMiso" type="Node2D" parent="."]
+position = Vector2(660, 300)
+script = ExtResource("r_gate")
+target_scene = "res://game/bosses/miso/miso_arena.tscn"
+prompt = "W 보스2 미소"
+
+[node name="GateArk" type="Node2D" parent="."]
+position = Vector2(710, 300)
+script = ExtResource("r_gate")
+target_scene = "res://game/bosses/ark/ark_arena.tscn"
+prompt = "W 보스3 ARK"
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

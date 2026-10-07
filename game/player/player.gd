@@ -23,6 +23,7 @@ const STAT_HACK_REACH: StringName = &"hack_reach"
 const STAT_KNOCKBACK_TAKEN_MULT: StringName = &"knockback_taken_mult"
 const STAT_HURT_TIME_MULT: StringName = &"hurt_time_mult"
 const STAT_DATA_GAIN_MULT: StringName = &"data_gain_mult"
+const STAT_MOVE_SPEED_MULT: StringName = &"move_speed_mult"
 const SKILL_RAILGUN: StringName = &"railgun"
 const SKILL_HACK: StringName = &"hack"
 
@@ -47,6 +48,8 @@ var _air_dashes_left: int = 0
 var _blink_left: float = 0.0
 var _safe_sample_timer: float = 0.0
 var _safe_history: Array[Vector2] = []
+## 시간 제한이 있는 수정값 출처 -> 남은 시간 (역해킹 감속 등)
+var _timed_sources: Dictionary = {}
 
 @onready var state_machine: StateMachine = %StateMachine
 @onready var visual: Node2D = %Visual
@@ -81,6 +84,7 @@ func _physics_process(delta: float) -> void:
 	_dash_cooldown_timer = maxf(_dash_cooldown_timer - delta, 0.0)
 
 	_blink_left = maxf(_blink_left - delta, 0.0)
+	_tick_timed_sources(delta)
 	if is_on_floor():
 		_coyote_timer = movement.coyote_time
 		_air_dashes_left = movement.air_dash_count
@@ -154,7 +158,7 @@ func consume_attack() -> bool:
 ## 입력 방향으로 가속/감속한다. speed_scale은 레일건 충전 등 감속에 사용한다.
 func apply_horizontal(delta: float, control: float = 1.0, speed_scale: float = 1.0) -> void:
 	var dir: float = get_input_direction()
-	var target_speed: float = dir * movement.move_speed * speed_scale
+	var target_speed: float = dir * movement.move_speed * speed_scale * stats.get_value(STAT_MOVE_SPEED_MULT)
 	var rate: float
 	if is_zero_approx(dir):
 		rate = movement.move_speed / movement.decel_time
@@ -335,6 +339,9 @@ func revive() -> void:
 	velocity = Vector2.ZERO
 	health.reset()
 	_safe_history.clear()
+	for source: StringName in _timed_sources.keys():
+		stats.remove_source(source)
+	_timed_sources.clear()
 	_blink_left = 0.0
 	visual.modulate = Color.WHITE
 	state_machine.transition_to(&"Idle")
@@ -357,8 +364,27 @@ func _init_stats() -> void:
 	stats.set_base(STAT_KNOCKBACK_TAKEN_MULT, 1.0)
 	stats.set_base(STAT_HURT_TIME_MULT, 1.0)
 	stats.set_base(STAT_DATA_GAIN_MULT, 1.0)
+	stats.set_base(STAT_MOVE_SPEED_MULT, 1.0)
 	stats.stats_changed.connect(_apply_stats)
 	_apply_stats()
+
+
+## duration초 동안만 유지되는 수정값을 건다. 같은 출처를 다시 걸면 시간이 갱신된다.
+func add_timed_modifier(source: StringName, modifiers: Array, duration: float) -> void:
+	stats.set_source(source, modifiers)
+	_timed_sources[source] = duration
+
+
+func has_timed_modifier(source: StringName) -> bool:
+	return _timed_sources.has(source)
+
+
+func _tick_timed_sources(delta: float) -> void:
+	for source: StringName in _timed_sources.keys():
+		_timed_sources[source] -= delta
+		if _timed_sources[source] <= 0.0:
+			_timed_sources.erase(source)
+			stats.remove_source(source)
 
 
 ## 스탯을 각 컴포넌트에 반영한다.

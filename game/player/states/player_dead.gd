@@ -8,7 +8,8 @@ func enter() -> void:
 	_time = 0.0
 	player.hitbox.deactivate()
 	player.pending_safe_return = false
-	GameState.create_wreck(player.get_wreck_position())
+	var scene: Node = player.get_tree().current_scene
+	GameState.create_wreck(player.get_wreck_position(), scene.scene_file_path if scene else "")
 	EventBus.player_died.emit()
 
 

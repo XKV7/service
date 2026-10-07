@@ -39,3 +39,10 @@ signal toast_requested(text: String)
 ## 의체 메뉴 열기 요청. editable이면 장착·강화를 바꿀 수 있다. (중계기)
 @warning_ignore("unused_signal")
 signal body_menu_requested(editable: bool)
+
+## 보스전 시작 (boss는 Boss 노드)
+@warning_ignore("unused_signal")
+signal boss_started(boss: Node)
+
+@warning_ignore("unused_signal")
+signal boss_defeated(boss_id: StringName)

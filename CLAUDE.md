@@ -143,6 +143,7 @@ godot --headless --path . res://tests/test_player_movement.tscn
 godot --headless --path . res://tests/test_combat.tscn
 godot --headless --path . res://tests/test_enemies.tscn
 godot --headless --path . res://tests/test_growth.tscn
+godot --headless --path . res://tests/test_bosses.tscn
 ```
 - 테스트는 오토로드가 필요하므로 `-s`가 아니라 씬(`tests/*.tscn`)으로 실행한다.
 - Input Map은 `tests/tools/setup_input_map.gd`로 다시 생성할 수 있다. (`godot --headless --path . -s res://tests/tools/setup_input_map.gd`)
@@ -169,7 +170,7 @@ python3 tests/tools/split_web_build.py build/web
 - [x] M2 전투 — 전투 컴포넌트 core, 블레이드 3타·아래 찍기·레일건·시스템 정지, 히트스톱·흔들림·섬광·피격 플래시, 샌드백, 전투 테스트 (플레이어 Hurt/Dead는 M3에서)
 - [x] M3 적·함정 — Enemy 베이스와 공통 상태, 적 6종, 함정 3종, 데이터 드랍(GameState), 플레이어 피격·사망·재접속, 안전 지점, 적·함정 테스트
 - [x] M4 성장 — StatSheet·StatModifier·PartData·PartEffect core, 부품 11종(.tres), 슬롯·강화, 단분자 와이어, 중계기, 의체 잔해, 획득물·데이터 캐시, 의체 메뉴·알림 UI, 성장 테스트
-- [ ] M5 보스
+- [x] M5 보스 — BossBrain·BossPhase core, Boss 베이스·공통 상태·HazardZone·Projectile, 전동차·미소·ARK와 아레나, 보스 체력바, LevelBase, 보스 테스트
 - [ ] M6 스테이지
 - [ ] M7 스토리
 - [ ] M8 시스템·UI

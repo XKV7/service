@@ -23,8 +23,9 @@ var equipped_weapon: StringName = DEFAULT_WEAPON
 var skills: Dictionary = {}
 var activated_relays: Array[StringName] = []
 var last_relay: StringName = &""
-## 의체 잔해 {"position": Vector2, "data": int}. 없으면 비어 있다.
+## 의체 잔해 {"position": Vector2, "data": int, "scene": String}. 없으면 비어 있다.
 var wreck: Dictionary = {}
+var defeated_bosses: Array[StringName] = []
 
 
 ## 새 게임 상태로 되돌린다. (테스트, 새 게임)
@@ -38,6 +39,7 @@ func reset() -> void:
 	activated_relays.clear()
 	last_relay = &""
 	wreck.clear()
+	defeated_bosses.clear()
 	data_changed.emit(data)
 	loadout_changed.emit()
 	wreck_changed.emit()
@@ -179,12 +181,12 @@ func activate_relay(id: StringName) -> bool:
 
 ## 파괴된 위치에 잔해를 남기고 들고 있던 데이터를 모두 옮긴다.
 ## 회수하지 못한 이전 잔해와 데이터는 사라진다. 들고 있던 데이터가 없으면 잔해도 남지 않는다.
-func create_wreck(pos: Vector2) -> void:
+func create_wreck(pos: Vector2, scene_path: String = "") -> void:
 	if data <= 0:
 		wreck.clear()
 		wreck_changed.emit()
 		return
-	wreck = {"position": pos, "data": data}
+	wreck = {"position": pos, "data": data, "scene": scene_path}
 	data = 0
 	data_changed.emit(data)
 	wreck_changed.emit()
@@ -203,3 +205,14 @@ func recover_wreck() -> int:
 	add_data(amount)
 	wreck_changed.emit()
 	return amount
+
+
+# --- 보스 ---
+
+func defeat_boss(id: StringName) -> void:
+	if not id in defeated_bosses:
+		defeated_bosses.append(id)
+
+
+func is_boss_defeated(id: StringName) -> bool:
+	return id in defeated_bosses

@@ -1,0 +1,187 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/bosses/train/train_boss.gd" id="1_b"]
+[ext_resource type="Script" path="res://core/components/health_component.gd" id="2_b"]
+[ext_resource type="Script" path="res://core/components/stun_component.gd" id="3_b"]
+[ext_resource type="Script" path="res://core/feel/hit_flash.gd" id="4_b"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="5_b"]
+[ext_resource type="Script" path="res://core/components/hitbox_component.gd" id="6_b"]
+[ext_resource type="Resource" path="res://data/attacks/train_rush.tres" id="7_b"]
+[ext_resource type="Resource" path="res://data/attacks/train_claw.tres" id="8_b"]
+[ext_resource type="Resource" path="res://data/attacks/train_shock.tres" id="9_b"]
+[ext_resource type="Resource" path="res://data/attacks/train_spark.tres" id="10_b"]
+[ext_resource type="Script" path="res://core/components/boss_brain.gd" id="11_b"]
+[ext_resource type="Script" path="res://core/components/boss_phase.gd" id="12_b"]
+[ext_resource type="Script" path="res://core/state_machine/state_machine.gd" id="13_b"]
+[ext_resource type="Script" path="res://game/bosses/states/boss_dormant.gd" id="14_b"]
+[ext_resource type="Script" path="res://game/bosses/states/boss_idle.gd" id="15_b"]
+[ext_resource type="Script" path="res://game/bosses/train/train_rush.gd" id="16_b"]
+[ext_resource type="Script" path="res://game/bosses/train/train_claw.gd" id="17_b"]
+[ext_resource type="Script" path="res://game/bosses/train/train_shock.gd" id="18_b"]
+[ext_resource type="Script" path="res://game/bosses/train/train_sparks.gd" id="19_b"]
+[ext_resource type="Script" path="res://game/bosses/states/boss_stunned.gd" id="20_b"]
+[ext_resource type="Script" path="res://game/bosses/states/boss_defeated.gd" id="21_b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0"]
+size = Vector2(196, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(26, 26)
+
+[sub_resource type="Resource" id="Resource_2"]
+script = ExtResource("12_b")
+hp_ratio = 1.0
+patterns = Array[StringName]([&"Rush", &"Claw", &"Shock"])
+weights = Array[float]([1.2, 1.0, 1.0])
+idle_time = 1.2
+
+[sub_resource type="Resource" id="Resource_3"]
+script = ExtResource("12_b")
+hp_ratio = 0.5
+patterns = Array[StringName]([&"Rush", &"Claw", &"Sparks", &"Shock"])
+weights = Array[float]([1.2, 1.0, 1.2, 0.8])
+idle_time = 0.9
+
+[node name="Train" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_b")
+boss_id = &"train"
+display_name = "폭주한 전동차"
+max_hp = 600
+data_reward = 300
+reward_parts = Array[StringName]([&"compute_amp"])
+reward_skills = Array[StringName]([&"hack"])
+defeat_lines = "전동차가 멈췄다.
+스피커: 「여기가… 천국인가요?」"
+number_offset = Vector2(0, -70)
+facing = -1.0
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Part0" type="ColorRect" parent="Visual"]
+offset_left = -100
+offset_top = -52
+offset_right = 100
+offset_bottom = 0
+mouse_filter = 2
+color = Color(0.5, 0.55, 0.65, 1)
+
+[node name="Part1" type="ColorRect" parent="Visual"]
+offset_left = -92
+offset_top = -44
+offset_right = 66
+offset_bottom = -30
+mouse_filter = 2
+color = Color(0.12, 0.14, 0.2, 1)
+
+[node name="Part2" type="ColorRect" parent="Visual"]
+offset_left = -100
+offset_top = -14
+offset_right = 100
+offset_bottom = -10
+mouse_filter = 2
+color = Color(0.9, 0.75, 0.3, 1)
+
+[node name="Part3" type="ColorRect" parent="Visual"]
+offset_left = 92
+offset_top = -42
+offset_right = 100
+offset_bottom = -30
+mouse_filter = 2
+color = Color(1, 0.95, 0.6, 1)
+
+[node name="CoreRect" type="ColorRect" parent="Visual"]
+unique_name_in_owner = true
+offset_left = 73
+offset_top = -41
+offset_right = 99
+offset_bottom = -15
+mouse_filter = 2
+color = Color(0.3, 0.1, 0.15, 1)
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_b")
+
+[node name="Stun" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_b")
+max_duration = 0.5
+
+[node name="HitFlash" type="Node" parent="." node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("4_b")
+target = NodePath("../Visual")
+
+[node name="BodyHurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health", "stun")]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("5_b")
+health = NodePath("../Health")
+stun = NodePath("../Stun")
+position = Vector2(0, -26)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyHurtbox"]
+shape = SubResource("RectangleShape2D_0")
+
+[node name="CoreHurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health", "stun")]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("5_b")
+health = NodePath("../Health")
+stun = NodePath("../Stun")
+position = Vector2(86, -28)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CoreHurtbox"]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="RushHitbox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("6_b")
+draw_color = Color(0, 0, 0, 0)
+
+[node name="Brain" type="Node" parent="." node_paths=PackedStringArray("health")]
+unique_name_in_owner = true
+script = ExtResource("11_b")
+phases = Array[ExtResource("12_b")]([SubResource("Resource_2"), SubResource("Resource_3")])
+health = NodePath("../Health")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("13_b")
+initial_state = NodePath("Dormant")
+
+[node name="Dormant" type="Node" parent="StateMachine"]
+script = ExtResource("14_b")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+face_target = false
+script = ExtResource("15_b")
+
+[node name="Rush" type="Node" parent="StateMachine"]
+script = ExtResource("16_b")
+attack = ExtResource("7_b")
+
+[node name="Claw" type="Node" parent="StateMachine"]
+script = ExtResource("17_b")
+attack = ExtResource("8_b")
+
+[node name="Shock" type="Node" parent="StateMachine"]
+script = ExtResource("18_b")
+attack = ExtResource("9_b")
+
+[node name="Sparks" type="Node" parent="StateMachine"]
+script = ExtResource("19_b")
+attack = ExtResource("10_b")
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("20_b")
+
+[node name="Defeated" type="Node" parent="StateMachine"]
+script = ExtResource("21_b")

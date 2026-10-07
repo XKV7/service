@@ -19,6 +19,11 @@ static func sync(parent: Node) -> void:
 		node.queue_free()
 	if not GameState.has_wreck():
 		return
+	# 다른 레벨에서 남긴 잔해는 이 레벨에 만들지 않는다.
+	var scene_path: String = GameState.wreck.get("scene", "")
+	var current: Node = parent.get_tree().current_scene
+	if scene_path != "" and current and current.scene_file_path != scene_path:
+		return
 	var wreck := BodyWreck.new()
 	parent.add_child(wreck)
 	wreck.global_position = GameState.wreck["position"]

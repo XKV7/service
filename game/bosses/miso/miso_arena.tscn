@@ -1,0 +1,88 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/levels/boss_arena.gd" id="1_b"]
+[ext_resource type="Script" path="res://game/bosses/miso/miso_projector.gd" id="2_b"]
+[ext_resource type="Script" path="res://game/objects/relay.gd" id="3_b"]
+[ext_resource type="Script" path="res://game/objects/scene_gate.gd" id="4_b"]
+[ext_resource type="PackedScene" path="res://game/bosses/miso/miso.tscn" id="5_b"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="6_b"]
+[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="7_b"]
+[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="8_b"]
+[ext_resource type="Script" path="res://game/ui/toast.gd" id="9_b"]
+[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="10_b"]
+[ext_resource type="Script" path="res://game/ui/boss_bar.gd" id="11_b"]
+[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="12_b"]
+
+[node name="Arena" type="Node2D" node_paths=PackedStringArray("boss", "exit_gate")]
+script = ExtResource("1_b")
+platforms = Array[Rect2]([Rect2(-20, 320, 680, 100), Rect2(-20, -200, 20, 520), Rect2(640, -200, 20, 520), Rect2(30, 256, 120, 12), Rect2(490, 256, 120, 12), Rect2(240, 192, 160, 12)])
+boss = NodePath("Boss")
+exit_gate = NodePath("ExitGate")
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Fill" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.03, 0.03, 0.08, 1)
+
+[node name="ProjectorLeftLow" type="Node2D" parent="."]
+position = Vector2(12, 228)
+script = ExtResource("2_b")
+
+[node name="ProjectorRightLow" type="Node2D" parent="."]
+position = Vector2(628, 228)
+script = ExtResource("2_b")
+
+[node name="ProjectorLeftHigh" type="Node2D" parent="."]
+position = Vector2(12, 164)
+script = ExtResource("2_b")
+
+[node name="ProjectorRightHigh" type="Node2D" parent="."]
+position = Vector2(628, 164)
+script = ExtResource("2_b")
+
+[node name="Relay" type="Node2D" parent="."]
+position = Vector2(24, 320)
+script = ExtResource("3_b")
+relay_id = &"boss_miso"
+
+[node name="ExitGate" type="Node2D" parent="."]
+position = Vector2(56, 320)
+script = ExtResource("4_b")
+target_scene = "res://game/levels/test/test_map.tscn"
+prompt = "W 나가기"
+
+[node name="Boss" parent="." instance=ExtResource("5_b")]
+position = Vector2(320, 120)
+
+[node name="Player" parent="." instance=ExtResource("6_b")]
+unique_name_in_owner = true
+position = Vector2(90, 320)
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(320, 180)
+
+[node name="CameraShake" type="Node" parent="Camera" node_paths=PackedStringArray("camera")]
+script = ExtResource("7_b")
+camera = NodePath("..")
+
+[node name="ScreenFlash" type="CanvasLayer" parent="."]
+script = ExtResource("8_b")
+
+[node name="Toast" type="CanvasLayer" parent="."]
+script = ExtResource("9_b")
+
+[node name="BodyMenu" type="CanvasLayer" parent="."]
+script = ExtResource("10_b")
+
+[node name="BossBar" type="CanvasLayer" parent="."]
+script = ExtResource("11_b")
+
+[node name="Hud" type="CanvasLayer" parent="."]
+script = ExtResource("12_b")

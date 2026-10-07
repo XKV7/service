@@ -1,0 +1,166 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/bosses/miso/miso_boss.gd" id="1_b"]
+[ext_resource type="Script" path="res://core/components/health_component.gd" id="2_b"]
+[ext_resource type="Script" path="res://core/components/stun_component.gd" id="3_b"]
+[ext_resource type="Script" path="res://core/feel/hit_flash.gd" id="4_b"]
+[ext_resource type="Script" path="res://core/components/hurtbox_component.gd" id="5_b"]
+[ext_resource type="Resource" path="res://data/attacks/miso_beam.tres" id="6_b"]
+[ext_resource type="Resource" path="res://data/attacks/miso_popup_shot.tres" id="7_b"]
+[ext_resource type="Resource" path="res://data/attacks/miso_bomb.tres" id="8_b"]
+[ext_resource type="PackedScene" path="res://game/enemies/wraith/wraith.tscn" id="9_b"]
+[ext_resource type="Script" path="res://core/components/boss_brain.gd" id="10_b"]
+[ext_resource type="Script" path="res://core/components/boss_phase.gd" id="11_b"]
+[ext_resource type="Script" path="res://core/state_machine/state_machine.gd" id="12_b"]
+[ext_resource type="Script" path="res://game/bosses/states/boss_dormant.gd" id="13_b"]
+[ext_resource type="Script" path="res://game/bosses/states/boss_idle.gd" id="14_b"]
+[ext_resource type="Script" path="res://game/bosses/miso/miso_beam.gd" id="15_b"]
+[ext_resource type="Script" path="res://game/bosses/miso/miso_popup.gd" id="16_b"]
+[ext_resource type="Script" path="res://game/bosses/miso/miso_bomb.gd" id="17_b"]
+[ext_resource type="Script" path="res://game/bosses/miso/miso_summon.gd" id="18_b"]
+[ext_resource type="Script" path="res://game/bosses/miso/miso_vulnerable.gd" id="19_b"]
+[ext_resource type="Script" path="res://game/bosses/states/boss_stunned.gd" id="20_b"]
+[ext_resource type="Script" path="res://game/bosses/states/boss_defeated.gd" id="21_b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0"]
+size = Vector2(200, 150)
+
+[sub_resource type="Resource" id="Resource_1"]
+script = ExtResource("11_b")
+hp_ratio = 1.0
+patterns = Array[StringName]([&"Beam", &"Popup", &"Bomb"])
+weights = Array[float]([1.0, 1.0, 1.0])
+idle_time = 1.4
+
+[sub_resource type="Resource" id="Resource_2"]
+script = ExtResource("11_b")
+hp_ratio = 0.5
+patterns = Array[StringName]([&"Beam", &"Popup", &"Bomb", &"Summon"])
+weights = Array[float]([1.0, 1.0, 1.0, 0.8])
+idle_time = 1.0
+
+[node name="Miso" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_b")
+boss_id = &"miso"
+display_name = "광고 AI 미소"
+max_hp = 750
+data_reward = 400
+reward_parts = Array[StringName]([&"data_intake"])
+reward_skills = Array[StringName]([])
+defeat_lines = "미소의 목소리가 수많은 사람의 목소리로 갈라진다.
+남은 데이터에서 ARK 설계 문서를 발견했다.
+설계자 서명: ROOT"
+number_offset = Vector2(0, -90)
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Part0" type="ColorRect" parent="Visual"]
+offset_left = -90
+offset_top = -65
+offset_right = 90
+offset_bottom = 65
+mouse_filter = 2
+color = Color(1, 0.55, 0.75, 0.55)
+
+[node name="Part1" type="ColorRect" parent="Visual"]
+offset_left = -45
+offset_top = -25
+offset_right = -25
+offset_bottom = -12
+mouse_filter = 2
+color = Color(1, 1, 1, 0.9)
+
+[node name="Part2" type="ColorRect" parent="Visual"]
+offset_left = 25
+offset_top = -25
+offset_right = 45
+offset_bottom = -12
+mouse_filter = 2
+color = Color(1, 1, 1, 0.9)
+
+[node name="Part3" type="ColorRect" parent="Visual"]
+offset_left = -35
+offset_top = 15
+offset_right = 35
+offset_bottom = 25
+mouse_filter = 2
+color = Color(1, 0.3, 0.6, 0.9)
+
+[node name="Crack" type="ColorRect" parent="Visual"]
+unique_name_in_owner = true
+offset_left = -4
+offset_top = -65
+offset_right = 4
+offset_bottom = 65
+mouse_filter = 2
+color = Color(0.1, 0.05, 0.1, 1)
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_b")
+
+[node name="Stun" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_b")
+max_duration = 0.5
+
+[node name="HitFlash" type="Node" parent="." node_paths=PackedStringArray("target")]
+unique_name_in_owner = true
+script = ExtResource("4_b")
+target = NodePath("../Visual")
+
+[node name="BodyHurtbox" type="Area2D" parent="." node_paths=PackedStringArray("health", "stun")]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("5_b")
+health = NodePath("../Health")
+stun = NodePath("../Stun")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyHurtbox"]
+shape = SubResource("RectangleShape2D_0")
+
+[node name="Brain" type="Node" parent="." node_paths=PackedStringArray("health")]
+unique_name_in_owner = true
+script = ExtResource("10_b")
+phases = Array[ExtResource("11_b")]([SubResource("Resource_1"), SubResource("Resource_2")])
+health = NodePath("../Health")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("12_b")
+initial_state = NodePath("Dormant")
+
+[node name="Dormant" type="Node" parent="StateMachine"]
+script = ExtResource("13_b")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("14_b")
+
+[node name="Beam" type="Node" parent="StateMachine"]
+script = ExtResource("15_b")
+attack = ExtResource("6_b")
+
+[node name="Popup" type="Node" parent="StateMachine"]
+script = ExtResource("16_b")
+attack = ExtResource("7_b")
+
+[node name="Bomb" type="Node" parent="StateMachine"]
+script = ExtResource("17_b")
+attack = ExtResource("8_b")
+
+[node name="Summon" type="Node" parent="StateMachine"]
+script = ExtResource("18_b")
+enemy_scene = ExtResource("9_b")
+
+[node name="Vulnerable" type="Node" parent="StateMachine"]
+script = ExtResource("19_b")
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("20_b")
+
+[node name="Defeated" type="Node" parent="StateMachine"]
+script = ExtResource("21_b")
