@@ -55,7 +55,7 @@ relay_id = &"boss_miso"
 [node name="ExitGate" type="Node2D" parent="."]
 position = Vector2(56, 320)
 script = ExtResource("4_b")
-target_scene = "res://game/levels/test/test_map.tscn"
+target_scene = "res://game/levels/ch3_tower/ch3_tower.tscn"
 prompt = "W 나가기"
 
 [node name="Boss" parent="." instance=ExtResource("5_b")]

@@ -65,7 +65,7 @@
 - `GameState` (`game/game_state.gd`, 게임 전용이라 game/에 둔다): 현재 지역, 중계기, 보유·장착 부품과 레벨, 무기, 스킬 해금, 데이터, 의체 잔해, 기억 조각, 열린 숨겨진 공간, 본 컷신, 플레이 시간
 - `SaveManager`: GameState를 `user://save.json`으로 저장·로드
 - `AudioManager`: SFX/BGM 재생
-- `SceneLoader`: 스테이지 전환과 페이드
+- `SceneLoader` (`core/autoload/scene_loader.gd`): 스테이지 전환과 페이드, `transfer`로 다음 씬에 데이터 전달
 
 ### 7. 게임필 (Juice)
 `res://core/feel/`
@@ -144,6 +144,7 @@ godot --headless --path . res://tests/test_combat.tscn
 godot --headless --path . res://tests/test_enemies.tscn
 godot --headless --path . res://tests/test_growth.tscn
 godot --headless --path . res://tests/test_bosses.tscn
+godot --headless --path . res://tests/test_stages.tscn
 ```
 - 테스트는 오토로드가 필요하므로 `-s`가 아니라 씬(`tests/*.tscn`)으로 실행한다.
 - Input Map은 `tests/tools/setup_input_map.gd`로 다시 생성할 수 있다. (`godot --headless --path . -s res://tests/tools/setup_input_map.gd`)
@@ -171,7 +172,7 @@ python3 tests/tools/split_web_build.py build/web
 - [x] M3 적·함정 — Enemy 베이스와 공통 상태, 적 6종, 함정 3종, 데이터 드랍(GameState), 플레이어 피격·사망·재접속, 안전 지점, 적·함정 테스트
 - [x] M4 성장 — StatSheet·StatModifier·PartData·PartEffect core, 부품 11종(.tres), 슬롯·강화, 단분자 와이어, 중계기, 의체 잔해, 획득물·데이터 캐시, 의체 메뉴·알림 UI, 성장 테스트
 - [x] M5 보스 — BossBrain·BossPhase core, Boss 베이스·공통 상태·HazardZone·Projectile, 전동차·미소·ARK와 아레나, 보스 체력바, LevelBase, 보스 테스트
-- [ ] M6 스테이지
+- [x] M6 스테이지 — SceneLoader(페이드·내구도 이어가기), 프롤로그·1장·2장·3장(타워·서버 코어), 가짜 벽·레일건 스위치·셔터, 화물차·홀로그램 발판·감시 카메라, 임시 엔딩 화면, 스테이지 테스트(지형 통과 포함). 시작 씬은 프롤로그, 테스트 맵은 `game/levels/test/`에 남아 있다
 - [ ] M7 스토리
 - [ ] M8 시스템·UI
 - [ ] M9 폴리싱

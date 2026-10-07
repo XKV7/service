@@ -26,6 +26,10 @@ var last_relay: StringName = &""
 ## 의체 잔해 {"position": Vector2, "data": int, "scene": String}. 없으면 비어 있다.
 var wreck: Dictionary = {}
 var defeated_bosses: Array[StringName] = []
+## 열어 둔 숨겨진 공간·가짜 벽·셔터 id
+var opened_secrets: Array[StringName] = []
+## 지금 있는 레벨 씬 경로 (세이브용)
+var current_scene: String = ""
 
 
 ## 새 게임 상태로 되돌린다. (테스트, 새 게임)
@@ -40,6 +44,8 @@ func reset() -> void:
 	last_relay = &""
 	wreck.clear()
 	defeated_bosses.clear()
+	opened_secrets.clear()
+	current_scene = ""
 	data_changed.emit(data)
 	loadout_changed.emit()
 	wreck_changed.emit()
@@ -216,3 +222,14 @@ func defeat_boss(id: StringName) -> void:
 
 func is_boss_defeated(id: StringName) -> bool:
 	return id in defeated_bosses
+
+
+# --- 숨겨진 공간 ---
+
+func open_secret(id: StringName) -> void:
+	if id != &"" and not id in opened_secrets:
+		opened_secrets.append(id)
+
+
+func is_secret_open(id: StringName) -> bool:
+	return id in opened_secrets

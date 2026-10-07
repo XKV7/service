@@ -1,0 +1,284 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/levels/level_base.gd" id="1_l"]
+[ext_resource type="Script" path="res://game/objects/fake_wall.gd" id="2_l"]
+[ext_resource type="Script" path="res://game/objects/item_pickup.gd" id="3_l"]
+[ext_resource type="Script" path="res://game/objects/data_cache.gd" id="4_l"]
+[ext_resource type="Script" path="res://game/objects/relay.gd" id="5_l"]
+[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="6_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="7_l"]
+[ext_resource type="Script" path="res://game/traps/electric_rail.gd" id="8_l"]
+[ext_resource type="Resource" path="res://data/attacks/trap_shock.tres" id="9_l"]
+[ext_resource type="Script" path="res://game/objects/sign_text.gd" id="10_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/drone/drone.tscn" id="11_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/crawler/crawler.tscn" id="12_l"]
+[ext_resource type="Script" path="res://game/traps/cargo_train.gd" id="13_l"]
+[ext_resource type="Resource" path="res://data/attacks/cargo_train.tres" id="14_l"]
+[ext_resource type="Script" path="res://game/objects/stage_exit.gd" id="15_l"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="16_l"]
+[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="17_l"]
+[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="18_l"]
+[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="19_l"]
+[ext_resource type="Script" path="res://game/ui/toast.gd" id="20_l"]
+[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="21_l"]
+[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="22_l"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_l")
+platforms = Array[Rect2]([Rect2(-260, -200, 20, 500), Rect2(-240, 300, 1940, 200), Rect2(730, 244, 140, 12), Rect2(1820, 300, 180, 200), Rect2(2200, 300, 1000, 200), Rect2(2800, 236, 120, 12), Rect2(3200, 300, 1600, 200), Rect2(3200, 100, 1600, 40), Rect2(3450, 236, 80, 12), Rect2(3800, 236, 80, 12), Rect2(4150, 236, 80, 12), Rect2(4500, 236, 80, 12), Rect2(4800, 300, 1200, 200), Rect2(6000, -200, 20, 500)])
+platform_color = Color(0.13, 0.14, 0.18, 1)
+platform_edge_color = Color(0.95, 0.75, 0.25, 1)
+title = "1장. 폐선 지하철"
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Fill" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.02, 0.03, 0.05, 1)
+
+[node name="FakeWall1" type="StaticBody2D" parent="."]
+position = Vector2(-20, 100)
+script = ExtResource("2_l")
+secret_id = &"ch1_slot_room"
+size = Vector2(20, 200)
+
+[node name="Pickup_slot_module" type="Area2D" parent="."]
+position = Vector2(-140, 300)
+script = ExtResource("3_l")
+kind = 0
+item_id = &"slot_module"
+
+[node name="DataCache1" type="Node2D" parent="."]
+position = Vector2(-200, 300)
+script = ExtResource("4_l")
+data_amount = 40
+
+[node name="Relay1" type="Node2D" parent="."]
+position = Vector2(100, 300)
+script = ExtResource("5_l")
+relay_id = &"ch1_start"
+
+[node name="SpawnGuard1" type="Marker2D" parent="."]
+position = Vector2(500, 300)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("7_l")
+
+[node name="DataCache2" type="Node2D" parent="."]
+position = Vector2(620, 300)
+script = ExtResource("4_l")
+data_amount = 50
+
+[node name="ElectricRail1" type="Node2D" parent="."]
+position = Vector2(700, 294)
+script = ExtResource("8_l")
+attack = ExtResource("9_l")
+size = Vector2(200, 6)
+
+[node name="Sign1" type="Node2D" parent="."]
+position = Vector2(800, 190)
+script = ExtResource("10_l")
+text = "감전 선로 — 위로 건너자"
+
+[node name="SpawnDrone1" type="Marker2D" parent="."]
+position = Vector2(1200, 180)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("11_l")
+
+[node name="SpawnCrawler1" type="Marker2D" parent="."]
+position = Vector2(1320, 294)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("12_l")
+
+[node name="SpawnCrawler2" type="Marker2D" parent="."]
+position = Vector2(1380, 294)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("12_l")
+
+[node name="SpawnCrawler3" type="Marker2D" parent="."]
+position = Vector2(1440, 294)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("12_l")
+
+[node name="Relay2" type="Node2D" parent="."]
+position = Vector2(2280, 300)
+script = ExtResource("5_l")
+relay_id = &"ch1_mid"
+
+[node name="Pickup_railgun" type="Area2D" parent="."]
+position = Vector2(2420, 300)
+script = ExtResource("3_l")
+kind = 2
+item_id = &"railgun"
+
+[node name="Sign2" type="Node2D" parent="."]
+position = Vector2(2420, 200)
+script = ExtResource("10_l")
+text = "K 를 길게 눌렀다 떼기: 레일건
+(연산력 25 소모)"
+
+[node name="SpawnGuard2" type="Marker2D" parent="."]
+position = Vector2(2600, 300)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("7_l")
+
+[node name="SpawnGuard3" type="Marker2D" parent="."]
+position = Vector2(2980, 300)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("7_l")
+
+[node name="SpawnDrone2" type="Marker2D" parent="."]
+position = Vector2(2700, 140)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("11_l")
+
+[node name="Pickup_armor_plate" type="Area2D" parent="."]
+position = Vector2(2860, 236)
+script = ExtResource("3_l")
+kind = 0
+item_id = &"armor_plate"
+
+[node name="DataCache3" type="Node2D" parent="."]
+position = Vector2(2520, 300)
+script = ExtResource("4_l")
+data_amount = 50
+
+[node name="DataCache4" type="Node2D" parent="."]
+position = Vector2(3120, 300)
+script = ExtResource("4_l")
+data_amount = 50
+
+[node name="Sign3" type="Node2D" parent="."]
+position = Vector2(3300, 160)
+script = ExtResource("10_l")
+text = "화물차가 지나간다!
+승강장 발판으로 피하자"
+
+[node name="CargoTrain1" type="Node2D" parent="."]
+position = Vector2(3200, 300)
+script = ExtResource("13_l")
+attack = ExtResource("14_l")
+track_length = 1600.0
+
+[node name="SpawnCrawler4" type="Marker2D" parent="."]
+position = Vector2(4000, 146)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("12_l")
+properties = {"on_ceiling": true}
+
+[node name="Pickup_absorb_circuit" type="Area2D" parent="."]
+position = Vector2(4540, 236)
+script = ExtResource("3_l")
+kind = 0
+item_id = &"absorb_circuit"
+
+[node name="SpawnGuard4" type="Marker2D" parent="."]
+position = Vector2(5100, 300)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("7_l")
+
+[node name="SpawnGuard5" type="Marker2D" parent="."]
+position = Vector2(5320, 300)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("7_l")
+
+[node name="SpawnDrone3" type="Marker2D" parent="."]
+position = Vector2(5200, 180)
+script = ExtResource("6_l")
+enemy_scene = ExtResource("11_l")
+
+[node name="DataCache5" type="Node2D" parent="."]
+position = Vector2(4950, 300)
+script = ExtResource("4_l")
+data_amount = 50
+
+[node name="DataCache6" type="Node2D" parent="."]
+position = Vector2(5520, 300)
+script = ExtResource("4_l")
+data_amount = 50
+
+[node name="Relay3" type="Node2D" parent="."]
+position = Vector2(5800, 300)
+script = ExtResource("5_l")
+relay_id = &"ch1_boss"
+
+[node name="Sign4" type="Node2D" parent="."]
+position = Vector2(5880, 200)
+script = ExtResource("10_l")
+text = "종착역 →
+…무언가 달려온다"
+color = Color(0.6, 0.9, 1.0, 0.45)
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(5960, 300)
+script = ExtResource("15_l")
+target_scene = "res://game/bosses/train/train_arena.tscn"
+
+[node name="Deco1" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1000
+offset_top = 150
+offset_right = 1006
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.9, 0.2, 0.2, 0.25)
+
+[node name="Deco2" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 2400
+offset_top = 150
+offset_right = 2406
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.9, 0.2, 0.2, 0.25)
+
+[node name="Deco3" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 5000
+offset_top = 150
+offset_right = 5006
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.9, 0.2, 0.2, 0.25)
+
+[node name="Deco4" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 5600
+offset_top = 150
+offset_right = 5606
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.9, 0.2, 0.2, 0.25)
+
+[node name="Player" parent="." instance=ExtResource("16_l")]
+unique_name_in_owner = true
+position = Vector2(60, 300)
+
+[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+limit_left = -260
+limit_top = -100
+limit_right = 6020
+limit_bottom = 420
+script = ExtResource("17_l")
+target = NodePath("../Player")
+
+[node name="CameraShake" type="Node" parent="Camera" node_paths=PackedStringArray("camera")]
+script = ExtResource("18_l")
+camera = NodePath("..")
+
+[node name="ScreenFlash" type="CanvasLayer" parent="."]
+script = ExtResource("19_l")
+
+[node name="Toast" type="CanvasLayer" parent="."]
+script = ExtResource("20_l")
+
+[node name="BodyMenu" type="CanvasLayer" parent="."]
+script = ExtResource("21_l")
+
+[node name="Hud" type="CanvasLayer" parent="."]
+script = ExtResource("22_l")

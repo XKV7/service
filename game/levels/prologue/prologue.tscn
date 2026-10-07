@@ -1,0 +1,180 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/levels/level_base.gd" id="1_l"]
+[ext_resource type="Script" path="res://game/objects/relay.gd" id="2_l"]
+[ext_resource type="Script" path="res://game/objects/sign_text.gd" id="3_l"]
+[ext_resource type="Resource" path="res://data/enemies/guard_broken.tres" id="4_l"]
+[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="5_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="6_l"]
+[ext_resource type="Script" path="res://game/objects/data_cache.gd" id="7_l"]
+[ext_resource type="Script" path="res://game/objects/item_pickup.gd" id="8_l"]
+[ext_resource type="Script" path="res://game/objects/stage_exit.gd" id="9_l"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="10_l"]
+[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="11_l"]
+[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="12_l"]
+[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="13_l"]
+[ext_resource type="Script" path="res://game/ui/toast.gd" id="14_l"]
+[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="15_l"]
+[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="16_l"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_l")
+platforms = Array[Rect2]([Rect2(-20, -200, 20, 500), Rect2(0, 300, 760, 200), Rect2(420, 252, 60, 48), Rect2(860, 300, 340, 200), Rect2(1400, 300, 900, 200), Rect2(2300, -200, 20, 500)])
+platform_color = Color(0.18, 0.16, 0.17, 1)
+platform_edge_color = Color(0.9, 0.5, 0.3, 1)
+title = "프롤로그. 폐공장 은신처"
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Fill" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.04, 0.035, 0.05, 1)
+
+[node name="Relay1" type="Node2D" parent="."]
+position = Vector2(110, 300)
+script = ExtResource("2_l")
+relay_id = &"prologue_start"
+
+[node name="Sign1" type="Node2D" parent="."]
+position = Vector2(60, 190)
+script = ExtResource("3_l")
+text = "…예비 의체 기동 완료.
+…신호가 또 들린다."
+color = Color(0.6, 0.9, 1.0, 0.45)
+
+[node name="Sign2" type="Node2D" parent="."]
+position = Vector2(260, 220)
+script = ExtResource("3_l")
+text = "A / D  이동"
+
+[node name="Sign3" type="Node2D" parent="."]
+position = Vector2(450, 160)
+script = ExtResource("3_l")
+text = "Space  점프"
+
+[node name="Sign4" type="Node2D" parent="."]
+position = Vector2(800, 210)
+script = ExtResource("3_l")
+text = "길게 누르면 높이 뛴다"
+
+[node name="Sign5" type="Node2D" parent="."]
+position = Vector2(1300, 190)
+script = ExtResource("3_l")
+text = "L  대시
+점프 후 대시로 넓은 틈을 건넌다"
+
+[node name="Sign6" type="Node2D" parent="."]
+position = Vector2(1560, 210)
+script = ExtResource("3_l")
+text = "J  공격 (연타하면 3연격)"
+
+[node name="SpawnGuard1" type="Marker2D" parent="."]
+position = Vector2(1680, 300)
+script = ExtResource("5_l")
+enemy_scene = ExtResource("6_l")
+properties = {"data": ExtResource("4_l")}
+
+[node name="SpawnGuard2" type="Marker2D" parent="."]
+position = Vector2(1900, 300)
+script = ExtResource("5_l")
+enemy_scene = ExtResource("6_l")
+properties = {"data": ExtResource("4_l")}
+
+[node name="DataCache1" type="Node2D" parent="."]
+position = Vector2(1790, 300)
+script = ExtResource("7_l")
+data_amount = 50
+
+[node name="Sign7" type="Node2D" parent="."]
+position = Vector2(1990, 200)
+script = ExtResource("3_l")
+text = "부품은 중계기에서 장착한다"
+
+[node name="Pickup_accel_actuator" type="Area2D" parent="."]
+position = Vector2(1990, 300)
+script = ExtResource("8_l")
+kind = 0
+item_id = &"accel_actuator"
+
+[node name="Relay2" type="Node2D" parent="."]
+position = Vector2(2120, 300)
+script = ExtResource("2_l")
+relay_id = &"prologue_end"
+
+[node name="Sign8" type="Node2D" parent="."]
+position = Vector2(2120, 190)
+script = ExtResource("3_l")
+text = "W  중계기 접속
+Tab  의체 메뉴"
+
+[node name="Sign9" type="Node2D" parent="."]
+position = Vector2(2230, 210)
+script = ExtResource("3_l")
+text = "신호 발신지: 폐선 지하철 →"
+color = Color(0.6, 0.9, 1.0, 0.45)
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(2280, 300)
+script = ExtResource("9_l")
+target_scene = "res://game/levels/ch1_subway/ch1_subway.tscn"
+
+[node name="Deco1" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 150
+offset_top = 200
+offset_right = 180
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.12, 0.1, 0.12, 1)
+
+[node name="Deco2" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 620
+offset_top = 180
+offset_right = 670
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.12, 0.1, 0.12, 1)
+
+[node name="Deco3" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1500
+offset_top = 160
+offset_right = 1580
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.12, 0.1, 0.12, 1)
+
+[node name="Player" parent="." instance=ExtResource("10_l")]
+unique_name_in_owner = true
+position = Vector2(60, 300)
+
+[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+limit_left = -20
+limit_top = -100
+limit_right = 2320
+limit_bottom = 420
+script = ExtResource("11_l")
+target = NodePath("../Player")
+
+[node name="CameraShake" type="Node" parent="Camera" node_paths=PackedStringArray("camera")]
+script = ExtResource("12_l")
+camera = NodePath("..")
+
+[node name="ScreenFlash" type="CanvasLayer" parent="."]
+script = ExtResource("13_l")
+
+[node name="Toast" type="CanvasLayer" parent="."]
+script = ExtResource("14_l")
+
+[node name="BodyMenu" type="CanvasLayer" parent="."]
+script = ExtResource("15_l")
+
+[node name="Hud" type="CanvasLayer" parent="."]
+script = ExtResource("16_l")

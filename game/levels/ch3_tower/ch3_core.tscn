@@ -1,0 +1,402 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/levels/level_base.gd" id="1_l"]
+[ext_resource type="Script" path="res://game/objects/relay.gd" id="2_l"]
+[ext_resource type="Script" path="res://game/objects/sign_text.gd" id="3_l"]
+[ext_resource type="Script" path="res://game/objects/enemy_spawn_point.gd" id="4_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/guard/guard.tscn" id="5_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/drone/drone.tscn" id="6_l"]
+[ext_resource type="Script" path="res://game/traps/laser_grid.gd" id="7_l"]
+[ext_resource type="Resource" path="res://data/attacks/trap_laser.tres" id="8_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/executioner/executioner.tscn" id="9_l"]
+[ext_resource type="Script" path="res://game/objects/data_cache.gd" id="10_l"]
+[ext_resource type="PackedScene" path="res://game/enemies/riot/riot.tscn" id="11_l"]
+[ext_resource type="Script" path="res://game/objects/stage_exit.gd" id="12_l"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="13_l"]
+[ext_resource type="Script" path="res://core/feel/follow_camera.gd" id="14_l"]
+[ext_resource type="Script" path="res://core/feel/camera_shake.gd" id="15_l"]
+[ext_resource type="Script" path="res://core/feel/screen_flash.gd" id="16_l"]
+[ext_resource type="Script" path="res://game/ui/toast.gd" id="17_l"]
+[ext_resource type="Script" path="res://game/ui/body_menu.gd" id="18_l"]
+[ext_resource type="Script" path="res://game/ui/debug_hud.gd" id="19_l"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_l")
+platforms = Array[Rect2]([Rect2(-20, -200, 20, 500), Rect2(0, 300, 3500, 200), Rect2(1250, 236, 100, 12), Rect2(1550, 236, 100, 12), Rect2(3500, -200, 20, 500)])
+platform_color = Color(0.06, 0.18, 0.2, 1)
+platform_edge_color = Color(0.3, 1.0, 0.9, 1)
+title = "3장. 서버 코어 '고요'"
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Fill" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.01, 0.05, 0.06, 1)
+
+[node name="Relay1" type="Node2D" parent="."]
+position = Vector2(100, 300)
+script = ExtResource("2_l")
+relay_id = &"ch3_core_start"
+
+[node name="Sign1" type="Node2D" parent="."]
+position = Vector2(260, 170)
+script = ExtResource("3_l")
+text = "…여기야… 여기…"
+color = Color(0.6, 0.9, 1.0, 0.45)
+
+[node name="SpawnGuard1" type="Marker2D" parent="."]
+position = Vector2(420, 300)
+script = ExtResource("4_l")
+enemy_scene = ExtResource("5_l")
+
+[node name="SpawnDrone1" type="Marker2D" parent="."]
+position = Vector2(620, 180)
+script = ExtResource("4_l")
+enemy_scene = ExtResource("6_l")
+
+[node name="LaserGrid1" type="Node2D" parent="."]
+position = Vector2(820, 120)
+script = ExtResource("7_l")
+attack = ExtResource("8_l")
+length = 180.0
+
+[node name="SpawnExecutioner1" type="Marker2D" parent="."]
+position = Vector2(1100, 300)
+script = ExtResource("4_l")
+enemy_scene = ExtResource("9_l")
+
+[node name="DataCache1" type="Node2D" parent="."]
+position = Vector2(1000, 300)
+script = ExtResource("10_l")
+data_amount = 50
+
+[node name="SpawnRiot1" type="Marker2D" parent="."]
+position = Vector2(1420, 300)
+script = ExtResource("4_l")
+enemy_scene = ExtResource("11_l")
+
+[node name="Relay2" type="Node2D" parent="."]
+position = Vector2(1720, 300)
+script = ExtResource("2_l")
+relay_id = &"ch3_core_mid"
+
+[node name="Sign2" type="Node2D" parent="."]
+position = Vector2(1720, 170)
+script = ExtResource("3_l")
+text = "…살려 줘… 누구든…"
+color = Color(0.6, 0.9, 1.0, 0.45)
+
+[node name="LaserGrid2" type="Node2D" parent="."]
+position = Vector2(2000, 120)
+script = ExtResource("7_l")
+attack = ExtResource("8_l")
+length = 180.0
+
+[node name="SpawnGuard2" type="Marker2D" parent="."]
+position = Vector2(2200, 300)
+script = ExtResource("4_l")
+enemy_scene = ExtResource("5_l")
+
+[node name="SpawnGuard3" type="Marker2D" parent="."]
+position = Vector2(2350, 300)
+script = ExtResource("4_l")
+enemy_scene = ExtResource("5_l")
+
+[node name="SpawnDrone2" type="Marker2D" parent="."]
+position = Vector2(2500, 180)
+script = ExtResource("4_l")
+enemy_scene = ExtResource("6_l")
+
+[node name="SpawnExecutioner2" type="Marker2D" parent="."]
+position = Vector2(2800, 300)
+script = ExtResource("4_l")
+enemy_scene = ExtResource("9_l")
+
+[node name="DataCache2" type="Node2D" parent="."]
+position = Vector2(2620, 300)
+script = ExtResource("10_l")
+data_amount = 50
+
+[node name="Relay3" type="Node2D" parent="."]
+position = Vector2(3300, 300)
+script = ExtResource("2_l")
+relay_id = &"ch3_core_boss"
+
+[node name="Sign3" type="Node2D" parent="."]
+position = Vector2(3380, 160)
+script = ExtResource("3_l")
+text = "…ROOT… 당신이죠?"
+color = Color(0.6, 0.9, 1.0, 0.45)
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(3460, 300)
+script = ExtResource("12_l")
+target_scene = "res://game/bosses/ark/ark_arena.tscn"
+
+[node name="Deco1" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 150
+offset_top = 150
+offset_right = 178
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco2" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 154
+offset_top = 160
+offset_right = 174
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco3" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 410
+offset_top = 150
+offset_right = 438
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco4" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 414
+offset_top = 160
+offset_right = 434
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco5" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 670
+offset_top = 150
+offset_right = 698
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco6" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 674
+offset_top = 160
+offset_right = 694
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco7" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 930
+offset_top = 150
+offset_right = 958
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco8" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 934
+offset_top = 160
+offset_right = 954
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco9" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1190
+offset_top = 150
+offset_right = 1218
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco10" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1194
+offset_top = 160
+offset_right = 1214
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco11" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1450
+offset_top = 150
+offset_right = 1478
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco12" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1454
+offset_top = 160
+offset_right = 1474
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco13" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1710
+offset_top = 150
+offset_right = 1738
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco14" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1714
+offset_top = 160
+offset_right = 1734
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco15" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1970
+offset_top = 150
+offset_right = 1998
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco16" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 1974
+offset_top = 160
+offset_right = 1994
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco17" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 2230
+offset_top = 150
+offset_right = 2258
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco18" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 2234
+offset_top = 160
+offset_right = 2254
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco19" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 2490
+offset_top = 150
+offset_right = 2518
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco20" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 2494
+offset_top = 160
+offset_right = 2514
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco21" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 2750
+offset_top = 150
+offset_right = 2778
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco22" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 2754
+offset_top = 160
+offset_right = 2774
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco23" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 3010
+offset_top = 150
+offset_right = 3038
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco24" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 3014
+offset_top = 160
+offset_right = 3034
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Deco25" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 3270
+offset_top = 150
+offset_right = 3298
+offset_bottom = 300
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.14, 1)
+
+[node name="Deco26" type="ColorRect" parent="."]
+z_index = -1
+offset_left = 3274
+offset_top = 160
+offset_right = 3294
+offset_bottom = 163
+mouse_filter = 2
+color = Color(0.3, 1.0, 0.9, 0.7)
+
+[node name="Player" parent="." instance=ExtResource("13_l")]
+unique_name_in_owner = true
+position = Vector2(60, 300)
+
+[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+limit_left = -20
+limit_top = -100
+limit_right = 3520
+limit_bottom = 420
+script = ExtResource("14_l")
+target = NodePath("../Player")
+
+[node name="CameraShake" type="Node" parent="Camera" node_paths=PackedStringArray("camera")]
+script = ExtResource("15_l")
+camera = NodePath("..")
+
+[node name="ScreenFlash" type="CanvasLayer" parent="."]
+script = ExtResource("16_l")
+
+[node name="Toast" type="CanvasLayer" parent="."]
+script = ExtResource("17_l")
+
+[node name="BodyMenu" type="CanvasLayer" parent="."]
+script = ExtResource("18_l")
+
+[node name="Hud" type="CanvasLayer" parent="."]
+script = ExtResource("19_l")

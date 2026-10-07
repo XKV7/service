@@ -42,8 +42,15 @@ func _apply_enabled() -> void:
 
 
 func _on_interacted(_actor: Node) -> void:
-	if target_scene == "":
+	SceneGate.travel(get_tree(), target_scene)
+
+
+## 플레이어의 내구도·연산력을 들고 target으로 넘어간다.
+static func travel(tree: SceneTree, target: String) -> void:
+	if target == "":
 		return
-	HitStop.cancel()
-	get_tree().paused = false
-	get_tree().change_scene_to_file.call_deferred(target_scene)
+	var data: Dictionary = {}
+	var p := tree.get_first_node_in_group(&"player") as Player
+	if p and not p.is_dead():
+		data = {"player_hp": p.health.hp, "player_energy": p.energy.value}
+	SceneLoader.change_scene(target, data)

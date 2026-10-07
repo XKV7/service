@@ -12,6 +12,8 @@ extends Node2D
 @export var kill_y: float = 800.0
 ## 월드 물리 레이어 번호 (Project Settings의 "world")
 @export_flags_2d_physics var world_layer: int = 1
+## 들어올 때 보여줄 구역 이름 (비우면 안 보여준다)
+@export var title: String = ""
 
 @onready var player: Player = %Player
 
@@ -22,6 +24,21 @@ func _ready() -> void:
 		_build_platform(rect)
 	GameState.wreck_changed.connect(_sync_wreck)
 	_sync_wreck()
+	GameState.current_scene = scene_file_path
+	_apply_transfer.call_deferred()
+	if title != "":
+		EventBus.toast_requested.emit(title)
+
+
+## 이전 구역에서 넘어온 내구도·연산력을 이어받는다. (부품 적용 뒤에 실행)
+func _apply_transfer() -> void:
+	var data: Dictionary = SceneLoader.transfer
+	if data.has("player_hp"):
+		player.health.hp = clampi(int(data["player_hp"]), 1, player.health.max_hp)
+		player.health.health_changed.emit(player.health.hp, player.health.max_hp)
+	if data.has("player_energy"):
+		player.energy.set_value(float(data["player_energy"]))
+	SceneLoader.transfer = {}
 
 
 func _physics_process(_delta: float) -> void:

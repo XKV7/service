@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="ROOT ACCESS"
-run/main_scene="res://game/levels/test/test_map.tscn"
+run/main_scene="res://game/levels/prologue/prologue.tscn"
 config/features=PackedStringArray("4.4")
 
 [autoload]
 
 EventBus="*res://core/autoload/event_bus.gd"
 GameState="*res://game/game_state.gd"
+SceneLoader="*res://core/autoload/scene_loader.gd"
 
 [display]
 

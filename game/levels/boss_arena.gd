@@ -27,5 +27,4 @@ func _on_boss_defeated(_id: StringName) -> void:
 
 func _on_player_respawned() -> void:
 	# 보스전은 처음부터 다시 한다.
-	HitStop.cancel()
-	get_tree().reload_current_scene.call_deferred()
+	SceneLoader.reload_scene()
